@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pos_config_view_form_stock_guard" model="ir.ui.view">
+        <field name="name">pos.config.form.stock.guard</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='configuration']//setting[field[@name='default_partner_id']]" position="after">
+                <setting id="block_negative_stock"
+                         string="Block sales with insufficient stock"
+                         help="Check available stock at the POS source location before checkout.">
+                    <field name="block_negative_stock" readonly="has_active_session"/>
+                    <div class="text-muted mt8" invisible="not block_negative_stock">
+                        Requires inventory updates after each order and an online connection.
+                    </div>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>

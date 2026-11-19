@@ -1,0 +1,77 @@
+# Odoo POS Stock Guard
+
+Prevent Odoo 20 Point of Sale checkout when unreserved stock is insufficient.
+
+**Status: development preview. Not yet validated in a running Odoo 20 database.**
+
+Maintained by [Ronald Torrez](https://github.com/ronaldtorrez).
+Technical module: `pos_stock_guard`. Target Odoo series: **20.0** only.
+
+## Behavior
+
+- Optional enforcement per POS configuration; disabled by default.
+- Checks physical quantity minus reservations at the POS source location and its children.
+- Adds positive quantities across duplicate product lines. Refunds do not offset sales.
+- Skips products whose inventory is not tracked, including services.
+- Checks manual checkout in the browser, then rechecks persisted lines on the server.
+- Serializes participating server checkouts by product and rejects incomplete stock transfers.
+- Replayed finalized orders bypass the additional check to avoid double consumption checks.
+
+## Requirements and limits
+
+Requires `pos_stock` and its standard dependencies, Odoo.sh or self-hosted Odoo.
+Odoo Online does not support this Python addon. Inventory must update after each
+order. Manual checkout requires an online connection. The check is not a stock
+reservation and does not guarantee that a payment terminal has not already charged
+the customer when a later server check fails. Automatic terminal validation relies
+on the server check, not the manual payment-screen patch.
+
+Ship-later orders are rejected when enforcement is enabled. Lot/serial selection
+is delegated to Odoo; aggregate availability does not validate an individual lot.
+The server rejects a transfer that does not finish successfully. Product bundles,
+alternative units of measure, consignment, custom routes and third-party payment
+flows need separate acceptance testing. This addon is a POS checkout policy, not
+a global prohibition against negative inventory from all stock operations.
+
+## Installation
+
+1. Add this repository to the Odoo addons path (or commit its module to Odoo.sh).
+2. Update the Apps list and install **Odoo POS Stock Guard**.
+3. Close active POS sessions.
+4. Configure inventory to update after each order.
+5. Open the POS configuration and enable **Block sales with insufficient stock**.
+6. Open a new session and refresh the POS assets.
+7. Complete the [acceptance checklist](docs/TESTING.md) on a test database.
+
+Example self-hosted installation:
+
+```bash
+odoo-bin -d stock_guard_test --addons-path=/path/to/odoo/addons,/path/to/this/repository \
+  -i pos_stock_guard --stop-after-init
+```
+
+The old unpublished prototype `pos_no_negative_stock` is not an upgrade target.
+Do not install both prototypes together. An installed old prototype requires a
+separate migration plan; this repository does not include database migrations.
+
+## Development
+
+See [CONTRIBUTING.md](CONTRIBUTING.md), [architecture](docs/ARCHITECTURE.md)
+and [testing](docs/TESTING.md). All code, comments and documentation use English;
+user-facing strings remain translatable with Odoo's translation tools.
+
+```bash
+python scripts/check_project.py
+node --input-type=module --check < pos_stock_guard/static/src/app/payment_screen_patch.js
+```
+
+## License and attribution
+
+Licensed under [Apache License 2.0](LICENSE). Personal and commercial use,
+modification and distribution are permitted under its terms. Preserve applicable
+copyright, license and [NOTICE](NOTICE) attribution when distributing the work.
+The license does not require a visible promotional banner or payment to the author.
+
+Apache 2.0 grants remain applicable to versions already received even if future
+development becomes private. Keep company credentials and private customizations
+out of public forks. A private deployment repository can contain a licensed copy.
