@@ -4,6 +4,7 @@
 
 - Display the stock-blocking option in the Odoo 20 Point of Sale settings page.
 - Add a regression test for saving the option on the selected POS configuration.
+- Keep the option read-only while that POS has an active session.
 
 ## 20.0.1.0.1 - Unreleased
 
