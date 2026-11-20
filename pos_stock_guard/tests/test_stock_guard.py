@@ -37,6 +37,14 @@ class TestStockGuard(AccountTestInvoicingCommon):
         self.assertIn("use_pricelist", records[0])
         self.assertTrue(records[0]["block_negative_stock"])
 
+    def test_settings_field_updates_selected_pos(self):
+        settings = self.env["res.config.settings"].sudo().create({
+            "pos_config_id": self.config.id,
+            "pos_block_negative_stock": False,
+        })
+        self.assertFalse(settings.pos_block_negative_stock)
+        self.assertFalse(self.config.block_negative_stock)
+
     def test_duplicate_lines_and_refunds(self):
         result = self.guard._aggregate_demand([
             {"product_id": self.product.id, "qty": 2},
