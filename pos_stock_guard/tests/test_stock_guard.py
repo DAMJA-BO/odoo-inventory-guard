@@ -11,20 +11,23 @@ class TestStockGuard(AccountTestInvoicingCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.guard = cls.env["pos.stock.guard"]
-        cls.warehouse = cls.env["stock.warehouse"].search([
+        # AccountTestInvoicingCommon does not grant Point of Sale manager
+        # access. Use elevated privileges only for technical test fixtures so
+        # these policy tests do not depend on the runner user's access groups.
+        cls.guard = cls.env["pos.stock.guard"].sudo()
+        cls.warehouse = cls.env["stock.warehouse"].sudo().search([
             ("company_id", "=", cls.env.company.id),
         ], limit=1)
-        cls.config = cls.env["pos.config"].create({
+        cls.config = cls.env["pos.config"].sudo().create({
             "name": "Stock Guard Test",
             "picking_type_id": cls.warehouse.pos_type_id.id,
             "block_negative_stock": True,
         })
-        cls.session = cls.env["pos.session"].create({
+        cls.session = cls.env["pos.session"].sudo().create({
             "config_id": cls.config.id,
             "update_stock_at_closing": False,
         })
-        cls.product = cls.env["product.product"].create({
+        cls.product = cls.env["product.product"].sudo().create({
             "name": "Guarded Test Product", "is_storable": True,
         })
         cls.location = cls.config.picking_type_id.default_location_src_id
@@ -50,7 +53,9 @@ class TestStockGuard(AccountTestInvoicingCommon):
         ))
 
     def test_exact_available_quantity(self):
-        self.env["stock.quant"]._update_available_quantity(self.product, self.location, 2)
+        self.env["stock.quant"].sudo()._update_available_quantity(
+            self.product, self.location, 2,
+        )
         self.assertFalse(self.guard._shortage_message(
             self.session, {self.product.id: 2}, lock=True,
         ))
@@ -59,7 +64,7 @@ class TestStockGuard(AccountTestInvoicingCommon):
         ))
 
     def test_reservations_are_excluded(self):
-        quant_model = self.env["stock.quant"]
+        quant_model = self.env["stock.quant"].sudo()
         quant_model._update_available_quantity(self.product, self.location, 3)
         quant_model._update_reserved_quantity(self.product, self.location, 2)
         self.assertTrue(self.guard._shortage_message(
@@ -73,7 +78,7 @@ class TestStockGuard(AccountTestInvoicingCommon):
         ))
 
     def test_service_and_refund_only_orders(self):
-        service = self.env["product.product"].create({
+        service = self.env["product.product"].sudo().create({
             "name": "Test Service", "type": "service",
         })
         self.assertFalse(self.guard._shortage_message(self.session, {service.id: 1}))
