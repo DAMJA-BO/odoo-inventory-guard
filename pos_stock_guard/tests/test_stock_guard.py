@@ -32,6 +32,11 @@ class TestStockGuard(AccountTestInvoicingCommon):
         })
         cls.location = cls.config.picking_type_id.default_location_src_id
 
+    def test_pos_loader_keeps_standard_and_guard_fields(self):
+        records = self.config._load_pos_data_read(self.config, self.config)
+        self.assertIn("use_pricelist", records[0])
+        self.assertTrue(records[0]["block_negative_stock"])
+
     def test_duplicate_lines_and_refunds(self):
         result = self.guard._aggregate_demand([
             {"product_id": self.product.id, "qty": 2},

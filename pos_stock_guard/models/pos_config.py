@@ -15,13 +15,6 @@ class PosConfig(models.Model):
     )
 
     @api.model
-    def _load_pos_data_fields(self, config):
-        """Expose the toggle through Odoo 20's POS data loader."""
-        return list(dict.fromkeys([
-            *super()._load_pos_data_fields(config), "block_negative_stock",
-        ]))
-
-    @api.model
     def check_pos_stock(self, config_id, lines):
         """Check draft quantities without reserving stock or acquiring locks.
 

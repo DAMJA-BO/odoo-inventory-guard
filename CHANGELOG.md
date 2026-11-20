@@ -1,5 +1,11 @@
 # Changelog
 
+## 20.0.1.0.1 - Unreleased
+
+- Preserve all standard Odoo 20 POS configuration fields during data loading.
+- Add regression coverage for the standard `use_pricelist` loader field.
+- Create test fixtures with explicit elevated privileges.
+
 ## 20.0.1.0.0 - Unreleased
 
 - Introduce Odoo POS Stock Guard (`pos_stock_guard`).
