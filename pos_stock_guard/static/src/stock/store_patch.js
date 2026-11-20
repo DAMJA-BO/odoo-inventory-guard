@@ -81,6 +81,9 @@ patch(PosStore.prototype, {
         if (packaging) {
             quantity = packaging.uom_id.factor / values.product_id.uom_id.factor;
         }
+        if (order.preset_id?.is_return) {
+            quantity = -Math.abs(quantity);
+        }
         const demands = [{ product: values.product_id, qty: quantity }];
         for (const command of values.combo_line_ids || []) {
             if (command[0] === "create") {

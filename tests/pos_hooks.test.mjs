@@ -120,6 +120,10 @@ test("quantity check aggregates duplicate lines and barcode quantities", async (
 test("refunds remain possible and service stock is not limited", async () => {
     const f = fixture({ stock_guard_limit_quantity: true }, 0);
     assert.notEqual(await f.store.handleOrderLineConfiguration(f.order, { product_id: f.product, qty: -1 }), false);
+    f.order.preset_id = { is_return: true };
+    assert.notEqual(await f.store.handleOrderLineConfiguration(f.order,
+        { product_id: f.product, qty: -1 }, { type: "quantity", value: 5 }), false);
+    f.order.preset_id = undefined;
     f.store.data.call = async () => ({ products: { 1: { tracked: false, available: 0 } } });
     assert.notEqual(await f.store.handleOrderLineConfiguration(f.order, { product_id: f.product, qty: 50 }), false);
 });
