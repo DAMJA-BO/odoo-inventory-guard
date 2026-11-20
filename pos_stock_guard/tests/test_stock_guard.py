@@ -99,6 +99,10 @@ class TestStockGuard(AccountTestInvoicingCommon):
         stock = result["products"][self.product.id]
         self.assertTrue(stock["tracked"])
         self.assertEqual(stock["available"], 1)
+        self.assertEqual(
+            stock["rounding"],
+            10.0 ** -self.env["decimal.precision"].precision_get("Product Unit"),
+        )
         self.assertTrue(self.guard._shortage_message(self.session, {self.product.id: 2}))
         with self.assertRaises(ValidationError):
             self.env["pos.config"].with_user(manager).get_stock_guard_availability(

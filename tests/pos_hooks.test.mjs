@@ -26,15 +26,35 @@ class Store {
 class Line {
     setQuantity(quantity) { this.qty = quantity; return true; }
 }
+let currentPos;
+const mounted = [];
+const unmounted = [];
+class Card {}
+class OrderlineComponent {
+    get line() { return this.props.line; }
+    get lineContainerClasses() { return { selected: true }; }
+}
+class Screen {
+    setup() { this.pos = currentPos; }
+    get currentOrder() { return this.pos.getOrder(); }
+}
 const translation = (text, ...args) => text.replace(/%s/g, () => String(args.shift()));
 const stubs = {
-    "@odoo/owl": { proxy: value => value },
+    "@odoo/owl": {
+        proxy: value => value,
+        onMounted: callback => mounted.push(callback),
+        onWillUnmount: callback => unmounted.push(callback),
+    },
     "@web/core/utils/patch": { patch: patches },
     "@web/core/l10n/translation": { _t: translation },
     "@web/core/confirmation_dialog/confirmation_dialog": { AlertDialog: class {} },
     "@web/views/fields/parsers": { parseFloat: Number },
     "@point_of_sale/app/services/pos_store": { PosStore: Store },
     "@point_of_sale/app/models/pos_order_line": { PosOrderline: Line },
+    "@point_of_sale/app/hooks/pos_hook": { usePos: () => currentPos },
+    "@point_of_sale/app/components/product_card/product_card": { ProductCard: Card },
+    "@point_of_sale/app/components/orderline/orderline": { Orderline: OrderlineComponent },
+    "@point_of_sale/app/screens/product_screen/product_screen": { ProductScreen: Screen },
 };
 async function load(specifier, parent) {
     const id = specifier.startsWith("@") ? specifier :
@@ -52,7 +72,7 @@ async function load(specifier, parent) {
     await module.link((child, referring) => load(child, referring.identifier));
     return module;
 }
-for (const name of ["store_patch", "order_line_patch"]) {
+for (const name of ["store_patch", "order_line_patch", "components_patch"]) {
     await (await load("./" + name)).evaluate();
 }
 const runtime = cache.get(path.join(root, "runtime.js")).namespace.stockRuntime;
@@ -180,4 +200,69 @@ test("snapshot refreshes use bounded batches and are serialized", async () => {
     ]);
     assert.equal(maximum, 1);
     assert.deepEqual(batches, [200, 200, 50, 1, 1]);
+});
+
+test("card presentation supports optional text/colors and aggregate variants", async () => {
+    const f = fixture({ stock_guard_show_badges: true, stock_guard_display_mode: "quantity" });
+    currentPos = f.store;
+    await f.store.refreshStockGuard();
+    const card = new Card();
+    card.props = { product: { product_variant_ids: [f.product] } };
+    card.setup();
+    assert.equal(card.stockGuardBadge.colorsOnly, false);
+    assert.equal(card.stockGuardBadge.label, "Available: 2");
+    f.config.stock_guard_display_mode = "color";
+    assert.equal(card.stockGuardBadge.colorsOnly, true);
+    runtime(f.config).products[2] = { tracked: true, available: 3 };
+    card.props.product.product_variant_ids.push({ id: 2 });
+    assert.equal(card.stockGuardBadge.label, "Variants — Available: 5");
+    runtime(f.config).failed = true;
+    assert.equal(card.stockGuardBadge.stale, true);
+    f.config.stock_guard_show_badges = false;
+    assert.equal(card.stockGuardBadge, null);
+});
+
+test("order indicator and shortage summary use total positive demand", async () => {
+    const f = fixture({ stock_guard_show_order: true }, 0);
+    currentPos = f.store;
+    f.store.getOrder = () => f.order;
+    await f.store.refreshStockGuard();
+    const component = new OrderlineComponent();
+    component.props = { line: f.line, mode: "display" };
+    assert.equal(component.stockGuardIndicator.css, "text-bg-danger");
+    assert.equal(component.lineContainerClasses.o_stock_guard_shortage, true);
+    assert.equal(component.lineContainerClasses.selected, true);
+    const screen = new Screen();
+    screen.pos = f.store;
+    assert.equal(screen.stockGuardShortages, 1);
+    f.line.qty = -1;
+    assert.equal(screen.stockGuardShortages, 0);
+    component.props.mode = "receipt";
+    assert.equal(component.stockGuardIndicator, null);
+});
+
+test("custom polling interval is scheduled after refresh and cleared on unmount", async () => {
+    const f = fixture({ stock_guard_auto_refresh: true, stock_guard_refresh_seconds: 45 });
+    currentPos = f.store;
+    mounted.length = 0;
+    unmounted.length = 0;
+    const timers = [];
+    const cleared = [];
+    context.setTimeout = (callback, delay) => { timers.push({ callback, delay }); return 123; };
+    context.clearTimeout = id => cleared.push(id);
+    try {
+        const screen = new Screen();
+        screen.setup();
+        mounted[0]();
+        await new Promise(resolve => setImmediate(resolve));
+        assert.equal(timers.length, 1);
+        assert.equal(timers[0].delay, 45000);
+        unmounted[0]();
+        assert.deepEqual(cleared, [123]);
+        await timers[0].callback();
+        assert.equal(timers.length, 1);
+    } finally {
+        context.setTimeout = setTimeout;
+        context.clearTimeout = clearTimeout;
+    }
 });

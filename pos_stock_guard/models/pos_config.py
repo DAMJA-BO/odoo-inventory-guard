@@ -69,6 +69,9 @@ class PosConfig(models.Model):
         if any(product.company_id and product.company_id != config.company_id for product in products):
             raise AccessError(_("Products must belong to the POS company or be shared."))
         result = {}
+        # Odoo 20 removed uom.uom.rounding. Its compare()/round() methods
+        # use the shared Product Unit decimal precision instead.
+        digits = self.env["decimal.precision"].precision_get("Product Unit")
         for product in products:
             # Use exactly the same availability calculation as final validation.
             quantity = self.env["stock.quant"].with_company(config.company_id)._get_available_quantity(
@@ -77,7 +80,7 @@ class PosConfig(models.Model):
             result[product.id] = {
                 "tracked": product.is_storable,
                 "available": quantity,
-                "rounding": product.uom_id.rounding,
+                "rounding": 10.0 ** -digits,
             }
         return {"products": result, "location": location.display_name}
 
