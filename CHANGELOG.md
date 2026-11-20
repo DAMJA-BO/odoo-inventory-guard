@@ -1,5 +1,10 @@
 # Changelog
 
+## 20.0.1.0.2 - Unreleased
+
+- Display the stock-blocking option in the Odoo 20 Point of Sale settings page.
+- Add a regression test for saving the option on the selected POS configuration.
+
 ## 20.0.1.0.1 - Unreleased
 
 - Preserve all standard Odoo 20 POS configuration fields during data loading.
