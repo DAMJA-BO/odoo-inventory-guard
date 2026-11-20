@@ -1,0 +1,17 @@
+// SPDX-License-Identifier: Apache-2.0
+.o_stock_guard_badge {
+    z-index: 1;
+    max-width: calc(100% - .5rem);
+    white-space: normal;
+    pointer-events: none;
+}
+.o_stock_guard_shortage {
+    border-inline-start: 4px solid var(--danger, #dc3545);
+}
+.o_stock_guard_line .badge {
+    white-space: normal;
+    text-align: start;
+}
+.o_stock_guard_dot {
+    font-size: 1rem;
+}

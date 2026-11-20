@@ -1,5 +1,23 @@
 # Architecture
 
+## Optional stock UI
+
+The settings bridge exposes per-POS fields through Odoo 20's
+`res.config.settings`, using the standard `pos_` related-field convention.
+The standalone Stock Guard block is attached to the native POS settings app.
+
+- `stock/policy.js`: pure demand, UoM comparison and display-state calculations.
+- `stock/runtime.js`: reactive in-memory snapshots, isolated by POS configuration.
+- `stock/store_patch.js`: bounded snapshot RPC, catalog filter and pre-creation checks.
+- `stock/order_line_patch.js`: synchronous quantity checks, including combo children.
+- `stock/components_patch.js`: card/line presentation and product-screen polling lifecycle.
+- `stock/stock_guard.xml` and `stock_guard.scss`: inherited UI templates and styling.
+
+The public snapshot RPC checks POS group membership, configuration read access,
+allowed company and product access. It uses the same free-stock calculation as
+the final validator. Snapshots are advisory, not reservations. Failed refreshes
+are visible; all authoritative transaction checks remain server-side.
+
 ## Request flow
 
 The payment-screen patch invokes `pos.config.check_pos_stock` before manual

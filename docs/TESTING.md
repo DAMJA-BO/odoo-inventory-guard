@@ -9,6 +9,17 @@ node --input-type=module --check < pos_stock_guard/static/src/app/payment_screen
 
 These checks do not import Odoo or prove runtime compatibility.
 
+Run the dependency-free frontend policy and boundary tests with Node 22 or newer:
+
+```bash
+npm test
+```
+
+The boundary adapter executes the actual store and order-line patches with fake
+Odoo services. It verifies duplicate demand, barcode/packaging quantities, returns,
+combos, disabled controls, snapshot failures, filtering, isolated configurations,
+and serialized bounded requests. It does not replace rendering or real POS tests.
+
 ## Odoo regression tests
 
 On a disposable database with Odoo 20 and PostgreSQL:
@@ -23,6 +34,20 @@ untracked products, missing products and deferred inventory updates. Extend test
 for the deployment's payment methods and installed addons before release.
 
 ## Acceptance checklist
+
+- [ ] Stock Guard is its own block; select two POS configurations and verify independent values.
+- [ ] All new switches start off; existing checkout protection retains its value on upgrade.
+- [ ] Cards display stock; verify colors-only mode, tooltips and untracked products.
+- [ ] Multi-variant cards show combined availability; addition checks the chosen variant.
+- [ ] Zero stock is rejected on click, barcode scan and weighted/package scans with early blocking.
+- [ ] Quantity limits include duplicate lines and combo children; reductions and returns remain possible.
+- [ ] Order indicators and the shortage count update when quantities or stock change.
+- [ ] Available only starts off and can be toggled; unknown and untracked products remain visible.
+- [ ] Enable/disable low-stock warnings and try custom fractional thresholds.
+- [ ] Refresh manually and automatically; verify custom intervals and last-update time.
+- [ ] Leave/reopen the product screen; polling stops/restarts without duplicate timers.
+- [ ] Disconnect/reconnect; stale quantities are marked and early checks fail closed.
+- [ ] Complete a sale and verify refreshed quantities on the product screen.
 
 - [ ] Install and upgrade the addon; confirm the inherited settings view loads.
 - [ ] Disabled toggle preserves normal checkout.

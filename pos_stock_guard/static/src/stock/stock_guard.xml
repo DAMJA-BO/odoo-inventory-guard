@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="pos_stock_guard.ProductCard" t-inherit="point_of_sale.ProductCard" t-inherit-mode="extension">
+        <xpath expr="//article" position="inside">
+            <span t-if="this.stockGuardBadge"
+                  class="o_stock_guard_badge badge position-absolute top-0 start-0 m-1"
+                  t-att-class="this.stockGuardBadge.css"
+                  t-att-title="this.stockGuardBadge.label"
+                  t-att-aria-label="this.stockGuardBadge.label" role="status">
+                <span t-if="this.stockGuardBadge.colorsOnly" class="o_stock_guard_dot"
+                      aria-hidden="true">&#9679;</span>
+                <t t-else="" t-out="this.stockGuardBadge.label"/>
+                <span t-if="this.stockGuardBadge.stale" title="Stock may be outdated"> !</span>
+            </span>
+        </xpath>
+    </t>
+    <t t-name="pos_stock_guard.Orderline" t-inherit="point_of_sale.Orderline" t-inherit-mode="extension">
+        <xpath expr="//ul[hasclass('info-list')]" position="inside">
+            <li t-if="this.stockGuardIndicator" class="o_stock_guard_line">
+                <span class="badge" t-att-class="this.stockGuardIndicator.css"
+                      t-att-title="this.stockGuardIndicator.label"
+                      t-att-aria-label="this.stockGuardIndicator.label" role="status">
+                    <span t-if="this.stockGuardIndicator.colorsOnly" aria-hidden="true">&#9679;</span>
+                    <t t-else="" t-out="this.stockGuardIndicator.label"/>
+                    <span t-if="this.stockGuardIndicator.stale" title="Stock may be outdated"> !</span>
+                </span>
+            </li>
+        </xpath>
+    </t>
+    <t t-name="pos_stock_guard.ProductScreen" t-inherit="point_of_sale.ProductScreen" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('rightpane')]/div[1]" position="before">
+            <div t-if="this.stockGuardVisible" class="o_stock_guard_toolbar d-flex align-items-center flex-wrap gap-2 p-2 border-bottom">
+                <button class="btn btn-sm btn-secondary" t-on-click="() => this.pos.refreshStockGuard()"
+                        t-att-disabled="this.stockGuardState.loading">
+                    <t t-if="this.stockGuardState.loading">Refreshing stock…</t>
+                    <t t-else="">Refresh stock</t>
+                </button>
+                <button t-if="this.pos.config.stock_guard_available_filter"
+                        class="btn btn-sm" t-att-class="this.stockGuardState.onlyAvailable ? 'btn-primary' : 'btn-outline-secondary'"
+                        t-att-aria-pressed="this.stockGuardState.onlyAvailable ? 'true' : 'false'"
+                        t-on-click="this.toggleStockGuardFilter">Available only</button>
+                <small t-if="this.stockGuardState.failed" class="text-danger" role="status">Stock update unavailable — quantities may be outdated.</small>
+                <small t-elif="this.stockGuardState.lastUpdated" class="text-muted">
+                    <t t-out="this.stockGuardState.location"/> · Updated: <t t-out="this.stockGuardState.lastUpdated"/>
+                </small>
+                <small t-else="" class="text-muted" role="status">Stock not loaded yet.</small>
+            </div>
+        </xpath>
+        <xpath expr="//OrderSummary" position="before">
+            <div t-if="this.stockGuardShortages" class="alert alert-danger m-2 p-2" role="alert">
+                Products with insufficient stock: <t t-out="this.stockGuardShortages"/>
+            </div>
+        </xpath>
+    </t>
+</templates>

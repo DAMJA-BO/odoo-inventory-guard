@@ -1,8 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 """Stock-policy regression tests requiring a disposable Odoo 20 database."""
 
-from odoo.exceptions import ValidationError
+from odoo.exceptions import AccessError, ValidationError
 from odoo.tests import tagged
+from odoo.tests.common import new_test_user
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 
@@ -44,6 +45,72 @@ class TestStockGuard(AccountTestInvoicingCommon):
         })
         self.assertFalse(settings.pos_block_negative_stock)
         self.assertFalse(self.config.block_negative_stock)
+
+    def test_optional_settings_are_scoped_to_selected_pos(self):
+        other = self.config.copy({"name": "Other POS"})
+        self.env["res.config.settings"].sudo().create({
+            "pos_config_id": self.config.id,
+            "pos_stock_guard_show_badges": True,
+            "pos_stock_guard_display_mode": "color",
+            "pos_stock_guard_block_add": True,
+            "pos_stock_guard_limit_quantity": True,
+            "pos_stock_guard_show_order": True,
+            "pos_stock_guard_available_filter": True,
+            "pos_stock_guard_low_stock": True,
+            "pos_stock_guard_low_threshold": 7,
+            "pos_stock_guard_auto_refresh": True,
+            "pos_stock_guard_refresh_seconds": 45,
+        })
+        self.assertTrue(self.config.stock_guard_show_badges)
+        self.assertEqual(self.config.stock_guard_display_mode, "color")
+        self.assertEqual(self.config.stock_guard_low_threshold, 7)
+        self.assertEqual(self.config.stock_guard_refresh_seconds, 45)
+        self.assertFalse(other.stock_guard_show_badges)
+        self.assertFalse(other.stock_guard_block_add)
+        self.assertEqual(other.stock_guard_refresh_seconds, 30)
+        self.assertEqual(other.stock_guard_low_threshold, 3)
+
+    def test_invalid_settings_are_rejected(self):
+        for values in (
+            {"stock_guard_low_threshold": -1},
+            {"stock_guard_refresh_seconds": 0},
+            {"stock_guard_refresh_seconds": 4},
+        ):
+            with self.assertRaises(ValidationError), self.env.cr.savepoint():
+                self.config.write(values)
+
+    def test_availability_snapshot_excludes_reservations_and_other_locations(self):
+        manager = new_test_user(
+            self.env, login="stock_guard_pos_manager",
+            groups="point_of_sale.group_pos_manager",
+            company_id=self.env.company.id,
+        )
+        quant_model = self.env["stock.quant"].sudo()
+        quant_model._update_available_quantity(self.product, self.location, 3)
+        quant_model._update_reserved_quantity(self.product, self.location, 2)
+        other_location = self.env["stock.location"].sudo().create({
+            "name": "Outside POS source", "usage": "internal",
+            "company_id": self.env.company.id,
+        })
+        quant_model._update_available_quantity(self.product, other_location, 20)
+        result = self.env["pos.config"].with_user(manager).get_stock_guard_availability(
+            self.config.id, [self.product.id],
+        )
+        stock = result["products"][self.product.id]
+        self.assertTrue(stock["tracked"])
+        self.assertEqual(stock["available"], 1)
+        self.assertTrue(self.guard._shortage_message(self.session, {self.product.id: 2}))
+        with self.assertRaises(ValidationError):
+            self.env["pos.config"].with_user(manager).get_stock_guard_availability(
+                self.config.id, [self.product.id] * 201,
+            )
+
+    def test_non_pos_user_cannot_read_stock_snapshot(self):
+        user = new_test_user(self.env, login="stock_guard_non_pos", groups="base.group_user")
+        with self.assertRaises(AccessError):
+            self.env["pos.config"].with_user(user).get_stock_guard_availability(
+                self.config.id, [self.product.id],
+            )
 
     def test_duplicate_lines_and_refunds(self):
         result = self.guard._aggregate_demand([

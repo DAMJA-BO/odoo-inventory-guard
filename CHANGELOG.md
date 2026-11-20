@@ -1,5 +1,16 @@
 # Changelog
 
+## 20.0.2.0.0 - Unreleased
+
+- Add a dedicated Stock Guard section with independent settings per POS.
+- Add optional stock badges, colors-only mode, order-line indicators and shortage counts.
+- Add optional early addition checks and quantity limits, including barcode quantities.
+- Add a temporary Available only filter and configurable low-stock threshold.
+- Add manual refresh and optional polling (30 seconds by default, minimum 5 seconds).
+- Display source location, last catalog update and failed-refresh status.
+- Preserve existing checkout enforcement and keep all new switches off by default.
+- Add frontend boundary tests and backend settings/snapshot regression tests.
+
 ## 20.0.1.0.2 - Unreleased
 
 - Display the stock-blocking option in the Odoo 20 Point of Sale settings page.

@@ -15,3 +15,5 @@ jobs:
           node-version: '22'
       - run: python scripts/check_project.py
       - run: node --input-type=module --check < pos_stock_guard/static/src/app/payment_screen_patch.js
+      - run: find pos_stock_guard/static/src/stock -name '*.js' -exec sh -c 'node --input-type=module --check < "$1"' _ {} \;
+      - run: node --experimental-vm-modules --test tests/*.test.mjs
