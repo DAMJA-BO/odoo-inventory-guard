@@ -65,6 +65,14 @@ The next Odoo.sh run reached transaction tests but their common fixture used the
 removed `stock.move.name` field. Fixtures now use the writable `reference` field;
 the reported five errors all occurred before stock protection was exercised.
 
+The following run executed 31 tests and reported one failed batch-rollback
+expectation. Odoo's `_action_done` may call `_free_reservation` after consuming
+stock; that method can reduce other unpicked move lines. The rollback test now
+marks both lines picked and asserts three actual units before validation and
+after rollback. This preserves the intended excessive-completion scenario rather
+than treating Odoo's legitimate adjustment of unpicked reservations as consumption.
+The corrected test still requires a new Odoo.sh execution.
+
 ## Required tests before selecting the final override
 
 - Reserved exact-stock delivery succeeds without counting its reservation twice.

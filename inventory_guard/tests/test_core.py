@@ -61,9 +61,15 @@ class TestInventoryGuardCore(TransactionCase):
         self.policy.enabled = True
         self._stock(2)
         lines = self._line(1) | self._line(2)
+        # Odoo may free/reduce another unpicked line's reservation while
+        # completing the first line. Mark both as physically picked so this
+        # scenario really attempts three units, rather than an adjusted two.
+        lines.write({"picked": True})
+        self.assertEqual(sum(lines.mapped("quantity_product_uom")), 3)
         with self.assertRaises(UserError):
             lines._action_done()
         self.assertEqual(self._physical(), 2)
+        self.assertEqual(sum(lines.mapped("quantity_product_uom")), 3)
 
     def test_reserved_physical_stock_is_not_subtracted_twice(self):
         self.policy.enabled = True

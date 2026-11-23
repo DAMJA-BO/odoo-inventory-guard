@@ -10,6 +10,7 @@
 - Keep the accepted POS integration unchanged until Phase 3.
 - Use Odoo 20 unified `ir.access` permissions and company restriction domains.
 - Create stock-move test fixtures with Odoo 20 `reference` instead of the removed `name` field.
+- Mark batch-rollback fixtures as picked so Odoo cannot reduce a future unpicked reservation during completion.
 
 ## Identity migration - Unreleased
 
