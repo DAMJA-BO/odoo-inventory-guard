@@ -7,7 +7,7 @@
     "website": "https://github.com/ronaldtorrez/odoo-inventory-guard",
     "license": "Other OSI approved licence",
     "depends": ["stock"],
-    "data": ["security/policy_security.xml", "security/ir.model.access.csv", "views/policy_views.xml"],
+    "data": ["security/policy_security.xml", "security/ir.access.csv", "views/policy_views.xml"],
     "application": True,
     "installable": True,
 }

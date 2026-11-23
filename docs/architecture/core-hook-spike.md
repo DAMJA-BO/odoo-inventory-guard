@@ -57,6 +57,10 @@ Operation classification must use persisted move metadata: inventory adjustments
 scrap, manufacturing consumption, deliveries, supplier returns and internal
 transfers. Product/category exceptions and overrides remain pending scope decisions.
 
+Odoo 20 unified legacy `ir.rule` and `ir.model.access` records under `ir.access`.
+Security declarations must use `ir.access`, its `operation`/`domain` fields and
+the `ir.access.csv` format; older security files prevent database initialization.
+
 ## Required tests before selecting the final override
 
 - Reserved exact-stock delivery succeeds without counting its reservation twice.

@@ -8,6 +8,7 @@
 - Serialize participating product updates and roll back failed move-line batches.
 - Add English/Spanish catalogs and Odoo transaction test cases (execution pending).
 - Keep the accepted POS integration unchanged until Phase 3.
+- Use Odoo 20 unified `ir.access` permissions and company restriction domains.
 
 ## Identity migration - Unreleased
 

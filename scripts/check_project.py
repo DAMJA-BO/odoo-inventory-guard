@@ -23,6 +23,12 @@ def main():
         for paths in manifest.get("assets", {}).values():
             for relative in paths:
                 assert (root / relative).is_file(), relative
+        if addon.name == "inventory_guard":
+            assert "security/ir.access.csv" in manifest["data"]
+            assert not (addon / "security" / "ir.model.access.csv").exists()
+            assert 'model="ir.rule"' not in "\n".join(
+                path.read_text(encoding="utf-8") for path in addon.rglob("*.xml")
+            )
     for name in ("LICENSE", "NOTICE", "README.md", "CONTRIBUTING.md"):
         assert (root / name).is_file(), name
     assert "Apache License" in (root / "LICENSE").read_text(encoding="utf-8")
