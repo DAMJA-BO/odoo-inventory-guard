@@ -1,5 +1,7 @@
 # Phase 1 — repository and module migration
 
+**Status: Complete — accepted on Odoo.sh on 2026-11-23.**
+
 ## Goal
 
 Rename the project before production use, preserve Git history and produce a clean

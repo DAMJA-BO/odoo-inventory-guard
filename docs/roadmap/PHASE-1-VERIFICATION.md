@@ -16,18 +16,12 @@ The accepted POS-only release is commit
 - Behavior and version remain the accepted POS behavior and `20.0.2.0.1`.
 - The core inventory app is deferred to Phase 2.
 
-## Company fork rename pending
+## Company fork rename completed
 
-The available Git credential can rename the personal repository but cannot
-administer the company fork. In the DAMJA account, open the existing fork's
-Settings → General → Repository name and rename `odoo-pos-stock-guard` to
-`odoo-inventory-guard`. Preserve the fork; do not delete or recreate it.
-
-Until that action is completed, deployment intentionally keeps the existing
-`DAMJA-BO/odoo-pos-stock-guard` URL. Its code still follows the personal repository.
-After the rename, change only the submodule URL in `.gitmodules` to
-`git@github.com:DAMJA-BO/odoo-inventory-guard.git` and commit it. The new submodule
-directory is already `addons/odoo-inventory-guard`.
+The existing DAMJA fork was preserved and renamed to
+`DAMJA-BO/odoo-inventory-guard`. The deployment submodule now uses
+`git@github.com:DAMJA-BO/odoo-inventory-guard.git` at
+`addons/odoo-inventory-guard`.
 
 ## Odoo.sh verification
 
@@ -60,18 +54,24 @@ directory is already `addons/odoo-inventory-guard`.
 12. Record results and build URL below. Only then promote the tested deployment
     commit to the deployment repository's `development` branch.
 
-## Results to record
+## Acceptance results
 
-- Odoo version/commit:
-- Odoo.sh build URL and commit:
-- English settings/POS:
-- Spanish settings/POS:
-- Zero stock and excessive quantity:
-- Valid sale, return and service:
-- Refresh/filter/indicators:
-- Browser and server errors:
-- Company fork rename completed:
-- Accepted by/date:
+- Odoo version: 20.0.
+- Deployment repository: `DAMJA-BO/odoo-sh-bestone`.
+- Tested deployment branch: `inventory-guard-migration`.
+- Accepted deployment commit: `b096141554de550ec3414014de7e04db41262294`.
+- Odoo.sh result: build and module test suite succeeded on a fresh development
+  database.
+- Installed addon: `pos_inventory_guard`; the former `pos_stock_guard` addon was
+  confirmed absent.
+- English settings/POS: settings and a POS session opened without errors.
+- Spanish settings/POS: interface and translated Inventory Guard content were
+  accepted.
+- Stock behavior: the existing zero-stock checkout protection remained
+  operational after the rename.
+- Browser and server errors: none reported during acceptance.
+- Company fork rename: completed without recreating the fork.
+- Accepted by/date: project owner, 2026-11-23.
 
-Local syntax, translation coverage and frontend tests do not replace these Odoo
-runtime checks. Phase 1 remains open until this evidence is recorded.
+Phase 1 is complete. The accepted migration may remain on `development`; `main`
+stays at the documented rollback release until a later release is approved.

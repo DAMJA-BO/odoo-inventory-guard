@@ -14,8 +14,8 @@ Update the relevant file whenever implementation decisions or behavior change.
 - Source language: English; shipped interface languages: English and Spanish.
 - License: Apache License 2.0.
 
-Repository names above are targets. Do not rename remotes or Odoo modules until
-Phase 1 is executed and its rollback point has been created.
+The repository and addon names above are active. Phase 1 preserved the previous
+POS-only release as a rollback point before applying the new identity.
 
 ## Addon architecture
 
@@ -37,7 +37,7 @@ more useful feedback; they must not duplicate the authoritative stock rule.
 | Phase | Document | Status | Exit condition |
 | --- | --- | --- | --- |
 | 0 | Current POS release | Complete | Version `20.0.2.0.1` promoted to `main` |
-| 1 | [Repository and module migration](01-migration-and-renaming.md) | Awaiting Odoo.sh verification and company fork rename | New identity builds on a clean Odoo.sh development database |
+| 1 | [Repository and module migration](01-migration-and-renaming.md) | Complete | New identity builds on a clean Odoo.sh development database |
 | 2 | [Core app and policy engine](02-inventory-guard-core.md) | Planned | Generic stock operations cannot create protected negative stock |
 | 3 | [POS migration](03-pos-inventory-guard.md) | Planned | Existing POS behavior uses the core policy without regression |
 | 4 | [Stock operations](04-stock-operations.md) | Planned | Transfers, scrap, adjustments and returns pass acceptance tests |
