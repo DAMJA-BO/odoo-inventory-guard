@@ -1,12 +1,12 @@
 {
     "name": "Odoo POS Inventory Guard",
     "summary": "Prevent POS checkout when available stock is insufficient",
-    "version": "20.0.2.0.1",
+    "version": "20.0.3.0.0",
     "category": "Sales/Point of Sale",
     "author": "Ronald Torrez",
     "website": "https://github.com/ronaldtorrez/odoo-inventory-guard",
     "license": "Other OSI approved licence",
-    "depends": ["pos_stock"],
+    "depends": ["inventory_guard", "pos_stock"],
     "data": ["views/pos_config_views.xml"],
     "assets": {
         "point_of_sale._assets_pos": [

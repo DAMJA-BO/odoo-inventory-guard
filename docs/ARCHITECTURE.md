@@ -1,10 +1,13 @@
 # Architecture
 
-## Optional stock UI
+## Configuration
 
-The settings bridge exposes per-POS fields through Odoo 20's
-`res.config.settings`, using the standard `pos_` related-field convention.
-The standalone Inventory Guard block is attached to the native POS settings app.
+The Inventory Guard app owns configuration navigation. Company policies live in
+`inventory.guard.policy`. The POS extension registers a dedicated view over the
+existing `pos.config` records. Native POS settings provide a shortcut.
+See [centralized configuration](architecture/centralized-configuration.md).
+
+## Optional stock UI
 
 - `stock/policy.js`: pure demand, UoM comparison and display-state calculations.
 - `stock/runtime.js`: reactive in-memory snapshots, isolated by POS configuration.
@@ -44,14 +47,15 @@ handling. A SELECT lock alone would not refresh a repeatable-read snapshot.
 Never catch a serialization error here and never manually commit.
 
 This coarse lock spans companies and warehouses sharing a product. It trades
-throughput for a small, reviewable implementation. Inventory operations outside
-this addon do not participate in this product lock. Acceptance tests must include
+throughput for a small, reviewable implementation. Company-protected inventory moves use the same lock in the core. Operations
+outside Inventory Guard policy do not participate. Acceptance tests must include
 concurrent checkouts over separate requests, not only sequential test cursors.
 
 ## Extension points
 
 - `pos.stock.guard._aggregate_demand`: input validation and positive demand.
-- `pos.stock.guard._shortage_message`: supported stock policy and availability.
+- `pos.stock.guard._shortage_message`: POS session prerequisites and core delegation.
+- `inventory.guard.availability`: shared free-stock check and transaction locking.
 - `pos.config.check_pos_stock`: authenticated advisory endpoint.
 - `pos.order._process_saved_order`: authoritative checkout integration.
 

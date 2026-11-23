@@ -1,5 +1,8 @@
 # Phase 5 — sales and purchases
 
+Register **Sales** and **Purchases** under Inventory Guard when their addons are installed. See the
+[central configuration contract](../architecture/centralized-configuration.md).
+
 ## `sale_inventory_guard`
 
 A sales order does not consume stock by itself. The delivery is protected by the

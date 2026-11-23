@@ -1,7 +1,7 @@
 {
     "name": "Odoo Inventory Guard",
     "summary": "Company-aware protection against negative physical stock",
-    "version": "20.0.1.0.0",
+    "version": "20.0.2.0.0",
     "category": "Inventory/Inventory",
     "author": "Ronald Torrez",
     "website": "https://github.com/ronaldtorrez/odoo-inventory-guard",

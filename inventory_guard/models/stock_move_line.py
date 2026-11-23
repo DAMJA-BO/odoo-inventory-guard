@@ -24,12 +24,7 @@ class StockMoveLine(models.Model):
 
     def _inventory_guard_lock_products(self):
         """Serialize even empty source dimensions; row locks alone miss them."""
-        self.env["product.product"].flush_model()
-        for product_id in sorted(self.product_id.ids):
-            self.env.cr.execute(
-                "UPDATE product_product SET write_date = write_date WHERE id = %s", [product_id],
-            )
-        self.env["stock.quant"].invalidate_model(["quantity", "reserved_quantity"])
+        self.env["inventory.guard.availability"]._lock_products(self.product_id)
 
     def _inventory_guard_has_policy(self):
         return any(self.env["inventory.guard.policy"]._for_source(

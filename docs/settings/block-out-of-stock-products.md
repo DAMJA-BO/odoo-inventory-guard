@@ -12,7 +12,7 @@ Enable this to catch unavailable selections early, including supported barcode s
 
 ## Settings
 
-- Location: Point of Sale → Configuration → Settings → Inventory Guard.
+- Location: Inventory Guard → Point of Sale → select a POS.
 - Scope: the selected POS configuration.
 - Technical field(s): `inventory_guard_block_add`.
 - Default: Off.

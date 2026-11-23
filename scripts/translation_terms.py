@@ -55,8 +55,15 @@ def terms():
                 add(value, ref.replace("selection__pos_config__", "selection__res_config_settings__pos_"))
     for path in ADDON.rglob("*.xml"):
         tree = ET.parse(path)
+        for menu in tree.findall(".//menuitem"):
+            add(menu.get("name"), f"model:ir.ui.menu,name:pos_inventory_guard.{menu.attrib['id']}")
         containers = tree.findall(".//record") if "views" in path.parts else [tree.getroot()]
         for container in containers:
+            if container.get("model") == "ir.actions.act_window":
+                add(container.findtext("field[@name='name']"),
+                    f"model:ir.actions.act_window,name:pos_inventory_guard.{container.attrib['id']}")
+            if "views" in path.parts and container.get("model") != "ir.ui.view":
+                continue
             ref = (f"model_terms:ir.ui.view,arch_db:pos_inventory_guard.{container.attrib['id']}"
                    if "views" in path.parts else f"code:addons/{path.relative_to(ROOT).as_posix()}:0")
             for node in container.iter():

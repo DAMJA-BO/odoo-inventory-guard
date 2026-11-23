@@ -2,11 +2,20 @@
 
 [Project README](../README.md) · [Setting reference](settings/README.md)
 
+## Configure company protection
+
+Select the active company, then open **Inventory Guard → General** to enable
+protection and scope it to internal locations. Open **Operations** to choose
+which movements the company policy protects. The first manager visit creates
+the disabled policy if it is missing. Use **Overview** to see saved policies
+for your allowed companies.
+
 ## Configure one POS
 
 1. Install the addon and close active sessions for the POS being configured.
-2. Open Point of Sale → Configuration → Settings.
-3. Select the intended POS and find the Inventory Guard section.
+2. Open **Inventory Guard → Point of Sale**. Native POS settings also offer
+   **Open Inventory Guard settings** for the selected POS.
+3. Select the POS you want to configure.
 4. Choose its settings using the [setting reference](settings/README.md).
 5. Save, reopen the POS and refresh the browser assets if necessary.
 6. Verify the behavior on a disposable test database.
@@ -17,7 +26,8 @@ read-only while a session is active.
 
 For final checkout protection, inventory must update after each order. Verify
 the operation type has an internal source location in the POS company, or a
-permitted shared location. The addon checks access to the POS and its company.
+permitted shared location. The addon checks access to the POS and its company. The checkout switch is stored per POS and is separate
+from the company's physical stock-operation policy.
 
 ## Availability rules
 

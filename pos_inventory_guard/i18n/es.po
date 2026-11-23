@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo POS Inventory Guard 20.0.2.0.1\n"
+"Project-Id-Version: Odoo POS Inventory Guard 20.0.3.0.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ronaldtorrez/odoo-inventory-guard/issues\n"
 "PO-Revision-Date: 2026-11-23 00:00+0000\n"
 "Last-Translator: Ronald Torrez\n"
@@ -14,10 +14,45 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: pos_inventory_guard
+#: code:addons/pos_inventory_guard/models/inventory_guard.py:0
+msgid "Inventory Guard requires inventory updates after each POS order."
+msgstr "Inventory Guard requiere actualizar el inventario después de cada pedido del PdV."
+
+#. module: pos_inventory_guard
+#: code:addons/pos_inventory_guard/models/inventory_guard.py:0
+#: code:addons/pos_inventory_guard/models/pos_config.py:0
+msgid "Configure an internal source location for the POS operation type."
+msgstr "Configure una ubicación de origen interna para el tipo de operación del PdV."
+
+#. module: pos_inventory_guard
+#: code:addons/pos_inventory_guard/models/inventory_guard.py:0
+#: code:addons/pos_inventory_guard/models/pos_config.py:0
+msgid "The POS source location must belong to the POS company."
+msgstr "La ubicación de origen del PdV debe pertenecer a la empresa del PdV."
+
+#. module: pos_inventory_guard
+#: code:addons/pos_inventory_guard/models/inventory_guard.py:0
+msgid "Checkout quantities must be finite."
+msgstr "Las cantidades del pedido deben ser finitas."
+
+#. module: pos_inventory_guard
+#: code:addons/pos_inventory_guard/models/inventory_guard.py:0
+msgid "A numeric product ID is required."
+msgstr "Se requiere un identificador numérico de producto."
+
+#. module: pos_inventory_guard
+#: code:addons/pos_inventory_guard/models/inventory_guard.py:0
+msgid "Invalid checkout quantity."
+msgstr "Cantidad del pedido no válida."
+
+#. module: pos_inventory_guard
+#: code:addons/pos_inventory_guard/models/inventory_guard.py:0
+msgid "Checkout quantity is too large."
+msgstr "La cantidad del pedido es demasiado grande."
+
+#. module: pos_inventory_guard
 #: model:ir.model.fields,field_description:pos_inventory_guard.field_pos_config__block_negative_stock
 #: model:ir.model.fields,field_description:pos_inventory_guard.field_res_config_settings__pos_block_negative_stock
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.pos_config_view_form_inventory_guard
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
 msgid "Block sales with insufficient stock"
 msgstr "Bloquear ventas con existencias insuficientes"
 
@@ -30,14 +65,12 @@ msgstr "Comprobar las existencias no reservadas en la ubicación de origen del P
 #. module: pos_inventory_guard
 #: model:ir.model.fields,field_description:pos_inventory_guard.field_pos_config__inventory_guard_show_badges
 #: model:ir.model.fields,field_description:pos_inventory_guard.field_res_config_settings__pos_inventory_guard_show_badges
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
 msgid "Show stock badges"
 msgstr "Mostrar indicadores de existencias"
 
 #. module: pos_inventory_guard
 #: model:ir.model.fields,field_description:pos_inventory_guard.field_pos_config__inventory_guard_display_mode
 #: model:ir.model.fields,field_description:pos_inventory_guard.field_res_config_settings__pos_inventory_guard_display_mode
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
 msgid "Stock display mode"
 msgstr "Modo de visualización de existencias"
 
@@ -56,35 +89,30 @@ msgstr "Solo colores"
 #. module: pos_inventory_guard
 #: model:ir.model.fields,field_description:pos_inventory_guard.field_pos_config__inventory_guard_block_add
 #: model:ir.model.fields,field_description:pos_inventory_guard.field_res_config_settings__pos_inventory_guard_block_add
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
 msgid "Block adding out-of-stock products"
 msgstr "Bloquear la adición de productos sin existencias"
 
 #. module: pos_inventory_guard
 #: model:ir.model.fields,field_description:pos_inventory_guard.field_pos_config__inventory_guard_limit_quantity
 #: model:ir.model.fields,field_description:pos_inventory_guard.field_res_config_settings__pos_inventory_guard_limit_quantity
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
 msgid "Prevent quantities above available stock"
 msgstr "Impedir cantidades superiores a las existencias disponibles"
 
 #. module: pos_inventory_guard
 #: model:ir.model.fields,field_description:pos_inventory_guard.field_pos_config__inventory_guard_show_order
 #: model:ir.model.fields,field_description:pos_inventory_guard.field_res_config_settings__pos_inventory_guard_show_order
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
 msgid "Show stock on order lines"
 msgstr "Mostrar existencias en las líneas del pedido"
 
 #. module: pos_inventory_guard
 #: model:ir.model.fields,field_description:pos_inventory_guard.field_pos_config__inventory_guard_available_filter
 #: model:ir.model.fields,field_description:pos_inventory_guard.field_res_config_settings__pos_inventory_guard_available_filter
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
 msgid "Enable Available only filter"
 msgstr "Habilitar el filtro Solo disponibles"
 
 #. module: pos_inventory_guard
 #: model:ir.model.fields,field_description:pos_inventory_guard.field_pos_config__inventory_guard_low_stock
 #: model:ir.model.fields,field_description:pos_inventory_guard.field_res_config_settings__pos_inventory_guard_low_stock
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
 msgid "Highlight low stock"
 msgstr "Resaltar existencias bajas"
 
@@ -97,7 +125,6 @@ msgstr "Umbral de existencias bajas"
 #. module: pos_inventory_guard
 #: model:ir.model.fields,field_description:pos_inventory_guard.field_pos_config__inventory_guard_auto_refresh
 #: model:ir.model.fields,field_description:pos_inventory_guard.field_res_config_settings__pos_inventory_guard_auto_refresh
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
 msgid "Automatically refresh stock"
 msgstr "Actualizar existencias automáticamente"
 
@@ -108,126 +135,64 @@ msgid "Refresh interval (seconds)"
 msgstr "Intervalo de actualización (segundos)"
 
 #. module: pos_inventory_guard
-#. odoo-python
 #: code:addons/pos_inventory_guard/models/pos_config.py:0
-msgid "Only Point of Sale users can check checkout stock."
-msgstr "Solo los usuarios del Punto de venta pueden comprobar las existencias antes del cobro."
+msgid "Inventory Guard settings"
+msgstr "Ajustes de Inventory Guard"
 
 #. module: pos_inventory_guard
-#. odoo-python
+#: code:addons/pos_inventory_guard/models/pos_config.py:0
+msgid "Only Point of Sale administrators can configure Inventory Guard."
+msgstr "Solo los administradores del PdV pueden configurar Inventory Guard."
+
+#. module: pos_inventory_guard
 #: code:addons/pos_inventory_guard/models/pos_config.py:0
 msgid "The POS belongs to an unauthorized company."
 msgstr "El PdV pertenece a una empresa no autorizada."
 
 #. module: pos_inventory_guard
-#. odoo-python
+#: code:addons/pos_inventory_guard/models/pos_config.py:0
+msgid "Only Point of Sale users can check checkout stock."
+msgstr "Solo los usuarios del Punto de venta pueden comprobar las existencias antes del cobro."
+
+#. module: pos_inventory_guard
 #: code:addons/pos_inventory_guard/models/pos_config.py:0
 msgid "Supply at most 200 numeric product IDs."
 msgstr "Indique como máximo 200 identificadores numéricos de productos."
 
 #. module: pos_inventory_guard
-#. odoo-python
-#: code:addons/pos_inventory_guard/models/pos_config.py:0
-#: code:addons/pos_inventory_guard/models/inventory_guard.py:0
-msgid "Configure an internal source location for the POS operation type."
-msgstr "Configure una ubicación de origen interna para el tipo de operación del PdV."
-
-#. module: pos_inventory_guard
-#. odoo-python
-#: code:addons/pos_inventory_guard/models/pos_config.py:0
-#: code:addons/pos_inventory_guard/models/inventory_guard.py:0
-msgid "The POS source location must belong to the POS company."
-msgstr "La ubicación de origen del PdV debe pertenecer a la empresa del PdV."
-
-#. module: pos_inventory_guard
-#. odoo-python
 #: code:addons/pos_inventory_guard/models/pos_config.py:0
 msgid "Products must belong to the POS company or be shared."
 msgstr "Los productos deben pertenecer a la empresa del PdV o ser compartidos."
 
 #. module: pos_inventory_guard
-#. odoo-python
 #: code:addons/pos_inventory_guard/models/pos_config.py:0
 msgid "POS configuration not found."
 msgstr "No se encontró la configuración del PdV."
 
 #. module: pos_inventory_guard
-#. odoo-python
 #: code:addons/pos_inventory_guard/models/pos_config.py:0
 msgid "An open POS session is required."
 msgstr "Se requiere una sesión de PdV abierta."
 
 #. module: pos_inventory_guard
-#. odoo-python
 #: code:addons/pos_inventory_guard/models/pos_config.py:0
 msgid "The low stock threshold must be finite and nonnegative."
 msgstr "El umbral de existencias bajas debe ser finito y no negativo."
 
 #. module: pos_inventory_guard
-#. odoo-python
 #: code:addons/pos_inventory_guard/models/pos_config.py:0
 msgid "The stock refresh interval must be at least 5 seconds."
 msgstr "El intervalo de actualización de existencias debe ser de al menos 5 segundos."
 
 #. module: pos_inventory_guard
-#. odoo-python
 #: code:addons/pos_inventory_guard/models/pos_order.py:0
 msgid "Inventory Guard does not support ship-later orders."
 msgstr "Inventory Guard no admite pedidos con envío posterior."
 
 #. module: pos_inventory_guard
-#. odoo-python
 #: code:addons/pos_inventory_guard/models/pos_order.py:0
 msgid "Inventory Guard could not complete the stock transfer. Check lots, serial numbers and stock configuration, then retry."
 msgstr "Inventory Guard no pudo completar la transferencia de existencias. Compruebe los lotes, números de serie y la configuración de existencias, y vuelva a intentarlo."
-
-#. module: pos_inventory_guard
-#. odoo-python
-#: code:addons/pos_inventory_guard/models/inventory_guard.py:0
-msgid "Inventory Guard requires inventory updates after each POS order."
-msgstr "Inventory Guard requiere actualizar el inventario después de cada pedido del PdV."
-
-#. module: pos_inventory_guard
-#. odoo-python
-#: code:addons/pos_inventory_guard/models/inventory_guard.py:0
-msgid "Insufficient stock at %(location)s:\n%(details)s"
-msgstr "Existencias insuficientes en %(location)s:\n%(details)s"
-
-#. module: pos_inventory_guard
-#. odoo-python
-#: code:addons/pos_inventory_guard/models/inventory_guard.py:0
-msgid "One or more checkout products no longer exist."
-msgstr "Uno o varios productos del pedido ya no existen."
-
-#. module: pos_inventory_guard
-#. odoo-python
-#: code:addons/pos_inventory_guard/models/inventory_guard.py:0
-msgid "Checkout quantities must be finite."
-msgstr "Las cantidades del pedido deben ser finitas."
-
-#. module: pos_inventory_guard
-#. odoo-python
-#: code:addons/pos_inventory_guard/models/inventory_guard.py:0
-msgid "A numeric product ID is required."
-msgstr "Se requiere un identificador numérico de producto."
-
-#. module: pos_inventory_guard
-#. odoo-python
-#: code:addons/pos_inventory_guard/models/inventory_guard.py:0
-msgid "%(product)s: requested %(requested)s; available %(available)s"
-msgstr "%(product)s: solicitado %(requested)s; disponible %(available)s"
-
-#. module: pos_inventory_guard
-#. odoo-python
-#: code:addons/pos_inventory_guard/models/inventory_guard.py:0
-msgid "Invalid checkout quantity."
-msgstr "Cantidad del pedido no válida."
-
-#. module: pos_inventory_guard
-#. odoo-python
-#: code:addons/pos_inventory_guard/models/inventory_guard.py:0
-msgid "Checkout quantity is too large."
-msgstr "La cantidad del pedido es demasiado grande."
 
 #. module: pos_inventory_guard
 #. odoo-javascript
@@ -247,6 +212,7 @@ msgstr "Conéctese al servidor antes de validar esta venta."
 #: code:addons/pos_inventory_guard/static/src/app/payment_screen_patch.js:0
 #: code:addons/pos_inventory_guard/static/src/stock/order_line_patch.js:0
 #: code:addons/pos_inventory_guard/static/src/stock/store_patch.js:0
+#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.pos_config_view_form_inventory_guard
 #: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
 msgid "Inventory Guard"
 msgstr "Inventory Guard"
@@ -313,69 +279,43 @@ msgid "Availability is unknown. Refresh stock and try again."
 msgstr "Se desconoce la disponibilidad. Actualice las existencias y vuelva a intentarlo."
 
 #. module: pos_inventory_guard
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.pos_config_view_form_inventory_guard
-msgid "Check available stock at the POS source location before checkout."
-msgstr "Comprobar las existencias disponibles en la ubicación de origen del PdV antes del cobro."
+#: model:ir.ui.menu,name:pos_inventory_guard.inventory_guard_pos_menu
+#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.inventory_guard_pos_form
+#: model:ir.actions.act_window,name:pos_inventory_guard.inventory_guard_pos_action
+msgid "Point of Sale"
+msgstr "Punto de venta"
 
 #. module: pos_inventory_guard
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.pos_config_view_form_inventory_guard
+#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.inventory_guard_pos_form
+msgid "Close the active POS session before changing these options."
+msgstr "Cierre la sesión activa del PdV antes de cambiar estas opciones."
+
+#. module: pos_inventory_guard
+#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.inventory_guard_pos_form
+msgid "Checkout"
+msgstr "Cobro"
+
+#. module: pos_inventory_guard
+#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.inventory_guard_pos_form
 msgid "Requires inventory updates after each order and an online connection."
 msgstr "Requiere actualizar el inventario después de cada pedido y una conexión a Internet."
 
 #. module: pos_inventory_guard
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
-msgid "Validate checkout on the server. Requires inventory updates after each order and an online connection."
-msgstr "Validar el cobro en el servidor. Requiere actualizar el inventario después de cada pedido y una conexión a Internet."
+#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.inventory_guard_pos_form
+msgid "Cashier options"
+msgstr "Opciones de caja"
 
 #. module: pos_inventory_guard
+#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.pos_config_view_form_inventory_guard
 #: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
-msgid "Applies to product badges and order indicators. Colors-only mode retains accessible labels and tooltips."
-msgstr "Se aplica a los indicadores de productos y de pedidos. El modo Solo colores conserva las etiquetas de accesibilidad y la información al pasar el cursor."
+msgid "Manage stock protection and cashier options from Inventory Guard."
+msgstr "Administre la protección de existencias y las opciones de caja desde Inventory Guard."
 
 #. module: pos_inventory_guard
+#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.pos_config_view_form_inventory_guard
 #: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
-msgid "Display availability on product cards."
-msgstr "Mostrar la disponibilidad en las tarjetas de productos."
-
-#. module: pos_inventory_guard
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
-msgid "Check the selected variant before creating a line, including barcode scans."
-msgstr "Comprobar la variante seleccionada antes de crear una línea, incluidas las lecturas de códigos de barras."
-
-#. module: pos_inventory_guard
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
-msgid "Check total positive quantities across duplicate order lines."
-msgstr "Comprobar el total de cantidades positivas entre las líneas duplicadas del pedido."
-
-#. module: pos_inventory_guard
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
-msgid "Display availability, highlight shortages and show a cart warning."
-msgstr "Mostrar la disponibilidad, resaltar las faltas de existencias y mostrar un aviso en el carrito."
-
-#. module: pos_inventory_guard
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
-msgid "Let the cashier temporarily filter the catalog; products remain visible by default."
-msgstr "Permitir al cajero filtrar temporalmente el catálogo; los productos permanecen visibles de forma predeterminada."
-
-#. module: pos_inventory_guard
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
-msgid "Use a warning color at or below the threshold."
-msgstr "Usar un color de advertencia cuando las existencias sean iguales o inferiores al umbral."
-
-#. module: pos_inventory_guard
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
-msgid "Threshold in each product's default unit of measure."
-msgstr "Umbral en la unidad de medida predeterminada de cada producto."
-
-#. module: pos_inventory_guard
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
-msgid "Refresh advisory quantities while the product screen is open."
-msgstr "Actualizar las cantidades informativas mientras esté abierta la pantalla de productos."
-
-#. module: pos_inventory_guard
-#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.res_config_settings_view_form_inventory_guard
-msgid "Default: 30 seconds. Minimum: 5 seconds. Checkout always rechecks the server."
-msgstr "Predeterminado: 30 segundos. Mínimo: 5 segundos. Si la protección final está activada, el cobro vuelve a comprobar las existencias en el servidor."
+msgid "Open Inventory Guard settings"
+msgstr "Abrir ajustes de Inventory Guard"
 
 #. module: pos_inventory_guard
 #. odoo-javascript

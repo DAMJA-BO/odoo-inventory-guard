@@ -1,5 +1,13 @@
 # Changelog
 
+## Centralized configuration — Unreleased
+
+- Add Overview, General, Operations and per-POS configuration to Inventory Guard.
+- Replace editable native POS settings with a shortcut to the selected POS.
+- Preserve saved POS values and move availability and product locking into the core.
+- Add an explicit POS dependency on the core and update English and Spanish catalogs.
+- Add navigation regression tests and a clean-install and upgrade checklist.
+
 ## Inventory core - Unreleased (local preview)
 
 - Add the standalone `inventory_guard` app and one disabled-by-default policy per company.

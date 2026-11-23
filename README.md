@@ -5,8 +5,10 @@ the shared `inventory_guard` application. The core is disabled until a company
 policy is configured and enabled. Its Odoo 20 database acceptance tests are pending;
 do not treat static checks as a production certification.
 
-See [core configuration and validation](docs/settings/core-policy.md). The POS addon
-does not yet depend on the core; that integration belongs to Phase 3.
+Configure company protection in **Inventory Guard → General / Operations** and
+per-POS protection and cashier options in **Inventory Guard → Point of Sale**.
+The POS addon depends on the core and uses its shared availability service. See
+[core configuration and validation](docs/settings/core-policy.md).
 
 See the [migration verification guide](docs/roadmap/PHASE-1-VERIFICATION.md)
 before installing the renamed addon on Odoo.sh.
@@ -30,7 +32,7 @@ Technical module: `pos_inventory_guard`. Target Odoo series: **20.0** only.
 
 ## Requirements and limits
 
-Requires `pos_stock` and its standard dependencies, Odoo.sh or self-hosted Odoo.
+Requires `inventory_guard`, `pos_stock` and their standard dependencies, Odoo.sh or self-hosted Odoo.
 Odoo Online does not support this Python addon. Inventory must update after each
 order. Manual checkout requires an online connection. The check is not a stock
 reservation and does not guarantee that a payment terminal has not already charged
@@ -50,7 +52,7 @@ a global prohibition against negative inventory from all stock operations.
 2. Update the Apps list and install **Odoo POS Inventory Guard**.
 3. Close active POS sessions.
 4. Configure inventory to update after each order.
-5. Open **Point of Sale → Configuration → Settings → Inventory Guard**, select the POS,
+5. Open **Inventory Guard → Point of Sale**, select the POS,
    and enable **Block sales with insufficient stock**.
 6. Open a new session and refresh the POS assets.
 7. Complete the [acceptance checklist](docs/TESTING.md) on a test database.
@@ -61,7 +63,7 @@ See the [configuration guide](docs/CONFIGURATION.md) and the
 [per-setting reference](docs/settings/README.md) for examples, dependencies,
 connection behavior, limitations and verification steps.
 
-Every POS has independent settings in its **Inventory Guard** section. All new
+Every POS has independent settings in the central Inventory Guard app. All new
 switches default to off; the existing checkout protection keeps its saved value.
 Close the POS session before changing settings, save, then reopen the POS.
 

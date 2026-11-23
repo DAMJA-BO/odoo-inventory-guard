@@ -12,7 +12,7 @@ Enable this when cashiers need to see availability before choosing a product.
 
 ## Settings
 
-- Location: Point of Sale → Configuration → Settings → Inventory Guard.
+- Location: Inventory Guard → Point of Sale → select a POS.
 - Scope: the selected POS configuration.
 - Technical field(s): `inventory_guard_show_badges`.
 - Default: Off.

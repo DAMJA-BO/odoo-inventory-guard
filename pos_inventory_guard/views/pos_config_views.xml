@@ -1,75 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="inventory_guard_pos_list" model="ir.ui.view">
+        <field name="name">inventory.guard.pos.list</field>
+        <field name="model">pos.config</field>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <list create="0" delete="0" duplicate="0">
+                <field name="name"/>
+                <field name="company_id"/>
+                <field name="block_negative_stock"/>
+            </list>
+        </field>
+    </record>
+    <record id="inventory_guard_pos_form" model="ir.ui.view">
+        <field name="name">inventory.guard.pos.form</field>
+        <field name="model">pos.config</field>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <form string="Point of Sale" create="0" delete="0" duplicate="0">
+                <sheet>
+                    <group>
+                        <field name="name" readonly="1"/>
+                        <field name="company_id" readonly="1"/>
+                        <field name="has_active_session" invisible="1"/>
+                    </group>
+                    <div class="alert alert-info" invisible="not has_active_session">
+                        Close the active POS session before changing these options.
+                    </div>
+                    <group string="Checkout">
+                        <field name="block_negative_stock" readonly="has_active_session"/>
+                        <div class="text-muted">Requires inventory updates after each order and an online connection.</div>
+                    </group>
+                    <group string="Cashier options">
+                        <field name="inventory_guard_display_mode" readonly="has_active_session"/>
+                        <field name="inventory_guard_show_badges" readonly="has_active_session"/>
+                        <field name="inventory_guard_block_add" readonly="has_active_session"/>
+                        <field name="inventory_guard_limit_quantity" readonly="has_active_session"/>
+                        <field name="inventory_guard_show_order" readonly="has_active_session"/>
+                        <field name="inventory_guard_available_filter" readonly="has_active_session"/>
+                        <field name="inventory_guard_low_stock" readonly="has_active_session"/>
+                        <field name="inventory_guard_low_threshold" readonly="has_active_session" invisible="not inventory_guard_low_stock"/>
+                        <field name="inventory_guard_auto_refresh" readonly="has_active_session"/>
+                        <field name="inventory_guard_refresh_seconds" readonly="has_active_session" invisible="not inventory_guard_auto_refresh"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="inventory_guard_pos_action" model="ir.actions.act_window">
+        <field name="name">Point of Sale</field>
+        <field name="res_model">pos.config</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="inventory_guard_pos_action_list" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="inventory_guard_pos_list"/>
+        <field name="act_window_id" ref="inventory_guard_pos_action"/>
+    </record>
+    <record id="inventory_guard_pos_action_form" model="ir.actions.act_window.view">
+        <field name="sequence">2</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="inventory_guard_pos_form"/>
+        <field name="act_window_id" ref="inventory_guard_pos_action"/>
+    </record>
+    <menuitem id="inventory_guard_pos_menu" name="Point of Sale"
+              parent="inventory_guard.inventory_guard_root" action="inventory_guard_pos_action"
+              sequence="40" groups="point_of_sale.group_pos_manager"/>
+
     <record id="pos_config_view_form_inventory_guard" model="ir.ui.view">
         <field name="name">pos.config.form.stock.guard</field>
         <field name="model">pos.config</field>
         <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='configuration']//setting[field[@name='default_partner_id']]" position="after">
-                <setting id="block_negative_stock"
-                         string="Block sales with insufficient stock"
-                         help="Check available stock at the POS source location before checkout.">
-                    <field name="block_negative_stock" readonly="has_active_session"/>
-                    <div class="text-muted mt8" invisible="not block_negative_stock">
-                        Requires inventory updates after each order and an online connection.
-                    </div>
+                <setting string="Inventory Guard" help="Manage stock protection and cashier options from Inventory Guard."
+                         groups="point_of_sale.group_pos_manager">
+                    <button name="action_open_inventory_guard" type="object"
+                            string="Open Inventory Guard settings" class="btn-link"/>
                 </setting>
             </xpath>
         </field>
     </record>
-
     <record id="res_config_settings_view_form_inventory_guard" model="ir.ui.view">
         <field name="name">res.config.settings.form.stock.guard</field>
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//block[@id='product_and_category_block']" position="after">
-                <block title="Inventory Guard" id="pos_inventory_guard_section">
-                    <setting id="pos_block_negative_stock" string="Block sales with insufficient stock"
-                             help="Validate checkout on the server. Requires inventory updates after each order and an online connection.">
-                        <field name="pos_block_negative_stock" readonly="pos_has_active_session"/>
-                    </setting>
-                    <setting string="Stock display mode"
-                             help="Applies to product badges and order indicators. Colors-only mode retains accessible labels and tooltips.">
-                        <field name="pos_inventory_guard_display_mode" readonly="pos_has_active_session"/>
-                    </setting>
-                    <setting id="pos_inventory_guard_show_badges" string="Show stock badges"
-                             help="Display availability on product cards.">
-                        <field name="pos_inventory_guard_show_badges" readonly="pos_has_active_session"/>
-                    </setting>
-                    <setting id="pos_inventory_guard_block_add" string="Block adding out-of-stock products"
-                             help="Check the selected variant before creating a line, including barcode scans.">
-                        <field name="pos_inventory_guard_block_add" readonly="pos_has_active_session"/>
-                    </setting>
-                    <setting id="pos_inventory_guard_limit_quantity" string="Prevent quantities above available stock"
-                             help="Check total positive quantities across duplicate order lines.">
-                        <field name="pos_inventory_guard_limit_quantity" readonly="pos_has_active_session"/>
-                    </setting>
-                    <setting id="pos_inventory_guard_show_order" string="Show stock on order lines"
-                             help="Display availability, highlight shortages and show a cart warning.">
-                        <field name="pos_inventory_guard_show_order" readonly="pos_has_active_session"/>
-                    </setting>
-                    <setting id="pos_inventory_guard_available_filter" string="Enable Available only filter"
-                             help="Let the cashier temporarily filter the catalog; products remain visible by default.">
-                        <field name="pos_inventory_guard_available_filter" readonly="pos_has_active_session"/>
-                    </setting>
-                    <setting id="pos_inventory_guard_low_stock" string="Highlight low stock"
-                             help="Use a warning color at or below the threshold.">
-                        <field name="pos_inventory_guard_low_stock" readonly="pos_has_active_session"/>
-                        <div class="content-group" invisible="not pos_inventory_guard_low_stock">
-                            <label for="pos_inventory_guard_low_threshold"/>
-                            <field name="pos_inventory_guard_low_threshold" readonly="pos_has_active_session"/>
-                            <div class="text-muted">Threshold in each product's default unit of measure.</div>
-                        </div>
-                    </setting>
-                    <setting id="pos_inventory_guard_auto_refresh" string="Automatically refresh stock"
-                             help="Refresh advisory quantities while the product screen is open.">
-                        <field name="pos_inventory_guard_auto_refresh" readonly="pos_has_active_session"/>
-                        <div class="content-group" invisible="not pos_inventory_guard_auto_refresh">
-                            <label for="pos_inventory_guard_refresh_seconds"/>
-                            <field name="pos_inventory_guard_refresh_seconds" readonly="pos_has_active_session"/>
-                            <div class="text-muted">Default: 30 seconds. Minimum: 5 seconds. Checkout always rechecks the server.</div>
-                        </div>
+                <block title="Inventory Guard" id="pos_inventory_guard_section"
+                       groups="point_of_sale.group_pos_manager">
+                    <setting help="Manage stock protection and cashier options from Inventory Guard.">
+                        <button name="action_open_inventory_guard" type="object" invisible="not pos_config_id"
+                                string="Open Inventory Guard settings" class="btn-link"/>
                     </setting>
                 </block>
             </xpath>

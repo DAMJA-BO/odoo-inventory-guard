@@ -1,5 +1,8 @@
 # Phase 6 — `mrp_inventory_guard`
 
+Register **Manufacturing** under Inventory Guard when this addon is installed. See the
+[central configuration contract](../architecture/centralized-configuration.md).
+
 ## Goal
 
 Protect raw-material and finished-product consumption while preserving standard

@@ -1,6 +1,7 @@
 # Inventory Guard settings
 
-Each POS has independent settings. Select the POS in its settings before editing.
+Each POS has independent settings. Open **Inventory Guard → Point of Sale** and select the POS before editing.
+For company scope and stock-operation switches, see the [core policy](core-policy.md).
 All switches default to off. The display mode defaults to quantity/text/colors,
 the low-stock threshold to 3, and the refresh interval to 30 seconds. An upgrade
 preserves the saved final-checkout protection value.

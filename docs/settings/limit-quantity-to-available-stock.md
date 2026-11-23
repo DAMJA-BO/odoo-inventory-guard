@@ -12,7 +12,7 @@ Enable this to stop cashiers building quantities that an eventual checkout would
 
 ## Settings
 
-- Location: Point of Sale → Configuration → Settings → Inventory Guard.
+- Location: Inventory Guard → Point of Sale → select a POS.
 - Scope: the selected POS configuration.
 - Technical field(s): `inventory_guard_limit_quantity`.
 - Default: Off.

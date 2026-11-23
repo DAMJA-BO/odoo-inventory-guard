@@ -2,7 +2,7 @@
 """Database acceptance tests; run on a disposable Odoo 20 instance."""
 from odoo.exceptions import UserError
 from odoo.tests import tagged
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase, new_test_user
 
 
 @tagged("post_install", "-at_install")
@@ -44,6 +44,19 @@ class TestInventoryGuardCore(TransactionCase):
         self.assertFalse(self.policy.enabled)
         self._line(1)._action_done()
         self.assertEqual(self._physical(), -1)
+
+    def test_company_sections_share_one_policy(self):
+        self.policy.unlink()
+        manager = new_test_user(
+            self.env, login="inventory_guard_core_manager", groups="stock.group_stock_manager",
+            company_id=self.env.company.id,
+        )
+        policies = self.env["inventory.guard.policy"]
+        general = self.env.ref("inventory_guard.policy_general_action").with_user(manager).run()
+        operations = self.env.ref("inventory_guard.policy_operations_action").with_user(manager).run()
+        self.assertEqual(general["res_id"], operations["res_id"])
+        self.assertNotEqual(general["views"], operations["views"])
+        self.assertFalse(policies.browse(general["res_id"]).enabled)
 
     def test_shortage_rolls_back_even_if_caller_catches(self):
         self.policy.enabled = True

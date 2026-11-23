@@ -12,7 +12,7 @@ Enable this for the final server-side protection, even when early checks are ena
 
 ## Settings
 
-- Location: Point of Sale → Configuration → Settings → Inventory Guard.
+- Location: Inventory Guard → Point of Sale → select a POS.
 - Scope: the selected POS configuration.
 - Technical field(s): `block_negative_stock`.
 - Default: Off.

@@ -2,8 +2,8 @@
 
 Odoo 20 addon to reject POS checkout when available stock is insufficient.
 
-Enable **Block sales with insufficient stock** on the POS configuration after
-closing active sessions. Requires inventory updates after each order and an
+Enable **Block sales with insufficient stock** under **Inventory Guard → Point of Sale → select a POS** after closing active
+sessions. This addon uses the shared `inventory_guard` core. Requires inventory updates after each order and an
 online connection. Ship-later orders are unsupported. Test on a disposable
 database before deployment; this is a development preview.
 

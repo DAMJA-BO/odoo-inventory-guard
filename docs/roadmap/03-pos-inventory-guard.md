@@ -1,5 +1,7 @@
 # Phase 3 — `pos_inventory_guard`
 
+**Status: In progress — Odoo 20 acceptance pending.**
+
 ## Goal
 
 Migrate the proven POS behavior to the shared core without losing cashier guidance
@@ -25,10 +27,12 @@ or creating two competing stock calculations.
 
 1. Make the renamed addon depend on `inventory_guard` and `pos_stock`.
 2. Replace private server calculations with documented core services.
-3. Map each POS configuration to the applicable company/location policy.
+3. Preserve the per-POS checkout switch and resolve availability in that POS's
+   company and source location. Do not map POS choices to a company-wide switch.
 4. Retain the persisted-order checkout check until tests prove the generic final
    hook covers every POS finalization and replay path; then remove duplication.
-5. Preserve current defaults and behavior for existing settings.
+5. Move the settings to Inventory Guard → Point of Sale and keep native shortcuts.
+   Preserve existing values by retaining the stored fields on `pos.config`.
 6. Update UI terminology to Inventory Guard while keeping concise cashier text.
 7. Regenerate English and Spanish catalogs and update settings documentation.
 

@@ -1,5 +1,8 @@
 # Phase 4 — stock operations
 
+Extend **Inventory Guard → Operations** for new stock-operation controls. See the
+[central configuration contract](../architecture/centralized-configuration.md).
+
 ## Goal
 
 Validate the core across every Inventory operation that can reduce protected stock.

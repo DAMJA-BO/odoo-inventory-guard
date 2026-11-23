@@ -27,6 +27,38 @@ class InventoryGuardPolicy(models.Model):
 
     _company_unique = models.Constraint("UNIQUE(company_id)", "Only one Inventory Guard policy is allowed per company.")
 
+    @api.model
+    def _open_company_settings(self, section):
+        company = self.env.company
+        domain = [("company_id", "=", company.id)]
+        policy = self.search(domain, limit=1)
+        if not policy:
+            self.check_access("create")
+            # Create a row version so concurrent first-time openings retry
+            # with a fresh snapshot instead of creating duplicate policies.
+            self.env.cr.execute(
+                "UPDATE res_company SET write_date = write_date WHERE id = %s", [company.id],
+            )
+            context = {
+                key: value for key, value in self.env.context.items()
+                if not key.startswith("default_")
+            }
+            policy = self.search(domain, limit=1) or self.with_context(context).create({
+                "company_id": company.id, "enabled": False,
+            })
+        view_id, title = {
+            "general": ("inventory_guard.policy_general_form", _("General")),
+            "operations": ("inventory_guard.policy_operations_form", _("Operations")),
+        }[section]
+        return {
+            "type": "ir.actions.act_window",
+            "name": title,
+            "res_model": self._name,
+            "res_id": policy.id,
+            "views": [(self.env.ref(view_id).id, "form")],
+            "target": "current",
+        }
+
     @api.constrains("location_ids", "company_id")
     def _check_locations(self):
         for policy in self:

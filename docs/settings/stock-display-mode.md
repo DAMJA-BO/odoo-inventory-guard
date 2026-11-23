@@ -12,7 +12,7 @@ Use quantity mode for explicit stock figures, or color mode for a compact visual
 
 ## Settings
 
-- Location: Point of Sale → Configuration → Settings → Inventory Guard.
+- Location: Inventory Guard → Point of Sale → select a POS.
 - Scope: the selected POS configuration.
 - Technical field(s): `inventory_guard_display_mode`.
 - Default: quantity.

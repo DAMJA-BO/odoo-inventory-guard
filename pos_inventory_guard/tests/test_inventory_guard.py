@@ -46,6 +46,20 @@ class TestInventoryGuard(AccountTestInvoicingCommon):
         self.assertFalse(settings.pos_block_negative_stock)
         self.assertFalse(self.config.block_negative_stock)
 
+    def test_native_shortcut_opens_selected_pos_in_central_form(self):
+        manager = new_test_user(
+            self.env, login="inventory_guard_settings_manager",
+            groups="base.group_system,point_of_sale.group_pos_manager",
+            company_id=self.config.company_id.id,
+        )
+        settings = self.env["res.config.settings"].with_user(manager).sudo().create({
+            "pos_config_id": self.config.id,
+        })
+        action = settings.action_open_inventory_guard()
+        self.assertEqual(action["res_id"], self.config.id)
+        view = self.env.ref("pos_inventory_guard.inventory_guard_pos_form")
+        self.assertEqual(action["views"], [(view.id, "form")])
+
     def test_optional_settings_are_scoped_to_selected_pos(self):
         other = self.config.copy({"name": "Other POS"})
         self.env["res.config.settings"].sudo().create({

@@ -39,6 +39,24 @@ class PosConfig(models.Model):
             if config.inventory_guard_refresh_seconds < 5:
                 raise ValidationError(_("The stock refresh interval must be at least 5 seconds."))
 
+    def action_open_inventory_guard(self):
+        """Open this POS in the dedicated configuration form."""
+        self.ensure_one()
+        if not self.env.user.has_group("point_of_sale.group_pos_manager"):
+            raise AccessError(_("Only Point of Sale administrators can configure Inventory Guard."))
+        self.check_access("read")
+        if self.company_id not in self.env.companies:
+            raise AccessError(_("The POS belongs to an unauthorized company."))
+        view = self.env.ref("pos_inventory_guard.inventory_guard_pos_form")
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Inventory Guard settings"),
+            "res_model": self._name,
+            "res_id": self.id,
+            "views": [(view.id, "form")],
+            "target": "current",
+        }
+
     @api.model
     def get_inventory_guard_availability(self, config_id, product_ids):
         """Return advisory free quantities in product UoM for one POS location.
@@ -72,11 +90,9 @@ class PosConfig(models.Model):
         # Odoo 20 removed uom.uom.rounding. Its compare()/round() methods
         # use the shared Product Unit decimal precision instead.
         digits = self.env["decimal.precision"].precision_get("Product Unit")
+        availability = self.env["inventory.guard.availability"].with_company(config.company_id)
         for product in products:
-            # Use exactly the same availability calculation as final validation.
-            quantity = self.env["stock.quant"].with_company(config.company_id)._get_available_quantity(
-                product, location, strict=False, allow_negative=True,
-            ) if product.is_storable else 0
+            quantity = availability._free_quantity(product, location) if product.is_storable else 0
             result[product.id] = {
                 "tracked": product.is_storable,
                 "available": quantity,

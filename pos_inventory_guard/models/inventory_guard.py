@@ -43,11 +43,8 @@ class PosInventoryGuard(models.AbstractModel):
         transaction retry instead of checking a stale transaction snapshot.
         """
         session.ensure_one()
-        products = self.env["product.product"].browse(sorted(demand)).exists()
-        if set(products.ids) != set(demand):
-            raise ValidationError(_("One or more checkout products no longer exist."))
-        products.check_access("read")
-        products = products.filtered("is_storable")
+        availability = self.env["inventory.guard.availability"].with_company(session.company_id)
+        products = availability._demand_products(demand)
         if not products:
             return False
         if session.update_stock_at_closing:
@@ -57,30 +54,4 @@ class PosInventoryGuard(models.AbstractModel):
             return _("Configure an internal source location for the POS operation type.")
         if location.company_id and location.company_id != session.company_id:
             return _("The POS source location must belong to the POS company.")
-        if lock:
-            products.flush_recordset()
-            # Sorted writes reduce deadlocks; never commit here. A no-op UPDATE
-            # deliberately creates a row version without changing business data.
-            for product_id in sorted(products.ids):
-                self.env.cr.execute(
-                    "UPDATE product_product SET write_date = write_date WHERE id = %s",
-                    [product_id],
-                )
-            self.env["stock.quant"].invalidate_model(["quantity", "reserved_quantity"])
-        shortages = []
-        for product in products:
-            available = self.env["stock.quant"]._get_available_quantity(
-                product, location, strict=False, allow_negative=True,
-            )
-            if product.uom_id.compare(available, demand[product.id]) < 0:
-                shortages.append(_(
-                    "%(product)s: requested %(requested)s; available %(available)s",
-                    product=product.display_name,
-                    requested=demand[product.id], available=available,
-                ))
-        if shortages:
-            return _(
-                "Insufficient stock at %(location)s:\n%(details)s",
-                location=location.display_name, details="\n".join(shortages),
-            )
-        return False
+        return availability._shortage_message(products, location, demand, lock=lock)

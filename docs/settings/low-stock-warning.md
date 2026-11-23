@@ -12,7 +12,7 @@ Enable this when cashiers should distinguish low stock from normal availability.
 
 ## Settings
 
-- Location: Point of Sale → Configuration → Settings → Inventory Guard.
+- Location: Inventory Guard → Point of Sale → select a POS.
 - Scope: the selected POS configuration.
 - Technical field(s): `inventory_guard_low_stock`, `inventory_guard_low_threshold`.
 - Default: Off; threshold 3.

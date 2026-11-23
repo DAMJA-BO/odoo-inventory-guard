@@ -4,16 +4,17 @@ Status: local development preview, awaiting Odoo 20 database acceptance.
 
 ## Installation and access
 
-Install `inventory_guard` on a disposable Odoo 20 database. This is a separate app;
-the existing `pos_inventory_guard` remains independently installable for now.
-Open **Inventory → Configuration → Inventory Guard**, or the Inventory Guard app.
+Install `inventory_guard` on a disposable Odoo 20 database. The POS addon
+uses the core as a dependency. Open **Inventory Guard → General** for activation
+and locations, or **Operations** for operation switches. **Overview** lists
+policies for companies you can access. Inventory's native menu links to General.
 Inventory users may read policies; Inventory managers may manage them, subject
 to allowed-company record rules. No separate override permission exists.
 
 ## Company and activation
 
-Create one policy for each company requiring protection. Installation creates no
-enabled policy. The **Enable inventory protection** switch starts off. The source
+Select the intended company in Odoo. The first manager visit to General or
+Operations creates that company's policy automatically if needed. The **Enable inventory protection** switch starts off. The source
 location company selects the rule; shared locations use the persisted move-line
 company. Changing the active company in the browser is not a policy bypass.
 
@@ -48,9 +49,10 @@ mode or manager bypass in this version.
 
 ## POS interaction
 
-The existing POS checks remain configured per POS. The core can still reject a
-stock operation even if the POS's early UI checks are disabled. Core protection
-does not automatically add stock badges or replace the POS free-stock checks.
+The POS checkout switch remains per POS and uses the core's free-stock check.
+The company policy checks actual physical move balances for covered operations,
+including any POS transfer classified as a protected delivery. Its rules can
+still apply with the POS checkout switch off. Neither setting controls badges.
 
 ## Verification required before release
 

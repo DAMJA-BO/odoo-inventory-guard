@@ -1,11 +1,16 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Expose Inventory Guard in the Odoo 20 Point of Sale settings screen."""
+"""Provide a native shortcut and keep legacy related settings compatible."""
 
 from odoo import fields, models
 
 
 class ResConfigSettings(models.TransientModel):
     _inherit = "res.config.settings"
+
+    def action_open_inventory_guard(self):
+        self.ensure_one()
+        self.check_access("read")
+        return self.pos_config_id.action_open_inventory_guard()
 
     pos_block_negative_stock = fields.Boolean(
         related="pos_config_id.block_negative_stock",

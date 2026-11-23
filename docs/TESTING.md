@@ -26,19 +26,30 @@ On a disposable database with Odoo 20 and PostgreSQL:
 
 ```bash
 odoo-bin -d inventory_guard_test --addons-path=/path/to/odoo/addons,/path/to/repository \
-  -i pos_inventory_guard --test-enable --test-tags /pos_inventory_guard --stop-after-init
+  -i inventory_guard,pos_inventory_guard --test-enable --test-tags /inventory_guard,/pos_inventory_guard --stop-after-init
 ```
 
 Tests cover aggregation, finite input, available quantity, reservations, refunds,
 untracked products, missing products and deferred inventory updates. Extend tests
 for the deployment's payment methods and installed addons before release.
 
+For upgrade coverage, record the values of two existing POS configurations before
+upgrading both addons from the prior release. Include a POS with checkout enabled
+and a POS with checkout disabled in the same company. Compare both records after
+the upgrade, without uninstalling either addon.
+
 ## Acceptance checklist
 
 - [ ] Install Spanish, upgrade the addon and verify settings and POS messages in Spanish.
 - [ ] Switch back to English and verify dynamic quantities and shortage messages.
 - [ ] Verify Inventory Guard is included in frontend translation modules.
-- [ ] Inventory Guard is its own block; select two POS configurations and verify independent values.
+- [ ] Install the core alone and open Overview, General and Operations.
+- [ ] Open General and Operations for the first time; both use the same disabled policy.
+- [ ] Change the active company and confirm independent policies and permissions.
+- [ ] Open Inventory Guard → Point of Sale; compare two POS configurations.
+- [ ] Open the native POS shortcut and confirm it selects the same POS.
+- [ ] Verify manager-only sections, active-session read-only behavior and company isolation.
+- [ ] Upgrade an existing database with saved POS values and compare every value.
 - [ ] All new switches start off; existing checkout protection retains its value on upgrade.
 - [ ] Cards display stock; verify colors-only mode, tooltips and untracked products.
 - [ ] Multi-variant cards show combined availability; addition checks the chosen variant.
@@ -53,7 +64,10 @@ for the deployment's payment methods and installed addons before release.
 - [ ] Complete a sale and verify refreshed quantities on the product screen.
 
 - [ ] Install and upgrade the addon; confirm the inherited settings view loads.
-- [ ] Disabled toggle preserves normal checkout.
+- [ ] With the POS toggle off, verify ordinary checkout outside protected stock operations.
+- [ ] With POS checkout protection on and company policy off, verify zero-stock rejection.
+- [ ] With company delivery protection on and POS checkout protection off, verify covered
+  outgoing transfers still cannot reduce source stock below zero.
 - [ ] Stock 0 blocks a tracked product; stock 1 accepts one unit and blocks two.
 - [ ] Duplicate product lines cannot bypass the limit; fractional UoM rounds correctly.
 - [ ] Reserved quantities are excluded; refunds and services behave as documented.

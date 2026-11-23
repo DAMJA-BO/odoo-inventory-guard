@@ -1,6 +1,6 @@
 # Phase 2 — `inventory_guard` core app
 
-**Status: In progress — local implementation; no push authorized.**
+**Status: Implemented — Odoo 20 acceptance pending.**
 
 The [hook investigation](../architecture/core-hook-spike.md) records upstream
 findings, version limitations and the transaction tests required before enabling
@@ -19,8 +19,7 @@ an authoritative core hook.
 The standalone app, policy configuration, completion/synchronization hooks,
 English/Spanish catalogs and initial Odoo transaction tests are implemented locally.
 No deployment or release acceptance is implied. Database tests, source revision
-comparison and independent concurrency coverage remain pending. The existing POS
-addon has not been changed to depend on the core (Phase 3).
+comparison and independent concurrency coverage remain pending. The POS addon now depends on the core as part of Phase 3.
 
 ## Goal
 
@@ -34,7 +33,7 @@ This addon becomes the Odoo application and configuration owner for the suite.
 - `inventory.guard.mixin` or an abstract service: demand normalization, protected
   location resolution, availability calculation and shortage formatting.
 - Security groups: Inventory Guard User, Manager and, when approved, Override.
-- Company-aware settings bridge and menu/actions under Inventory configuration.
+- Company-aware settings in the central Inventory Guard app.
 
 Avoid adding stored availability fields. Odoo quants, reservations and move lines
 remain the source of truth.
@@ -62,13 +61,12 @@ hook rather than assuming every operation uses the same UI button.
 
 ## Configuration
 
-Create **Inventory → Configuration → Inventory Guard** with:
+Use **Inventory Guard → General / Operations** for:
 
 - Global enable switch per company.
 - Default action and protected location scope.
 - Operation toggles for transfers, deliveries, vendor returns, scrap, inventory
   adjustments and manufacturing consumption.
-- Rule priority and conflict explanation.
 - Manager security assignment and clear indication of active company.
 
 The first version should prefer a small deterministic rule set. Product/category

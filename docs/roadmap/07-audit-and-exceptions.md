@@ -1,5 +1,8 @@
 # Phase 7 — `inventory_guard_audit`
 
+Register **Audit** under Inventory Guard when this addon is installed. See the
+[central configuration contract](../architecture/centralized-configuration.md).
+
 ## Goal
 
 Allow controlled exceptions without creating a silent bypass and provide useful

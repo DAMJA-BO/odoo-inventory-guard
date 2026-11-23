@@ -12,7 +12,7 @@ Enable this to help cashiers identify the exact items that need correction in a 
 
 ## Settings
 
-- Location: Point of Sale → Configuration → Settings → Inventory Guard.
+- Location: Inventory Guard → Point of Sale → select a POS.
 - Scope: the selected POS configuration.
 - Technical field(s): `inventory_guard_show_order`.
 - Default: Off.

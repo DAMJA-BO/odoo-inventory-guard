@@ -1,5 +1,8 @@
 # Phase 8 — quality and release
 
+Verify each extension contributes its settings to the central Inventory Guard app. See the
+[central configuration contract](../architecture/centralized-configuration.md).
+
 ## Automated validation
 
 Each addon must pass Python/XML/manifest checks, translation coverage, frontend
