@@ -1,5 +1,27 @@
 # Phase 2 — `inventory_guard` core app
 
+**Status: In progress — local implementation; no push authorized.**
+
+The [hook investigation](../architecture/core-hook-spike.md) records upstream
+findings, version limitations and the transaction tests required before enabling
+an authoritative core hook.
+
+## Confirmed decisions and local delivery
+
+- Block only; no warning mode or override permission.
+- Internal locations only; transit excluded.
+- One policy per company, optionally scoped to location subtrees.
+- No product/category exceptions or rule priority conflicts in the initial version.
+- Positive corrections may improve existing negatives; further consumption may not.
+- Reuse Inventory User/Manager groups initially instead of introducing redundant
+  permissions; company record rules apply to policy management.
+
+The standalone app, policy configuration, completion/synchronization hooks,
+English/Spanish catalogs and initial Odoo transaction tests are implemented locally.
+No deployment or release acceptance is implied. Database tests, source revision
+comparison and independent concurrency coverage remain pending. The existing POS
+addon has not been changed to depend on the core (Phase 3).
+
 ## Goal
 
 Create one authoritative, reusable policy engine for stock-consuming operations.

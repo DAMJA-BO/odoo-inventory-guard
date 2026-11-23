@@ -9,19 +9,20 @@ import xml.etree.ElementTree as ET
 
 def main():
     root = Path(__file__).resolve().parents[1]
-    addon = root / "pos_inventory_guard"
     for path in root.rglob("*.py"):
         ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
-    for path in addon.rglob("*.xml"):
+    for path in root.rglob("*.xml"):
         ET.parse(path)
-    manifest = ast.literal_eval((addon / "__manifest__.py").read_text(encoding="utf-8"))
-    assert manifest["version"].startswith("20.0."), "Expected Odoo 20 version"
-    assert manifest["license"] == "Other OSI approved licence"
-    for relative in manifest["data"]:
-        assert (addon / relative).is_file(), relative
-    for paths in manifest["assets"].values():
-        for relative in paths:
-            assert (root / relative).is_file(), relative
+    for manifest_path in root.glob("*/__manifest__.py"):
+        addon = manifest_path.parent
+        manifest = ast.literal_eval(manifest_path.read_text(encoding="utf-8"))
+        assert manifest["version"].startswith("20.0."), "Expected Odoo 20 version"
+        assert manifest["license"] == "Other OSI approved licence"
+        for relative in manifest["data"]:
+            assert (addon / relative).is_file(), relative
+        for paths in manifest.get("assets", {}).values():
+            for relative in paths:
+                assert (root / relative).is_file(), relative
     for name in ("LICENSE", "NOTICE", "README.md", "CONTRIBUTING.md"):
         assert (root / name).is_file(), name
     assert "Apache License" in (root / "LICENSE").read_text(encoding="utf-8")

@@ -1,0 +1,88 @@
+# SPDX-License-Identifier: Apache-2.0
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Inventory Guard 20.0\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. module: inventory_guard
+#: model:ir.model.fields,field_description:inventory_guard.field_inventory_guard_policy__enabled
+msgid "Enable inventory protection"
+msgstr "Activar protección del inventario"
+
+#. module: inventory_guard
+#: model:ir.model.fields,field_description:inventory_guard.field_inventory_guard_policy__location_ids
+msgid "Protected source locations"
+msgstr "Ubicaciones de origen protegidas"
+
+#. module: inventory_guard
+#: model:ir.model.fields,field_description:inventory_guard.field_inventory_guard_policy__protect_transfers
+msgid "Internal transfers"
+msgstr "Transferencias internas"
+
+#. module: inventory_guard
+#: model:ir.model.fields,field_description:inventory_guard.field_inventory_guard_policy__protect_deliveries
+msgid "Customer deliveries"
+msgstr "Entregas a clientes"
+
+#. module: inventory_guard
+#: model:ir.model.fields,field_description:inventory_guard.field_inventory_guard_policy__protect_vendor_returns
+msgid "Vendor returns"
+msgstr "Devoluciones a proveedores"
+
+#. module: inventory_guard
+#: model:ir.model.fields,field_description:inventory_guard.field_inventory_guard_policy__protect_scrap
+msgid "Scrap"
+msgstr "Desechos"
+
+#. module: inventory_guard
+#: model:ir.model.fields,field_description:inventory_guard.field_inventory_guard_policy__protect_adjustments
+msgid "Inventory adjustments"
+msgstr "Ajustes de inventario"
+
+#. module: inventory_guard
+#: model:ir.model.fields,field_description:inventory_guard.field_inventory_guard_policy__protect_manufacturing
+msgid "Manufacturing consumption"
+msgstr "Consumo de fabricación"
+
+#. module: inventory_guard
+#: model:ir.model.fields,help:inventory_guard.field_inventory_guard_policy__location_ids
+msgid "Leave empty to protect all internal locations. Selected locations include their children."
+msgstr "Deje vacío para proteger todas las ubicaciones internas. Las ubicaciones seleccionadas incluyen sus ubicaciones hijas."
+
+#. module: inventory_guard
+#: code:addons/inventory_guard/models/policy.py:0
+msgid "Protected locations must be internal and belong to the policy company."
+msgstr "Las ubicaciones protegidas deben ser internas y pertenecer a la empresa de la política."
+
+#. module: inventory_guard
+#: code:addons/inventory_guard/models/stock_move_line.py:0
+msgid "Inventory Guard blocked %(operation)s: %(product)s at %(location)s. Requested: %(requested)s; remaining physical stock: %(remaining)s. Check the lot, package and owner or reduce the quantity."
+msgstr "Inventory Guard bloqueó %(operation)s: %(product)s en %(location)s. Cantidad solicitada: %(requested)s; existencias físicas restantes: %(remaining)s. Revise el lote, paquete y propietario o reduzca la cantidad."
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_form
+msgid "Protected operations"
+msgstr "Operaciones protegidas"
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_form
+msgid "Internal source locations only. Transit is excluded. Positive corrections of existing negative stock are allowed. No override is available."
+msgstr "Solo ubicaciones de origen internas. Se excluye el tránsito. Se permiten correcciones positivas de existencias negativas existentes. No se permite omitir el bloqueo."
+
+#. module: inventory_guard
+#: model:ir.ui.menu,name:inventory_guard.inventory_guard_policy_menu
+msgid "Policies"
+msgstr "Políticas"
+
+#. module: inventory_guard
+#: model:ir.model,name:inventory_guard.model_inventory_guard_policy
+msgid "Inventory Guard Policy"
+msgstr "Política de Inventory Guard"
+
+#. module: inventory_guard
+#: model:ir.model.constraint,message:inventory_guard.constraint_inventory_guard_policy__company_unique
+msgid "Only one Inventory Guard policy is allowed per company."
+msgstr "Solo se permite una política de Inventory Guard por empresa."

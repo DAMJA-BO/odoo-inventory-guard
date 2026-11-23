@@ -1,0 +1,7 @@
+<odoo>
+    <record id="policy_company_rule" model="ir.rule">
+        <field name="name">Inventory Guard: allowed companies</field>
+        <field name="model_id" ref="model_inventory_guard_policy"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

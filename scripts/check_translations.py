@@ -39,6 +39,18 @@ def main():
                 assert source == target, source
         print(f"{name}: {len(catalog)} terms checked")
 
+    core = folder.parents[1] / "inventory_guard" / "i18n"
+    template = read_catalog(core / "inventory_guard.pot")
+    for language in ("en", "es"):
+        catalog = read_catalog(core / f"{language}.po")
+        assert set(catalog) == set(template), "Core catalog coverage mismatch"
+        for source, target in catalog.items():
+            assert target.strip(), f"Empty core translation: {source}"
+            assert tokens.findall(source) == tokens.findall(target), source
+            if language == "en":
+                assert source == target, source
+        print(f"inventory_guard/{language}.po: {len(catalog)} template terms checked")
+
 
 if __name__ == "__main__":
     main()

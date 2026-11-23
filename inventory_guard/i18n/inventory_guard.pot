@@ -1,0 +1,88 @@
+# SPDX-License-Identifier: Apache-2.0
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Inventory Guard 20.0\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. module: inventory_guard
+#: model:ir.model.fields,field_description:inventory_guard.field_inventory_guard_policy__enabled
+msgid "Enable inventory protection"
+msgstr ""
+
+#. module: inventory_guard
+#: model:ir.model.fields,field_description:inventory_guard.field_inventory_guard_policy__location_ids
+msgid "Protected source locations"
+msgstr ""
+
+#. module: inventory_guard
+#: model:ir.model.fields,field_description:inventory_guard.field_inventory_guard_policy__protect_transfers
+msgid "Internal transfers"
+msgstr ""
+
+#. module: inventory_guard
+#: model:ir.model.fields,field_description:inventory_guard.field_inventory_guard_policy__protect_deliveries
+msgid "Customer deliveries"
+msgstr ""
+
+#. module: inventory_guard
+#: model:ir.model.fields,field_description:inventory_guard.field_inventory_guard_policy__protect_vendor_returns
+msgid "Vendor returns"
+msgstr ""
+
+#. module: inventory_guard
+#: model:ir.model.fields,field_description:inventory_guard.field_inventory_guard_policy__protect_scrap
+msgid "Scrap"
+msgstr ""
+
+#. module: inventory_guard
+#: model:ir.model.fields,field_description:inventory_guard.field_inventory_guard_policy__protect_adjustments
+msgid "Inventory adjustments"
+msgstr ""
+
+#. module: inventory_guard
+#: model:ir.model.fields,field_description:inventory_guard.field_inventory_guard_policy__protect_manufacturing
+msgid "Manufacturing consumption"
+msgstr ""
+
+#. module: inventory_guard
+#: model:ir.model.fields,help:inventory_guard.field_inventory_guard_policy__location_ids
+msgid "Leave empty to protect all internal locations. Selected locations include their children."
+msgstr ""
+
+#. module: inventory_guard
+#: code:addons/inventory_guard/models/policy.py:0
+msgid "Protected locations must be internal and belong to the policy company."
+msgstr ""
+
+#. module: inventory_guard
+#: code:addons/inventory_guard/models/stock_move_line.py:0
+msgid "Inventory Guard blocked %(operation)s: %(product)s at %(location)s. Requested: %(requested)s; remaining physical stock: %(remaining)s. Check the lot, package and owner or reduce the quantity."
+msgstr ""
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_form
+msgid "Protected operations"
+msgstr ""
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_form
+msgid "Internal source locations only. Transit is excluded. Positive corrections of existing negative stock are allowed. No override is available."
+msgstr ""
+
+#. module: inventory_guard
+#: model:ir.ui.menu,name:inventory_guard.inventory_guard_policy_menu
+msgid "Policies"
+msgstr ""
+
+#. module: inventory_guard
+#: model:ir.model,name:inventory_guard.model_inventory_guard_policy
+msgid "Inventory Guard Policy"
+msgstr ""
+
+#. module: inventory_guard
+#: model:ir.model.constraint,message:inventory_guard.constraint_inventory_guard_policy__company_unique
+msgid "Only one Inventory Guard policy is allowed per company."
+msgstr ""

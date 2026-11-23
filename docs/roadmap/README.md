@@ -38,7 +38,7 @@ more useful feedback; they must not duplicate the authoritative stock rule.
 | --- | --- | --- | --- |
 | 0 | Current POS release | Complete | Version `20.0.2.0.1` promoted to `main` |
 | 1 | [Repository and module migration](01-migration-and-renaming.md) | Complete | New identity builds on a clean Odoo.sh development database |
-| 2 | [Core app and policy engine](02-inventory-guard-core.md) | Planned | Generic stock operations cannot create protected negative stock |
+| 2 | [Core app and policy engine](02-inventory-guard-core.md) | In progress (local investigation) | Generic stock operations cannot create protected negative stock |
 | 3 | [POS migration](03-pos-inventory-guard.md) | Planned | Existing POS behavior uses the core policy without regression |
 | 4 | [Stock operations](04-stock-operations.md) | Planned | Transfers, scrap, adjustments and returns pass acceptance tests |
 | 5 | [Sales and purchases](05-sales-and-purchases.md) | Planned | Business users receive application-specific guidance |

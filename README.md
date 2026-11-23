@@ -1,7 +1,12 @@
 # Odoo Inventory Guard
 
-The suite currently ships the POS addon only. The shared inventory core and other
-extensions are planned in the roadmap and are not implemented in this phase.
+The suite includes the accepted POS addon and a new local development preview of
+the shared `inventory_guard` application. The core is disabled until a company
+policy is configured and enabled. Its Odoo 20 database acceptance tests are pending;
+do not treat static checks as a production certification.
+
+See [core configuration and validation](docs/settings/core-policy.md). The POS addon
+does not yet depend on the core; that integration belongs to Phase 3.
 
 See the [migration verification guide](docs/roadmap/PHASE-1-VERIFICATION.md)
 before installing the renamed addon on Odoo.sh.

@@ -1,0 +1,34 @@
+<odoo>
+    <record id="policy_list" model="ir.ui.view">
+        <field name="name">inventory.guard.policy.list</field>
+        <field name="model">inventory.guard.policy</field>
+        <field name="arch" type="xml">
+            <list><field name="name"/><field name="company_id"/><field name="enabled"/></list>
+        </field>
+    </record>
+    <record id="policy_form" model="ir.ui.view">
+        <field name="name">inventory.guard.policy.form</field>
+        <field name="model">inventory.guard.policy</field>
+        <field name="arch" type="xml">
+            <form><sheet>
+                <group><field name="name"/><field name="company_id"/><field name="enabled"/>
+                    <field name="location_ids" widget="many2many_tags"/></group>
+                <group string="Protected operations">
+                    <field name="protect_transfers"/><field name="protect_deliveries"/>
+                    <field name="protect_vendor_returns"/><field name="protect_scrap"/>
+                    <field name="protect_adjustments"/><field name="protect_manufacturing"/>
+                </group>
+                <div class="text-muted">Internal source locations only. Transit is excluded.
+                    Positive corrections of existing negative stock are allowed.
+                    No override is available.</div>
+            </sheet></form>
+        </field>
+    </record>
+    <record id="policy_action" model="ir.actions.act_window">
+        <field name="name">Inventory Guard</field><field name="res_model">inventory.guard.policy</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="inventory_guard_root" name="Inventory Guard" sequence="60" groups="stock.group_stock_user"/>
+    <menuitem id="inventory_guard_policy_menu" name="Policies" parent="inventory_guard_root" action="policy_action"/>
+    <menuitem id="inventory_guard_stock_menu" name="Inventory Guard" parent="stock.menu_stock_config_settings" action="policy_action" groups="stock.group_stock_manager"/>
+</odoo>

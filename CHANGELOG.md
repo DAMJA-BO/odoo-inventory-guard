@@ -1,5 +1,14 @@
 # Changelog
 
+## Inventory core - Unreleased (local preview)
+
+- Add the standalone `inventory_guard` app and one disabled-by-default policy per company.
+- Add internal-location scope and independent operation switches, managed by Inventory managers.
+- Validate exact-dimensional physical balances after standard lot compensation.
+- Serialize participating product updates and roll back failed move-line batches.
+- Add English/Spanish catalogs and Odoo transaction test cases (execution pending).
+- Keep the accepted POS integration unchanged until Phase 3.
+
 ## Identity migration - Unreleased
 
 - Rename the suite repository to Odoo Inventory Guard and its POS addon to
