@@ -2,7 +2,7 @@
 
 Prevent Odoo 20 Point of Sale checkout when unreserved stock is insufficient.
 
-**Status: development preview. Not yet validated in a running Odoo 20 database.**
+**Status: development preview. New optional stock UI features require Odoo 20 acceptance testing.**
 
 Maintained by [Ronald Torrez](https://github.com/ronaldtorrez).
 Technical module: `pos_stock_guard`. Target Odoo series: **20.0** only.
@@ -39,9 +39,48 @@ a global prohibition against negative inventory from all stock operations.
 2. Update the Apps list and install **Odoo POS Stock Guard**.
 3. Close active POS sessions.
 4. Configure inventory to update after each order.
-5. Open the POS configuration and enable **Block sales with insufficient stock**.
+5. Open **Point of Sale → Configuration → Settings → Stock Guard**, select the POS,
+   and enable **Block sales with insufficient stock**.
 6. Open a new session and refresh the POS assets.
 7. Complete the [acceptance checklist](docs/TESTING.md) on a test database.
+
+## Optional stock display and early checks
+
+See the [configuration guide](docs/CONFIGURATION.md) and the
+[per-setting reference](docs/settings/README.md) for examples, dependencies,
+connection behavior, limitations and verification steps.
+
+Every POS has independent settings in its **Stock Guard** section. All new
+switches default to off; the existing checkout protection keeps its saved value.
+Close the POS session before changing settings, save, then reopen the POS.
+
+| Setting | Behavior |
+| --- | --- |
+| Show stock badges | Availability on product cards; untracked products have no badge. |
+| Stock display mode | Quantity/text with colors, or colors only with accessible labels and tooltips. Applies to cards and order-line indicators. |
+| Block adding out-of-stock products | Live server check of the selected variant before creating a line, including scans. |
+| Prevent quantities above available stock | Check positive demand across duplicate lines on addition and quantity increases. Reductions and returns remain possible. |
+| Show stock on order lines | Availability, shortage highlighting and a shortage count in the cart. |
+| Enable Available only filter | Show a cashier-controlled catalog filter. Starts off; unknown and untracked products remain visible. |
+| Highlight low stock | Optional warning threshold in product default UoM; default 3, customizable, nonnegative. |
+| Automatically refresh stock | Optional product-screen polling; default 30 seconds, customizable, minimum 5. |
+
+The product screen provides manual refresh, source location, last full update
+time and an update-failure warning. Polling stops when leaving the product screen;
+returning refreshes stock, including after a sale. Newly loaded products refresh too.
+Requests use batches of at most 200 variants and do not overlap.
+
+Cards for multiple variants show their combined positive availability, labeled
+**Variants**. The selected variant is checked separately before addition. Quantities
+are advisory physical stock minus reservations, not promises or reservations.
+Editing quantities uses the last snapshot; addition checks and final checkout use
+the server. Another cashier can consume stock between those checks.
+
+Early checks and display switches can be selected independently. Enable the
+existing final checkout protection for authoritative enforcement. A failed refresh
+keeps the previous quantities visibly marked as potentially outdated; early
+addition checks fail closed. Use manual refresh before increasing quantities when
+the last update failed.
 
 Example self-hosted installation:
 
@@ -63,6 +102,7 @@ user-facing strings remain translatable with Odoo's translation tools.
 ```bash
 python scripts/check_project.py
 node --input-type=module --check < pos_stock_guard/static/src/app/payment_screen_patch.js
+npm test
 ```
 
 ## License and attribution

@@ -12,7 +12,11 @@ Contributions, bug reports and documentation improvements are welcome.
    docstrings, commit messages and documentation.
 4. Add regression coverage for changed stock rules. Run the local checks and the
    Odoo tests listed in `docs/TESTING.md`. Report checks you could not run.
-5. Document changes and limitations in `CHANGELOG.md` and the README as needed.
+5. Update `docs/` in the same change whenever behavior, configuration, architecture
+   or testing changes. Keep each affected guide in `docs/settings/`, its examples,
+   defaults, dependencies and limitations aligned with the implementation. Update
+   the documentation index and links when adding or renaming settings. Record
+   release changes in `CHANGELOG.md` and update the README as needed.
 
 ## Design conventions
 
@@ -37,3 +41,5 @@ relicense your contribution under incompatible terms.
 - Company isolation, duplicate lines, returns and precision remain covered.
 - Draft/replayed orders and failed stock transfers retain correct behavior.
 - Runtime checks target Odoo 20, not older POS APIs.
+- Documentation reflects the change; expected behavior is distinguished from
+  completed test results.
