@@ -1,15 +1,22 @@
 # Changelog
 
+## Identity migration - Unreleased
+
+- Rename the suite repository to Odoo Inventory Guard and its POS addon to
+  `pos_inventory_guard`, including models, settings, assets and translation domains.
+- Retain the POS behavior and module version during the clean-install rename.
+- Document the rollback point, clean-database verification and pending fork rename.
+
 ## 20.0.2.0.1 - Unreleased
 
 - Add English and general Spanish catalogs for settings and POS messages.
-- Expose Stock Guard translations through the Odoo 20 frontend translation hook.
+- Expose Inventory Guard translations through the Odoo 20 frontend translation hook.
 - Add translation coverage and placeholder checks to CI.
 - Document language activation, translation maintenance and per-setting behavior.
 
 ## 20.0.2.0.0 - Unreleased
 
-- Add a dedicated Stock Guard section with independent settings per POS.
+- Add a dedicated Inventory Guard section with independent settings per POS.
 - Add optional stock badges, colors-only mode, order-line indicators and shortage counts.
 - Add optional early addition checks and quantity limits, including barcode quantities.
 - Add a temporary Available only filter and configurable low-stock threshold.
@@ -32,7 +39,7 @@
 
 ## 20.0.1.0.0 - Unreleased
 
-- Introduce Odoo POS Stock Guard (`pos_stock_guard`).
+- Introduce Odoo POS Inventory Guard (`pos_inventory_guard`).
 - Extract stock policy into a small abstract model.
 - Validate persisted lines rather than manually interpreting x2many commands.
 - Check authenticated POS access and allowed companies on the advisory endpoint.

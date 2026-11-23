@@ -1,11 +1,17 @@
-# Odoo POS Stock Guard
+# Odoo Inventory Guard
+
+The suite currently ships the POS addon only. The shared inventory core and other
+extensions are planned in the roadmap and are not implemented in this phase.
+
+See the [migration verification guide](docs/roadmap/PHASE-1-VERIFICATION.md)
+before installing the renamed addon on Odoo.sh.
 
 Prevent Odoo 20 Point of Sale checkout when unreserved stock is insufficient.
 
 **Status: development preview. New optional stock UI features require Odoo 20 acceptance testing.**
 
 Maintained by [Ronald Torrez](https://github.com/ronaldtorrez).
-Technical module: `pos_stock_guard`. Target Odoo series: **20.0** only.
+Technical module: `pos_inventory_guard`. Target Odoo series: **20.0** only.
 
 ## Behavior
 
@@ -36,10 +42,10 @@ a global prohibition against negative inventory from all stock operations.
 ## Installation
 
 1. Add this repository to the Odoo addons path (or commit its module to Odoo.sh).
-2. Update the Apps list and install **Odoo POS Stock Guard**.
+2. Update the Apps list and install **Odoo POS Inventory Guard**.
 3. Close active POS sessions.
 4. Configure inventory to update after each order.
-5. Open **Point of Sale → Configuration → Settings → Stock Guard**, select the POS,
+5. Open **Point of Sale → Configuration → Settings → Inventory Guard**, select the POS,
    and enable **Block sales with insufficient stock**.
 6. Open a new session and refresh the POS assets.
 7. Complete the [acceptance checklist](docs/TESTING.md) on a test database.
@@ -50,7 +56,7 @@ See the [configuration guide](docs/CONFIGURATION.md) and the
 [per-setting reference](docs/settings/README.md) for examples, dependencies,
 connection behavior, limitations and verification steps.
 
-Every POS has independent settings in its **Stock Guard** section. All new
+Every POS has independent settings in its **Inventory Guard** section. All new
 switches default to off; the existing checkout protection keeps its saved value.
 Close the POS session before changing settings, save, then reopen the POS.
 
@@ -85,8 +91,8 @@ the last update failed.
 Example self-hosted installation:
 
 ```bash
-odoo-bin -d stock_guard_test --addons-path=/path/to/odoo/addons,/path/to/this/repository \
-  -i pos_stock_guard --stop-after-init
+odoo-bin -d inventory_guard_test --addons-path=/path/to/odoo/addons,/path/to/this/repository \
+  -i pos_inventory_guard --stop-after-init
 ```
 
 The old unpublished prototype `pos_no_negative_stock` is not an upgrade target.
@@ -108,7 +114,7 @@ user-facing strings remain translatable with Odoo's translation tools.
 
 ```bash
 python scripts/check_project.py
-node --input-type=module --check < pos_stock_guard/static/src/app/payment_screen_patch.js
+node --input-type=module --check < pos_inventory_guard/static/src/app/payment_screen_patch.js
 npm test
 ```
 

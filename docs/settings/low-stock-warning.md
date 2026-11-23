@@ -12,9 +12,9 @@ Enable this when cashiers should distinguish low stock from normal availability.
 
 ## Settings
 
-- Location: Point of Sale → Configuration → Settings → Stock Guard.
+- Location: Point of Sale → Configuration → Settings → Inventory Guard.
 - Scope: the selected POS configuration.
-- Technical field(s): `stock_guard_low_stock`, `stock_guard_low_threshold`.
+- Technical field(s): `inventory_guard_low_stock`, `inventory_guard_low_threshold`.
 - Default: Off; threshold 3.
 
 Enable the switch and enter a finite, nonnegative threshold. Fractions are allowed. The number uses each product's default unit of measure.

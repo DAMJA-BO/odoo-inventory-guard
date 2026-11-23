@@ -1,4 +1,4 @@
-# Stock Guard settings
+# Inventory Guard settings
 
 Each POS has independent settings. Select the POS in its settings before editing.
 All switches default to off. The display mode defaults to quantity/text/colors,

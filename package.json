@@ -1,5 +1,5 @@
 {
-  "name": "odoo-pos-stock-guard",
+  "name": "odoo-inventory-guard",
   "private": true,
   "type": "module",
   "scripts": {

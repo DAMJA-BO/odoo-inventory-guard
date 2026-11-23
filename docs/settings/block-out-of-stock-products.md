@@ -12,9 +12,9 @@ Enable this to catch unavailable selections early, including supported barcode s
 
 ## Settings
 
-- Location: Point of Sale → Configuration → Settings → Stock Guard.
+- Location: Point of Sale → Configuration → Settings → Inventory Guard.
 - Scope: the selected POS configuration.
-- Technical field(s): `stock_guard_block_add`.
+- Technical field(s): `inventory_guard_block_add`.
 - Default: Off.
 
 Boolean switch. For limits above zero, also enable Prevent quantities above available stock.
@@ -24,7 +24,7 @@ before checking the result.
 
 ## Example
 
-With 0 available, selecting or scanning the product shows a Stock Guard alert and does not add the line. With 1 available, this setting alone can still allow a request for 2.
+With 0 available, selecting or scanning the product shows a Inventory Guard alert and does not add the line. With 1 available, this setting alone can still allow a request for 2.
 
 ## Expected behavior
 

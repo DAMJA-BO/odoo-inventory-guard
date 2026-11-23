@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import assert from "node:assert/strict";
 import test from "node:test";
-import { positiveDemand, exceedsAvailable, availabilityStatus } from "../pos_stock_guard/static/src/stock/policy.js";
+import { positiveDemand, exceedsAvailable, availabilityStatus } from "../pos_inventory_guard/static/src/stock/policy.js";
 
 test("duplicate sales accumulate and refunds do not finance sales", () => {
     const lines = [2, 3, -4].map(qty => ({ product_id: { id: 1 }, qty }));
@@ -20,11 +20,11 @@ test("availability comparison respects UoM rounding and exact stock", () => {
     assert.equal(exceedsAvailable(99, undefined), false);
 });
 test("low-stock option and custom threshold remain independent", () => {
-    const config = { stock_guard_low_stock: true, stock_guard_low_threshold: 3 };
+    const config = { inventory_guard_low_stock: true, inventory_guard_low_threshold: 3 };
     const stock = { tracked: true, available: 2 };
     assert.equal(availabilityStatus(stock, config), "low");
-    assert.equal(availabilityStatus(stock, { ...config, stock_guard_low_threshold: 1 }), "available");
-    assert.equal(availabilityStatus(stock, { ...config, stock_guard_low_stock: false }), "available");
+    assert.equal(availabilityStatus(stock, { ...config, inventory_guard_low_threshold: 1 }), "available");
+    assert.equal(availabilityStatus(stock, { ...config, inventory_guard_low_stock: false }), "available");
     assert.equal(availabilityStatus({ ...stock, available: 0 }, config), "empty");
     assert.equal(availabilityStatus(undefined, config), "unknown");
     assert.equal(availabilityStatus({ tracked: false }, config), "untracked");

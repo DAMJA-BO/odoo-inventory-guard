@@ -22,10 +22,10 @@ def read_catalog(path):
 
 
 def main():
-    folder = Path(__file__).resolve().parents[1] / "pos_stock_guard" / "i18n"
+    folder = Path(__file__).resolve().parents[1] / "pos_inventory_guard" / "i18n"
     expected = set(terms())
     tokens = re.compile(r"%\([^)]+\)[sd]|%[sd]")
-    for name in ("pos_stock_guard.pot", "en.po", "es.po"):
+    for name in ("pos_inventory_guard.pot", "en.po", "es.po"):
         catalog = read_catalog(folder / name)
         assert set(catalog) == expected, f"Catalog coverage mismatch: {name}"
         for source, target in catalog.items():

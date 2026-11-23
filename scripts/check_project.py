@@ -9,7 +9,7 @@ import xml.etree.ElementTree as ET
 
 def main():
     root = Path(__file__).resolve().parents[1]
-    addon = root / "pos_stock_guard"
+    addon = root / "pos_inventory_guard"
     for path in root.rglob("*.py"):
         ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
     for path in addon.rglob("*.xml"):

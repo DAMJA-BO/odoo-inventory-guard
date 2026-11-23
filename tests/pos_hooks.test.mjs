@@ -9,7 +9,7 @@ import vm from "node:vm";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../pos_stock_guard/static/src/stock");
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../pos_inventory_guard/static/src/stock");
 const context = vm.createContext({ console, setTimeout, clearTimeout, Date });
 const cache = new Map();
 const patches = (target, extension) => {
@@ -78,7 +78,7 @@ for (const name of ["store_patch", "order_line_patch", "components_patch"]) {
 const runtime = cache.get(path.join(root, "runtime.js")).namespace.stockRuntime;
 let configId = 0;
 function fixture(options = {}, availability = 2) {
-    const config = { id: ++configId, stock_guard_block_add: true, ...options };
+    const config = { id: ++configId, inventory_guard_block_add: true, ...options };
     const product = { id: 1, display_name: "Test", uom_id: { factor: 1 } };
     const order = { state: "draft", lines: [] };
     const store = new Store();
@@ -103,12 +103,12 @@ test("adding zero stock is stopped before line creation; disabled options do not
     const f = fixture({}, 0);
     assert.equal(await f.store.handleOrderLineConfiguration(f.order, { product_id: f.product, qty: 1 }), false);
     assert.equal(f.store.alerts.length, 1);
-    f.config.stock_guard_block_add = false;
+    f.config.inventory_guard_block_add = false;
     f.store.data.call = () => { throw Error("must not call"); };
     assert.notEqual(await f.store.handleOrderLineConfiguration(f.order, { product_id: f.product, qty: 1 }), false);
 });
 test("quantity check aggregates duplicate lines and barcode quantities", async () => {
-    const f = fixture({ stock_guard_limit_quantity: true }, 2);
+    const f = fixture({ inventory_guard_limit_quantity: true }, 2);
     assert.notEqual(await f.store.handleOrderLineConfiguration(f.order, { product_id: f.product, qty: 1 }), false);
     assert.equal(await f.store.handleOrderLineConfiguration(f.order, { product_id: f.product, qty: 2 }), false);
     assert.equal(await f.store.handleOrderLineConfiguration(f.order, { product_id: f.product, qty: 1 },
@@ -118,7 +118,7 @@ test("quantity check aggregates duplicate lines and barcode quantities", async (
         { type: "product", code: "PACK" }), false);
 });
 test("refunds remain possible and service stock is not limited", async () => {
-    const f = fixture({ stock_guard_limit_quantity: true }, 0);
+    const f = fixture({ inventory_guard_limit_quantity: true }, 0);
     assert.notEqual(await f.store.handleOrderLineConfiguration(f.order, { product_id: f.product, qty: -1 }), false);
     f.order.preset_id = { is_return: true };
     assert.notEqual(await f.store.handleOrderLineConfiguration(f.order,
@@ -128,34 +128,34 @@ test("refunds remain possible and service stock is not limited", async () => {
     assert.notEqual(await f.store.handleOrderLineConfiguration(f.order, { product_id: f.product, qty: 50 }), false);
 });
 test("quantity edits refuse excess, allow reduction and preserve isolated POS settings", async () => {
-    const f = fixture({ stock_guard_limit_quantity: true }, 2);
-    await f.store.refreshStockGuard();
+    const f = fixture({ inventory_guard_limit_quantity: true }, 2);
+    await f.store.refreshInventoryGuard();
     assert.equal(f.line.setQuantity(2), true);
     assert.equal(typeof f.line.setQuantity(3), "object");
     assert.equal(f.line.qty, 2);
     assert.equal(f.line.setQuantity(1), true);
-    const other = fixture({ stock_guard_limit_quantity: false }, 0);
+    const other = fixture({ inventory_guard_limit_quantity: false }, 0);
     assert.equal(other.line.setQuantity(10), true);
     assert.equal(f.line.qty, 1);
 });
 test("internal merges do not double-count the incoming line", async () => {
-    const f = fixture({ stock_guard_limit_quantity: true }, 2);
-    await f.store.refreshStockGuard();
+    const f = fixture({ inventory_guard_limit_quantity: true }, 2);
+    await f.store.refreshInventoryGuard();
     f.order.lines.push({ product_id: f.product, qty: 1 });
     assert.equal(f.store.tryMergeOrderline(() => f.line.setQuantity(2)), true);
     assert.equal(runtime(f.config).merging, false);
 });
 test("network errors fail early checks closed and mark snapshots stale", async () => {
     const f = fixture();
-    await f.store.refreshStockGuard();
+    await f.store.refreshInventoryGuard();
     f.store.data.call = async () => { throw Error("offline"); };
     assert.equal(await f.store.handleOrderLineConfiguration(f.order, { product_id: f.product, qty: 1 }), false);
     assert.equal(runtime(f.config).failed, true);
     assert.equal(runtime(f.config).products[1].available, 2);
 });
 test("available filter is temporary; unknown and untracked products remain visible", async () => {
-    const f = fixture({ stock_guard_available_filter: true }, 0);
-    await f.store.refreshStockGuard();
+    const f = fixture({ inventory_guard_available_filter: true }, 0);
+    await f.store.refreshInventoryGuard();
     const products = [
         { id: 11, product_variant_ids: [f.product] },
         { id: 12, product_variant_ids: [{ id: 2 }] },
@@ -167,7 +167,7 @@ test("available filter is temporary; unknown and untracked products remain visib
     assert.equal(f.store.filterExcludedProducts(products).length, 2);
 });
 test("combo child shortage blocks addition and parent quantity edits", async () => {
-    const f = fixture({ stock_guard_limit_quantity: true }, 2);
+    const f = fixture({ inventory_guard_limit_quantity: true }, 2);
     const service = { id: 2, display_name: "Combo" };
     f.store.data.call = async () => ({ products: {
         1: { tracked: true, available: 2, rounding: 0.01 },
@@ -198,55 +198,55 @@ test("snapshot refreshes use bounded batches and are serialized", async () => {
         return { products: {}, location: "WH/Stock" };
     };
     await Promise.all([
-        f.store.refreshStockGuard(Array.from({ length: 450 }, (_, i) => i + 1)),
-        f.store.refreshStockGuard([1]),
-        f.store.refreshStockGuard([2]),
+        f.store.refreshInventoryGuard(Array.from({ length: 450 }, (_, i) => i + 1)),
+        f.store.refreshInventoryGuard([1]),
+        f.store.refreshInventoryGuard([2]),
     ]);
     assert.equal(maximum, 1);
     assert.deepEqual(batches, [200, 200, 50, 1, 1]);
 });
 
 test("card presentation supports optional text/colors and aggregate variants", async () => {
-    const f = fixture({ stock_guard_show_badges: true, stock_guard_display_mode: "quantity" });
+    const f = fixture({ inventory_guard_show_badges: true, inventory_guard_display_mode: "quantity" });
     currentPos = f.store;
-    await f.store.refreshStockGuard();
+    await f.store.refreshInventoryGuard();
     const card = new Card();
     card.props = { product: { product_variant_ids: [f.product] } };
     card.setup();
-    assert.equal(card.stockGuardBadge.colorsOnly, false);
-    assert.equal(card.stockGuardBadge.label, "Available: 2");
-    f.config.stock_guard_display_mode = "color";
-    assert.equal(card.stockGuardBadge.colorsOnly, true);
+    assert.equal(card.inventoryGuardBadge.colorsOnly, false);
+    assert.equal(card.inventoryGuardBadge.label, "Available: 2");
+    f.config.inventory_guard_display_mode = "color";
+    assert.equal(card.inventoryGuardBadge.colorsOnly, true);
     runtime(f.config).products[2] = { tracked: true, available: 3 };
     card.props.product.product_variant_ids.push({ id: 2 });
-    assert.equal(card.stockGuardBadge.label, "Variants — Available: 5");
+    assert.equal(card.inventoryGuardBadge.label, "Variants — Available: 5");
     runtime(f.config).failed = true;
-    assert.equal(card.stockGuardBadge.stale, true);
-    f.config.stock_guard_show_badges = false;
-    assert.equal(card.stockGuardBadge, null);
+    assert.equal(card.inventoryGuardBadge.stale, true);
+    f.config.inventory_guard_show_badges = false;
+    assert.equal(card.inventoryGuardBadge, null);
 });
 
 test("order indicator and shortage summary use total positive demand", async () => {
-    const f = fixture({ stock_guard_show_order: true }, 0);
+    const f = fixture({ inventory_guard_show_order: true }, 0);
     currentPos = f.store;
     f.store.getOrder = () => f.order;
-    await f.store.refreshStockGuard();
+    await f.store.refreshInventoryGuard();
     const component = new OrderlineComponent();
     component.props = { line: f.line, mode: "display" };
-    assert.equal(component.stockGuardIndicator.css, "text-bg-danger");
-    assert.equal(component.lineContainerClasses.o_stock_guard_shortage, true);
+    assert.equal(component.inventoryGuardIndicator.css, "text-bg-danger");
+    assert.equal(component.lineContainerClasses.o_inventory_guard_shortage, true);
     assert.equal(component.lineContainerClasses.selected, true);
     const screen = new Screen();
     screen.pos = f.store;
-    assert.equal(screen.stockGuardShortages, 1);
+    assert.equal(screen.inventoryGuardShortages, 1);
     f.line.qty = -1;
-    assert.equal(screen.stockGuardShortages, 0);
+    assert.equal(screen.inventoryGuardShortages, 0);
     component.props.mode = "receipt";
-    assert.equal(component.stockGuardIndicator, null);
+    assert.equal(component.inventoryGuardIndicator, null);
 });
 
 test("custom polling interval is scheduled after refresh and cleared on unmount", async () => {
-    const f = fixture({ stock_guard_auto_refresh: true, stock_guard_refresh_seconds: 45 });
+    const f = fixture({ inventory_guard_auto_refresh: true, inventory_guard_refresh_seconds: 45 });
     currentPos = f.store;
     mounted.length = 0;
     unmounted.length = 0;

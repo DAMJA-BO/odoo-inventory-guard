@@ -12,9 +12,9 @@ Enable this to stop cashiers building quantities that an eventual checkout would
 
 ## Settings
 
-- Location: Point of Sale → Configuration → Settings → Stock Guard.
+- Location: Point of Sale → Configuration → Settings → Inventory Guard.
 - Scope: the selected POS configuration.
-- Technical field(s): `stock_guard_limit_quantity`.
+- Technical field(s): `inventory_guard_limit_quantity`.
 - Default: Off.
 
 Boolean switch. Comparisons use the Product Unit precision supplied by the server; there is no separate per-POS rounding setting.

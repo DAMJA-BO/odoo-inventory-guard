@@ -9,7 +9,7 @@ import re
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
-ADDON = ROOT / "pos_stock_guard"
+ADDON = ROOT / "pos_inventory_guard"
 
 
 def terms():
@@ -34,14 +34,14 @@ def terms():
                 if not isinstance(call.func, ast.Attribute) or not isinstance(call.func.value, ast.Name) or call.func.value.id != "fields":
                     continue
                 name = node.targets[0].id
-                ref = f"pos_stock_guard.field_{model}__{name}"
+                ref = f"pos_inventory_guard.field_{model}__{name}"
                 for kw in call.keywords:
                     if kw.arg in ("string", "help") and isinstance(kw.value, ast.Constant):
                         kind = "field_description" if kw.arg == "string" else "help"
                         add(kw.value.value, f"model:ir.model.fields,{kind}:{ref}")
                 if call.func.attr == "Selection" and call.args:
                     for key, label in ast.literal_eval(call.args[0]):
-                        add(label, f"model:ir.model.fields.selection,name:pos_stock_guard.selection__{model}__{name}__{key}")
+                        add(label, f"model:ir.model.fields.selection,name:pos_inventory_guard.selection__{model}__{name}__{key}")
     for path in (ADDON / "static").rglob("*.js"):
         for match in re.finditer(r'_t\("((?:[^"\\]|\\.)*)"', path.read_text(encoding="utf-8")):
             add(json.loads('"' + match.group(1) + '"'), f"code:addons/{path.relative_to(ROOT).as_posix()}:0", True)
@@ -57,7 +57,7 @@ def terms():
         tree = ET.parse(path)
         containers = tree.findall(".//record") if "views" in path.parts else [tree.getroot()]
         for container in containers:
-            ref = (f"model_terms:ir.ui.view,arch_db:pos_stock_guard.{container.attrib['id']}"
+            ref = (f"model_terms:ir.ui.view,arch_db:pos_inventory_guard.{container.attrib['id']}"
                    if "views" in path.parts else f"code:addons/{path.relative_to(ROOT).as_posix()}:0")
             for node in container.iter():
                 if node.tag in ("record", "field", "xpath", "templates"):

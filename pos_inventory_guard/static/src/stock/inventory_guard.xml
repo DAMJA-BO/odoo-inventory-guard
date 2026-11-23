@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="pos_inventory_guard.ProductCard" t-inherit="point_of_sale.ProductCard" t-inherit-mode="extension">
+        <xpath expr="//article" position="inside">
+            <span t-if="this.inventoryGuardBadge"
+                  class="o_inventory_guard_badge badge position-absolute top-0 start-0 m-1"
+                  t-att-class="this.inventoryGuardBadge.css"
+                  t-att-title="this.inventoryGuardBadge.label"
+                  t-att-aria-label="this.inventoryGuardBadge.label" role="status">
+                <span t-if="this.inventoryGuardBadge.colorsOnly" class="o_inventory_guard_dot"
+                      aria-hidden="true">&#9679;</span>
+                <t t-else="" t-out="this.inventoryGuardBadge.label"/>
+                <span t-if="this.inventoryGuardBadge.stale" title="Stock may be outdated"> !</span>
+            </span>
+        </xpath>
+    </t>
+    <t t-name="pos_inventory_guard.Orderline" t-inherit="point_of_sale.Orderline" t-inherit-mode="extension">
+        <xpath expr="//ul[hasclass('info-list')]" position="inside">
+            <li t-if="this.inventoryGuardIndicator" class="o_inventory_guard_line">
+                <span class="badge" t-att-class="this.inventoryGuardIndicator.css"
+                      t-att-title="this.inventoryGuardIndicator.label"
+                      t-att-aria-label="this.inventoryGuardIndicator.label" role="status">
+                    <span t-if="this.inventoryGuardIndicator.colorsOnly" aria-hidden="true">&#9679;</span>
+                    <t t-else="" t-out="this.inventoryGuardIndicator.label"/>
+                    <span t-if="this.inventoryGuardIndicator.stale" title="Stock may be outdated"> !</span>
+                </span>
+            </li>
+        </xpath>
+    </t>
+    <t t-name="pos_inventory_guard.ProductScreen" t-inherit="point_of_sale.ProductScreen" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('rightpane')]/div[1]" position="before">
+            <div t-if="this.inventoryGuardVisible" class="o_inventory_guard_toolbar d-flex align-items-center flex-wrap gap-2 p-2 border-bottom">
+                <button class="btn btn-sm btn-secondary" t-on-click="() => this.pos.refreshInventoryGuard()"
+                        t-att-disabled="this.inventoryGuardState.loading">
+                    <t t-if="this.inventoryGuardState.loading">Refreshing stock…</t>
+                    <t t-else="">Refresh stock</t>
+                </button>
+                <button t-if="this.pos.config.inventory_guard_available_filter"
+                        class="btn btn-sm" t-att-class="this.inventoryGuardState.onlyAvailable ? 'btn-primary' : 'btn-outline-secondary'"
+                        t-att-aria-pressed="this.inventoryGuardState.onlyAvailable ? 'true' : 'false'"
+                        t-on-click="this.toggleInventoryGuardFilter">Available only</button>
+                <small t-if="this.inventoryGuardState.failed" class="text-danger" role="status">Stock update unavailable — quantities may be outdated.</small>
+                <small t-elif="this.inventoryGuardState.lastUpdated" class="text-muted">
+                    <t t-out="this.inventoryGuardState.location"/> · Updated: <t t-out="this.inventoryGuardState.lastUpdated"/>
+                </small>
+                <small t-else="" class="text-muted" role="status">Stock not loaded yet.</small>
+            </div>
+        </xpath>
+        <xpath expr="//OrderSummary" position="before">
+            <div t-if="this.inventoryGuardShortages" class="alert alert-danger m-2 p-2" role="alert">
+                Products with insufficient stock: <t t-out="this.inventoryGuardShortages"/>
+            </div>
+        </xpath>
+    </t>
+</templates>

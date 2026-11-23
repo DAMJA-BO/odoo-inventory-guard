@@ -12,9 +12,9 @@ Enable this when cashiers need to see availability before choosing a product.
 
 ## Settings
 
-- Location: Point of Sale → Configuration → Settings → Stock Guard.
+- Location: Point of Sale → Configuration → Settings → Inventory Guard.
 - Scope: the selected POS configuration.
-- Technical field(s): `stock_guard_show_badges`.
+- Technical field(s): `inventory_guard_show_badges`.
 - Default: Off.
 
 Boolean switch. Presentation follows Stock display mode.

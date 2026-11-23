@@ -1,4 +1,4 @@
-# Stock Guard configuration for Odoo 20
+# Inventory Guard configuration for Odoo 20
 
 [Project README](../README.md) · [Setting reference](settings/README.md)
 
@@ -6,7 +6,7 @@
 
 1. Install the addon and close active sessions for the POS being configured.
 2. Open Point of Sale → Configuration → Settings.
-3. Select the intended POS and find the Stock Guard section.
+3. Select the intended POS and find the Inventory Guard section.
 4. Choose its settings using the [setting reference](settings/README.md).
 5. Save, reopen the POS and refresh the browser assets if necessary.
 6. Verify the behavior on a disposable test database.

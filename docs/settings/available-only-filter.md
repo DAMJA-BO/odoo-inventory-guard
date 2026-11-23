@@ -12,9 +12,9 @@ Enable this when cashiers want an optional way to browse available stock.
 
 ## Settings
 
-- Location: Point of Sale → Configuration → Settings → Stock Guard.
+- Location: Point of Sale → Configuration → Settings → Inventory Guard.
 - Scope: the selected POS configuration.
-- Technical field(s): `stock_guard_available_filter`.
+- Technical field(s): `inventory_guard_available_filter`.
 - Default: Off.
 
 Boolean setting permits the button. The cashier's runtime filter starts off and is not saved as a permanent POS preference.

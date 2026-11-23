@@ -1,20 +1,20 @@
 # Interface translations
 
-Stock Guard uses English source strings and ships general English (`en.po`) and
-Spanish (`es.po`) catalogs under `pos_stock_guard/i18n/`. There are no regional
+Inventory Guard uses English source strings and ships general English (`en.po`) and
+Spanish (`es.po`) catalogs under `pos_inventory_guard/i18n/`. There are no regional
 catalogs. The English catalog mirrors the source; English also works as the
 fallback when a translation is missing. Documentation remains in English.
 
 ## Enable a language
 
 Install the desired language in Odoo, select it in the user's preferences and
-install or upgrade Stock Guard so its translations are loaded. Reload the browser
+install or upgrade Inventory Guard so its translations are loaded. Reload the browser
 and reopen the POS after changing language or updating catalogs. The language is
-the active Odoo user/session language; it is not a separate Stock Guard setting.
+the active Odoo user/session language; it is not a separate Inventory Guard setting.
 Switching employee profiles within a POS is not a language selector.
 
 Example: in Spanish, Show stock badges becomes Mostrar indicadores de existencias
-and Out of stock becomes Sin existencias. Stock Guard remains the product name.
+and Out of stock becomes Sin existencias. Inventory Guard remains the product name.
 Product names, company names and location names are business data and follow
 Odoo's own data translations; this catalog does not translate them.
 

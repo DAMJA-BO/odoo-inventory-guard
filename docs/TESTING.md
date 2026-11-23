@@ -4,7 +4,7 @@
 
 ```bash
 python scripts/check_project.py
-node --input-type=module --check < pos_stock_guard/static/src/app/payment_screen_patch.js
+node --input-type=module --check < pos_inventory_guard/static/src/app/payment_screen_patch.js
 ```
 
 These checks do not import Odoo or prove runtime compatibility.
@@ -25,8 +25,8 @@ and serialized bounded requests. It does not replace rendering or real POS tests
 On a disposable database with Odoo 20 and PostgreSQL:
 
 ```bash
-odoo-bin -d stock_guard_test --addons-path=/path/to/odoo/addons,/path/to/repository \
-  -i pos_stock_guard --test-enable --test-tags /pos_stock_guard --stop-after-init
+odoo-bin -d inventory_guard_test --addons-path=/path/to/odoo/addons,/path/to/repository \
+  -i pos_inventory_guard --test-enable --test-tags /pos_inventory_guard --stop-after-init
 ```
 
 Tests cover aggregation, finite input, available quantity, reservations, refunds,
@@ -37,8 +37,8 @@ for the deployment's payment methods and installed addons before release.
 
 - [ ] Install Spanish, upgrade the addon and verify settings and POS messages in Spanish.
 - [ ] Switch back to English and verify dynamic quantities and shortage messages.
-- [ ] Verify Stock Guard is included in frontend translation modules.
-- [ ] Stock Guard is its own block; select two POS configurations and verify independent values.
+- [ ] Verify Inventory Guard is included in frontend translation modules.
+- [ ] Inventory Guard is its own block; select two POS configurations and verify independent values.
 - [ ] All new switches start off; existing checkout protection retains its value on upgrade.
 - [ ] Cards display stock; verify colors-only mode, tooltips and untracked products.
 - [ ] Multi-variant cards show combined availability; addition checks the chosen variant.

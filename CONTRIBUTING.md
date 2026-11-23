@@ -23,7 +23,7 @@ Contributions, bug reports and documentation improvements are welcome.
 When changing visible text, update the translation catalogs and follow
 `docs/TRANSLATIONS.md`. Run `python scripts/check_translations.py`.
 
-Keep model hooks small. Put stock rules in `models/stock_guard.py` and UI feedback
+Keep model hooks small. Put stock rules in `models/inventory_guard.py` and UI feedback
 in the payment-screen patch. Retain translatable user-facing strings. Respect
 record rules and company access; do not add broad `sudo()` access. Never commit
 inside a business method or swallow database serialization errors. Prefer narrow

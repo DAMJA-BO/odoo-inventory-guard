@@ -12,9 +12,9 @@ Enable this when other cashiers or inventory operations can change stock during 
 
 ## Settings
 
-- Location: Point of Sale → Configuration → Settings → Stock Guard.
+- Location: Point of Sale → Configuration → Settings → Inventory Guard.
 - Scope: the selected POS configuration.
-- Technical field(s): `stock_guard_auto_refresh`, `stock_guard_refresh_seconds`.
+- Technical field(s): `inventory_guard_auto_refresh`, `inventory_guard_refresh_seconds`.
 - Default: Off; interval 30 seconds.
 
 Enable the switch and enter an integer interval of at least 5 seconds. Default is 30 seconds. There is no explicit maximum imposed by this addon.
