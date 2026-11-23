@@ -20,7 +20,7 @@ class TestInventoryGuardCore(TransactionCase):
 
     def _line(self, quantity):
         move = self.env["stock.move"].create({
-            "name": "Guard test", "product_id": self.product.id,
+            "reference": "Guard test", "product_id": self.product.id,
             "product_uom_qty": quantity, "uom_id": self.product.uom_id.id,
             "location_id": self.source.id, "location_dest_id": self.customer.id,
             "company_id": self.env.company.id,

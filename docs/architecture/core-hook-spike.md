@@ -61,6 +61,10 @@ Odoo 20 unified legacy `ir.rule` and `ir.model.access` records under `ir.access`
 Security declarations must use `ir.access`, its `operation`/`domain` fields and
 the `ir.access.csv` format; older security files prevent database initialization.
 
+The next Odoo.sh run reached transaction tests but their common fixture used the
+removed `stock.move.name` field. Fixtures now use the writable `reference` field;
+the reported five errors all occurred before stock protection was exercised.
+
 ## Required tests before selecting the final override
 
 - Reserved exact-stock delivery succeeds without counting its reservation twice.
