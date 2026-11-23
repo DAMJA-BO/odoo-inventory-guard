@@ -1,0 +1,48 @@
+# Interface translations
+
+Stock Guard uses English source strings and ships general English (`en.po`) and
+Spanish (`es.po`) catalogs under `pos_stock_guard/i18n/`. There are no regional
+catalogs. The English catalog mirrors the source; English also works as the
+fallback when a translation is missing. Documentation remains in English.
+
+## Enable a language
+
+Install the desired language in Odoo, select it in the user's preferences and
+install or upgrade Stock Guard so its translations are loaded. Reload the browser
+and reopen the POS after changing language or updating catalogs. The language is
+the active Odoo user/session language; it is not a separate Stock Guard setting.
+Switching employee profiles within a POS is not a language selector.
+
+Example: in Spanish, Show stock badges becomes Mostrar indicadores de existencias
+and Out of stock becomes Sin existencias. Stock Guard remains the product name.
+Product names, company names and location names are business data and follow
+Odoo's own data translations; this catalog does not translate them.
+
+## Maintain translations
+
+Keep Python `_()` and JavaScript `_t()` calls around literal source messages.
+Use Odoo's translation export for this module to regenerate the POT and merge
+new terms into both PO catalogs. Preserve references, the odoo-python and
+odoo-javascript markers, interpolation tokens and line breaks. Do not translate
+technical field names or JavaScript selection keys.
+
+The `ir.http` extension includes this addon in frontend translation modules,
+following the Odoo 20 POS hook. Without it, JavaScript messages can remain in
+English even when settings translations are present.
+
+Run `python scripts/check_translations.py` after changing source messages or
+catalogs. It checks current source coverage, duplicate entries, nonempty targets,
+English source parity and interpolation tokens. `translation_terms.py` inventories
+the current source conventions for this check; it does not replace Odoo's exporter.
+Extend the inventory if new translation patterns are introduced.
+
+## Acceptance checks on Odoo.sh
+
+Use a disposable development build with Spanish installed. Verify settings names,
+help text, selection labels, toolbar text, stock badges and both early and final
+shortage messages in Spanish. Repeat in English. Include dynamic quantities,
+location names, tooltips and connection-failure messages. Check the browser console
+and server logs for translation or formatting errors.
+
+Local checks verify catalogs, not rendered Odoo screens. Record actual acceptance
+results separately in the [testing checklist](TESTING.md).

@@ -1,5 +1,12 @@
 # Changelog
 
+## 20.0.2.0.1 - Unreleased
+
+- Add English and general Spanish catalogs for settings and POS messages.
+- Expose Stock Guard translations through the Odoo 20 frontend translation hook.
+- Add translation coverage and placeholder checks to CI.
+- Document language activation, translation maintenance and per-setting behavior.
+
 ## 20.0.2.0.0 - Unreleased
 
 - Add a dedicated Stock Guard section with independent settings per POS.

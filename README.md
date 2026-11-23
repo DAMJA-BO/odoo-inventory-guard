@@ -46,6 +46,10 @@ a global prohibition against negative inventory from all stock operations.
 
 ## Optional stock display and early checks
 
+See the [configuration guide](docs/CONFIGURATION.md) and the
+[per-setting reference](docs/settings/README.md) for examples, dependencies,
+connection behavior, limitations and verification steps.
+
 Every POS has independent settings in its **Stock Guard** section. All new
 switches default to off; the existing checkout protection keeps its saved value.
 Close the POS session before changing settings, save, then reopen the POS.
@@ -90,6 +94,9 @@ Do not install both prototypes together. An installed old prototype requires a
 separate migration plan; this repository does not include database migrations.
 
 ## Development
+
+The interface includes English and general Spanish catalogs. See
+[translations](docs/TRANSLATIONS.md) for language activation and maintenance.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md), [architecture](docs/ARCHITECTURE.md)
 and [testing](docs/TESTING.md). All code, comments and documentation use English;

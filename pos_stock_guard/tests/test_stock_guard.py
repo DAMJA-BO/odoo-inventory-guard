@@ -171,3 +171,9 @@ class TestStockGuard(AccountTestInvoicingCommon):
     def test_missing_product_is_rejected(self):
         with self.assertRaises(ValidationError):
             self.guard._shortage_message(self.session, {-1: 1})
+
+    def test_frontend_translation_module_is_available(self):
+        self.assertIn(
+            "pos_stock_guard",
+            self.env["ir.http"]._get_translation_frontend_modules_name(),
+        )

@@ -35,6 +35,9 @@ for the deployment's payment methods and installed addons before release.
 
 ## Acceptance checklist
 
+- [ ] Install Spanish, upgrade the addon and verify settings and POS messages in Spanish.
+- [ ] Switch back to English and verify dynamic quantities and shortage messages.
+- [ ] Verify Stock Guard is included in frontend translation modules.
 - [ ] Stock Guard is its own block; select two POS configurations and verify independent values.
 - [ ] All new switches start off; existing checkout protection retains its value on upgrade.
 - [ ] Cards display stock; verify colors-only mode, tooltips and untracked products.

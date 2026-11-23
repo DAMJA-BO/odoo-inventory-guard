@@ -1,7 +1,7 @@
 {
     "name": "Odoo POS Stock Guard",
     "summary": "Prevent POS checkout when available stock is insufficient",
-    "version": "20.0.2.0.0",
+    "version": "20.0.2.0.1",
     "category": "Sales/Point of Sale",
     "author": "Ronald Torrez",
     "website": "https://github.com/ronaldtorrez/odoo-pos-stock-guard",
