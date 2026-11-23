@@ -95,6 +95,10 @@ separate migration plan; this repository does not include database migrations.
 
 ## Development
 
+Future expansion into the modular **Odoo Inventory Guard** suite is tracked in
+the [implementation roadmap](docs/roadmap/README.md). The roadmap defines the
+repository migration, addon order, configuration, tests and release criteria.
+
 The interface includes English and general Spanish catalogs. See
 [translations](docs/TRANSLATIONS.md) for language activation and maintenance.
 
