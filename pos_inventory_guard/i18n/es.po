@@ -359,3 +359,53 @@ msgstr "Las existencias aún no se han cargado."
 #: code:addons/pos_inventory_guard/static/src/stock/inventory_guard.xml:0
 msgid "Products with insufficient stock:"
 msgstr "Productos con existencias insuficientes:"
+
+#. module: pos_inventory_guard
+#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.inventory_guard_pos_form
+msgid "Choose how enabled stock badges and order-line indicators appear: quantity and text with colors, or colors only."
+msgstr "Elige cómo se muestran las etiquetas de stock y los indicadores de línea habilitados: cantidad y texto con colores, o solo colores."
+
+#. module: pos_inventory_guard
+#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.inventory_guard_pos_form
+msgid "Show available stock on product cards."
+msgstr "Muestra el stock disponible en las tarjetas de producto."
+
+#. module: pos_inventory_guard
+#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.inventory_guard_pos_form
+msgid "Prevent adding a product when an availability check finds no stock."
+msgstr "Impide añadir un producto si la consulta de disponibilidad indica que no hay stock."
+
+#. module: pos_inventory_guard
+#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.inventory_guard_pos_form
+msgid "Prevent the total quantity of a product across order lines from exceeding available stock."
+msgstr "Impide que la cantidad total de un producto entre las líneas del pedido supere el stock disponible."
+
+#. module: pos_inventory_guard
+#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.inventory_guard_pos_form
+msgid "Show stock indicators on order lines and a count of lines with shortages."
+msgstr "Muestra indicadores de stock en las líneas del pedido y un recuento de las líneas con faltantes."
+
+#. module: pos_inventory_guard
+#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.inventory_guard_pos_form
+msgid "Let cashiers hide products confirmed to be out of stock."
+msgstr "Permite al personal de caja ocultar los productos que se sabe que no tienen stock."
+
+#. module: pos_inventory_guard
+#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.inventory_guard_pos_form
+msgid "Highlight low stock on enabled product badges and order-line indicators."
+msgstr "Resalta el stock bajo en las etiquetas de producto y los indicadores de línea habilitados."
+
+#. module: pos_inventory_guard
+#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.inventory_guard_pos_form
+msgid "Mark stock as low when the available quantity is positive and at or below this threshold."
+msgstr "Marca el stock como bajo cuando la cantidad disponible es positiva y no supera este umbral."
+
+#. module: pos_inventory_guard
+#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.inventory_guard_pos_form
+msgid "Refresh stock availability periodically while the Product screen is open."
+msgstr "Actualiza periódicamente la disponibilidad de stock mientras está abierta la pantalla de productos."
+
+#. module: pos_inventory_guard
+#: model_terms:ir.ui.view,arch_db:pos_inventory_guard.inventory_guard_pos_form
+msgid "Set how often stock refreshes automatically, in seconds (minimum 5)."
+msgstr "Indica cada cuántos segundos se actualiza el stock automáticamente (mínimo 5)."

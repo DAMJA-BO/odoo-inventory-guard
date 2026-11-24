@@ -113,3 +113,48 @@ msgstr "Resumen"
 #: model_terms:ir.actions.act_window,help:inventory_guard.policy_action
 msgid "Open General to configure protection for the active company."
 msgstr "Abra General para configurar la protección de la empresa activa."
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_general_form
+msgid "Apply the selected stock protection rules to this company."
+msgstr "Aplica las reglas de protección de stock seleccionadas a esta compañía."
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_general_form
+msgid "Leave empty to protect all internal source locations. Selected locations include their internal descendants."
+msgstr "Deja el campo vacío para proteger todas las ubicaciones de origen internas. Las ubicaciones seleccionadas incluyen sus ubicaciones internas subordinadas."
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_operations_form
+msgid "These options only apply when inventory protection is enabled for this company in General."
+msgstr "Estas opciones solo se aplican si la protección de inventario está activada para esta compañía en General."
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_operations_form
+msgid "Block transfers from protected locations when there is not enough physical stock."
+msgstr "Bloquea las transferencias desde ubicaciones protegidas cuando no hay suficiente stock físico."
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_operations_form
+msgid "Block customer deliveries that would leave negative stock at the source."
+msgstr "Bloquea las entregas a clientes que dejarían stock negativo en el origen."
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_operations_form
+msgid "Block returns to suppliers that exceed physical stock at the source."
+msgstr "Bloquea las devoluciones a proveedores que superan el stock físico en el origen."
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_operations_form
+msgid "Block scrapping more units than are physically in stock at the source."
+msgstr "Impide desechar más unidades de las que hay físicamente en el origen."
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_operations_form
+msgid "Block inventory adjustments that decrease physical stock below zero."
+msgstr "Bloquea los ajustes de inventario que reducen el stock físico por debajo de cero."
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_operations_form
+msgid "Block moves to production locations when the protected source has insufficient physical stock."
+msgstr "Bloquea los movimientos hacia ubicaciones de producción cuando no hay suficiente stock físico en el origen protegido."

@@ -28,20 +28,63 @@
                         Close the active POS session before changing these options.
                     </div>
                     <group string="Checkout">
-                        <field name="block_negative_stock" readonly="has_active_session"/>
-                        <div class="text-muted">Requires inventory updates after each order and an online connection.</div>
+                        <label for="block_negative_stock"/>
+                        <div>
+                            <field name="block_negative_stock" readonly="has_active_session" nolabel="1"/>
+                            <div class="text-muted">Requires inventory updates after each order and an online connection.</div>
+                        </div>
                     </group>
                     <group string="Cashier options">
-                        <field name="inventory_guard_display_mode" readonly="has_active_session"/>
-                        <field name="inventory_guard_show_badges" readonly="has_active_session"/>
-                        <field name="inventory_guard_block_add" readonly="has_active_session"/>
-                        <field name="inventory_guard_limit_quantity" readonly="has_active_session"/>
-                        <field name="inventory_guard_show_order" readonly="has_active_session"/>
-                        <field name="inventory_guard_available_filter" readonly="has_active_session"/>
-                        <field name="inventory_guard_low_stock" readonly="has_active_session"/>
-                        <field name="inventory_guard_low_threshold" readonly="has_active_session" invisible="not inventory_guard_low_stock"/>
-                        <field name="inventory_guard_auto_refresh" readonly="has_active_session"/>
-                        <field name="inventory_guard_refresh_seconds" readonly="has_active_session" invisible="not inventory_guard_auto_refresh"/>
+                        <label for="inventory_guard_display_mode"/>
+                        <div>
+                            <field name="inventory_guard_display_mode" readonly="has_active_session" nolabel="1"/>
+                            <div class="text-muted">Choose how enabled stock badges and order-line indicators appear: quantity and text with colors, or colors only.</div>
+                        </div>
+                        <label for="inventory_guard_show_badges"/>
+                        <div>
+                            <field name="inventory_guard_show_badges" readonly="has_active_session" nolabel="1"/>
+                            <div class="text-muted">Show available stock on product cards.</div>
+                        </div>
+                        <label for="inventory_guard_block_add"/>
+                        <div>
+                            <field name="inventory_guard_block_add" readonly="has_active_session" nolabel="1"/>
+                            <div class="text-muted">Prevent adding a product when an availability check finds no stock.</div>
+                        </div>
+                        <label for="inventory_guard_limit_quantity"/>
+                        <div>
+                            <field name="inventory_guard_limit_quantity" readonly="has_active_session" nolabel="1"/>
+                            <div class="text-muted">Prevent the total quantity of a product across order lines from exceeding available stock.</div>
+                        </div>
+                        <label for="inventory_guard_show_order"/>
+                        <div>
+                            <field name="inventory_guard_show_order" readonly="has_active_session" nolabel="1"/>
+                            <div class="text-muted">Show stock indicators on order lines and a count of lines with shortages.</div>
+                        </div>
+                        <label for="inventory_guard_available_filter"/>
+                        <div>
+                            <field name="inventory_guard_available_filter" readonly="has_active_session" nolabel="1"/>
+                            <div class="text-muted">Let cashiers hide products confirmed to be out of stock.</div>
+                        </div>
+                        <label for="inventory_guard_low_stock"/>
+                        <div>
+                            <field name="inventory_guard_low_stock" readonly="has_active_session" nolabel="1"/>
+                            <div class="text-muted">Highlight low stock on enabled product badges and order-line indicators.</div>
+                        </div>
+                        <label for="inventory_guard_low_threshold" invisible="not inventory_guard_low_stock"/>
+                        <div invisible="not inventory_guard_low_stock">
+                            <field name="inventory_guard_low_threshold" readonly="has_active_session" invisible="not inventory_guard_low_stock" nolabel="1"/>
+                            <div class="text-muted">Mark stock as low when the available quantity is positive and at or below this threshold.</div>
+                        </div>
+                        <label for="inventory_guard_auto_refresh"/>
+                        <div>
+                            <field name="inventory_guard_auto_refresh" readonly="has_active_session" nolabel="1"/>
+                            <div class="text-muted">Refresh stock availability periodically while the Product screen is open.</div>
+                        </div>
+                        <label for="inventory_guard_refresh_seconds" invisible="not inventory_guard_auto_refresh"/>
+                        <div invisible="not inventory_guard_auto_refresh">
+                            <field name="inventory_guard_refresh_seconds" readonly="has_active_session" invisible="not inventory_guard_auto_refresh" nolabel="1"/>
+                            <div class="text-muted">Set how often stock refreshes automatically, in seconds (minimum 5).</div>
+                        </div>
                     </group>
                 </sheet>
             </form>

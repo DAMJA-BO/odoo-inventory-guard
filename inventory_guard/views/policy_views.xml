@@ -19,8 +19,16 @@
                     <group>
                         <field name="company_id" readonly="1"/>
                         <field name="name"/>
-                        <field name="enabled"/>
-                        <field name="location_ids" widget="many2many_tags"/>
+                        <label for="enabled"/>
+                        <div>
+                            <field name="enabled" nolabel="1"/>
+                            <div class="text-muted">Apply the selected stock protection rules to this company.</div>
+                        </div>
+                        <label for="location_ids"/>
+                        <div>
+                            <field name="location_ids" widget="many2many_tags" nolabel="1"/>
+                            <div class="text-muted">Leave empty to protect all internal source locations. Selected locations include their internal descendants.</div>
+                        </div>
                     </group>
                 </sheet>
             </form>
@@ -32,15 +40,40 @@
         <field name="arch" type="xml">
             <form string="Operations" create="0" delete="0" duplicate="0">
                 <sheet>
+                    <p class="text-muted">These options only apply when inventory protection is enabled for this company in General.</p>
                     <group>
                         <field name="company_id" readonly="1"/>
                         <field name="enabled" readonly="1"/>
-                        <field name="protect_transfers"/>
-                        <field name="protect_deliveries"/>
-                        <field name="protect_vendor_returns"/>
-                        <field name="protect_scrap"/>
-                        <field name="protect_adjustments"/>
-                        <field name="protect_manufacturing"/>
+                        <label for="protect_transfers"/>
+                        <div>
+                            <field name="protect_transfers" nolabel="1"/>
+                            <div class="text-muted">Block transfers from protected locations when there is not enough physical stock.</div>
+                        </div>
+                        <label for="protect_deliveries"/>
+                        <div>
+                            <field name="protect_deliveries" nolabel="1"/>
+                            <div class="text-muted">Block customer deliveries that would leave negative stock at the source.</div>
+                        </div>
+                        <label for="protect_vendor_returns"/>
+                        <div>
+                            <field name="protect_vendor_returns" nolabel="1"/>
+                            <div class="text-muted">Block returns to suppliers that exceed physical stock at the source.</div>
+                        </div>
+                        <label for="protect_scrap"/>
+                        <div>
+                            <field name="protect_scrap" nolabel="1"/>
+                            <div class="text-muted">Block scrapping more units than are physically in stock at the source.</div>
+                        </div>
+                        <label for="protect_adjustments"/>
+                        <div>
+                            <field name="protect_adjustments" nolabel="1"/>
+                            <div class="text-muted">Block inventory adjustments that decrease physical stock below zero.</div>
+                        </div>
+                        <label for="protect_manufacturing"/>
+                        <div>
+                            <field name="protect_manufacturing" nolabel="1"/>
+                            <div class="text-muted">Block moves to production locations when the protected source has insufficient physical stock.</div>
+                        </div>
                     </group>
                 </sheet>
             </form>

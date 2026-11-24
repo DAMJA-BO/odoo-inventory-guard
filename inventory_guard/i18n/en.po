@@ -113,3 +113,48 @@ msgstr "Overview"
 #: model_terms:ir.actions.act_window,help:inventory_guard.policy_action
 msgid "Open General to configure protection for the active company."
 msgstr "Open General to configure protection for the active company."
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_general_form
+msgid "Apply the selected stock protection rules to this company."
+msgstr "Apply the selected stock protection rules to this company."
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_general_form
+msgid "Leave empty to protect all internal source locations. Selected locations include their internal descendants."
+msgstr "Leave empty to protect all internal source locations. Selected locations include their internal descendants."
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_operations_form
+msgid "These options only apply when inventory protection is enabled for this company in General."
+msgstr "These options only apply when inventory protection is enabled for this company in General."
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_operations_form
+msgid "Block transfers from protected locations when there is not enough physical stock."
+msgstr "Block transfers from protected locations when there is not enough physical stock."
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_operations_form
+msgid "Block customer deliveries that would leave negative stock at the source."
+msgstr "Block customer deliveries that would leave negative stock at the source."
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_operations_form
+msgid "Block returns to suppliers that exceed physical stock at the source."
+msgstr "Block returns to suppliers that exceed physical stock at the source."
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_operations_form
+msgid "Block scrapping more units than are physically in stock at the source."
+msgstr "Block scrapping more units than are physically in stock at the source."
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_operations_form
+msgid "Block inventory adjustments that decrease physical stock below zero."
+msgstr "Block inventory adjustments that decrease physical stock below zero."
+
+#. module: inventory_guard
+#: model_terms:ir.ui.view,arch_db:inventory_guard.policy_operations_form
+msgid "Block moves to production locations when the protected source has insufficient physical stock."
+msgstr "Block moves to production locations when the protected source has insufficient physical stock."
