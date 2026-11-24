@@ -25,8 +25,10 @@
 - Add persisted POS duplicate/update/deferred-stock cases and core destination,
   fractional and package cases. The remote Odoo database suite passed.
 - Remaining acceptance work: actual POS request race, replay and failed picking,
-  payment terminal, ship-later, upgrade value preservation, real scrap/adjustment
-  entry points, backorders, serials, MRP and multi-company move completion.
+  payment terminal, ship-later, upgrade value preservation, MRP and multi-company
+  move completion. Phase 4 adds `TestInventoryGuardStockOperations` for native
+  picking, backorder, return, scrap, inventory-count, transit and done-line paths;
+  its Odoo execution remains pending until the branch CI run.
 - Branch protection still requires repository settings.
 
 ## First remote acceptance run

@@ -19,7 +19,8 @@ This phase extends core behavior and tests; it does not introduce another addon.
 | Negative inventory adjustment | Internal location | Prevent a resulting negative quant, subject to the correction policy |
 | Receipt | Supplier/virtual location | Do not block because protected stock increases |
 | Customer return | Customer/virtual location | Do not block because protected stock increases |
-| Transit transfer | Configurable | Apply the documented transit policy consistently |
+| Internal → transit | Internal location | Protect the internal source under the transfers switch |
+| Transit → internal | Transit location excluded | Leave the transit source to standard Odoo; allow the internal credit |
 
 ## Implementation steps
 
@@ -33,11 +34,16 @@ This phase extends core behavior and tests; it does not introduce another addon.
 6. Test barcode-driven Inventory flows and server/API validation paths.
 7. Document policy decisions for adjustments and transit locations.
 
-## Important limitation to resolve
+## Recorded policy decisions
 
-An adjustment may be correcting incorrect historical data rather than consuming
-stock. Decide whether managers may correct an already-negative quant and how that
-exception is recorded. Do not silently bypass every inventory adjustment.
+Transit sources remain excluded. An internal-to-transit move still consumes a
+protected internal source; a transit-to-internal move does not protect the transit
+source. This is deliberately not a new transit setting.
+
+A positive inventory correction may improve an already-negative balance, while a
+further consumption that worsens the negative balance is blocked. There is no
+manager override or audit exception in this phase; the audit/exception design is
+reserved for Phase 7. Do not silently bypass every inventory adjustment.
 
 ## Exit criteria
 

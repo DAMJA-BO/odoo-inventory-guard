@@ -109,6 +109,11 @@ the upgrade, without uninstalling either addon.
 - [ ] Test a cashier without inventory-manager access and two allowed companies.
 - [ ] Unauthorized users/companies cannot use the advisory RPC.
 - [ ] Test installed integrations, bundles, routes and returns using synthetic data.
+- [ ] Run `TestInventoryGuardStockOperations` through the pinned Odoo/PostgreSQL
+  workflow. It exercises native picking, backorder, return, scrap and inventory
+  counting entry points and checks exact source/destination balances.
+- [ ] Complete Inventory Barcode and deployment-specific POS/payment smoke tests;
+  mocked POS tests do not prove those UI workflows.
 
 Automated Odoo runtime acceptance passed on 2026-11-24 for addon commit
 `2ee7399c184359fe7453ded8dde7d464feeac1c1` and the pinned Odoo revision above.

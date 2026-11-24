@@ -30,6 +30,8 @@ not tagged yet; the entries above `20.0.2.0.1` belong to the manifests listed he
 - Log stock refresh failures in the POS client; initialize order demand before use.
 - Document that POS lines use the product unit and that the POS switch is
   independent of the core policy.
+- Add Phase 4 workflow acceptance coverage for native picking, backorders,
+  returns, scrap, inventory counts, transit legs and done-line rollback.
 
 ## Centralized configuration — Unreleased
 

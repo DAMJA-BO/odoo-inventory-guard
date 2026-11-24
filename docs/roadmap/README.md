@@ -101,9 +101,10 @@ and implemented in the first core release:
 | Policy scope | Company-wide, optionally narrowed to location subtrees. No product/category rules yet. |
 | Already-negative historical stock | Positive corrections may improve it; further consumption may not. |
 
-Revisit these only with a recorded decision. Phase 4 still needs to confirm that
-the transit exclusion also fits transit transfers (see
-[Stock operations](04-stock-operations.md)).
+Revisit these only with a recorded decision. Phase 4 records that the transit
+exclusion applies by source leg: internal-to-transit is protected as an internal
+source operation, while transit-to-internal leaves the transit source standard.
+See [Stock operations](04-stock-operations.md).
 
 ## Definition of done for every phase
 

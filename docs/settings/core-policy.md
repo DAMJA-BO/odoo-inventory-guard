@@ -63,7 +63,8 @@ New transaction tests cover disabled behavior, zero/exact stock, duplicate-line
 batch rollback, reservations, operation switches, positive correction and transit.
 They require a running Odoo server and PostgreSQL and have not been run locally.
 Before acceptance, add/run separate-cursor concurrent last-unit tests, lots,
-packages, owners, multi-company permissions, done-line edits, partials and backorders.
+packages, owners, multi-company permissions, done-line edits, partials and backorders,
+and exercise native picking, scrap, return and inventory-adjustment entry points.
 Compare the server hooks with the deployed Odoo 20 revision. See the
 [hook investigation](../architecture/core-hook-spike.md).
 
