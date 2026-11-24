@@ -2,6 +2,9 @@ name: Odoo acceptance
 on: [push, pull_request, workflow_dispatch]
 permissions:
   contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   acceptance:
     runs-on: ubuntu-24.04
@@ -18,17 +21,17 @@ jobs:
           --health-cmd pg_isready --health-interval 10s
           --health-timeout 5s --health-retries 5
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           repository: odoo/odoo
           ref: 7349287698e25ca2bddddb94dcd72a2bb3f1b77b
           path: upstream
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           ref: e255d6b9a6f76a4e601b50a96607039c782be90b
           path: baseline
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: '3.12'
       - run: |
@@ -44,6 +47,11 @@ jobs:
             --test-enable --test-tags=/inventory_guard,/pos_inventory_guard \
             --stop-after-init --http-port=8071 --logfile=clean.log
           python -m coverage json -o coverage.json
+      - name: Coverage floor
+        # Deliberately low until the first run's real figure is read; then raise it.
+        env:
+          COVERAGE_MIN: '50'
+        run: python -m coverage report --show-missing --fail-under="$COVERAGE_MIN"
       - name: Independent last-unit transactions
         run: |
           python upstream/odoo-bin shell --db_host=localhost --db_user=odoo --db_password=odoo \
@@ -60,7 +68,7 @@ jobs:
             --init=inventory_guard --update=pos_inventory_guard --without-demo=all \
             --test-enable --test-tags=/inventory_guard,/pos_inventory_guard \
             --stop-after-init --http-port=8071 --logfile=upgrade.log
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
           name: odoo-acceptance-evidence
