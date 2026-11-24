@@ -1,6 +1,6 @@
 # Phase 2 — `inventory_guard` core app
 
-**Status: Implemented — automated Odoo 20 acceptance passed; manual Odoo.sh acceptance pending.**
+**Status: Implemented — automated Odoo 20 acceptance passed; manual acceptance partially verified.**
 
 See [Phase 2 acceptance evidence and manual checklist](../TESTING.md#phase-2-core-acceptance). A successful Odoo.sh build is not manual acceptance.
 

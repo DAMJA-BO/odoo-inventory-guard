@@ -74,7 +74,22 @@ The Odoo.sh `development` build for deployment commit `eb81a1a` was reported suc
 
 ## Phase 2 core acceptance
 
-**Automated acceptance: passed. Manual acceptance: pending.**
+**Automated acceptance: passed. Manual acceptance: partially verified.**
+
+### Reported manual results
+
+The project owner confirmed the results below. The test date, build, database,
+and account details were not supplied with these results.
+
+| Scenario | Result |
+| --- | --- |
+| General and Operations | Confirmed: both opened the same policy, disabled by default. A fresh installation without POS was not separately confirmed. |
+| Inventory user permissions | Deferred: no separate non-manager account was available to verify Overview access or denial of management actions. |
+| Company isolation | Confirmed: enabling protection in company A left company B's policy unchanged. Access to B with an A-only account was not verified. |
+| Delivery of 2 units with 2 in stock | Passed: the delivery reached Done and the physical balance at the source was zero. |
+| Delivery of 3 units with 2 in stock | Passed: Inventory Guard blocked validation with a shortage message and physical balances at the source and destination were unchanged. |
+
+### Repeatable checklist
 
 Use a disposable database or an isolated copy of Odoo.sh `development` with synthetic stock. Use separate Inventory manager and Inventory user accounts for the access checks; do not use a superuser. Do not change a live company's policy to test defaults.
 

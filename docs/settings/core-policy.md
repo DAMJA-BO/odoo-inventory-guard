@@ -1,6 +1,6 @@
 # Core inventory protection
 
-Status: automated Odoo 20 acceptance passed; manual Odoo.sh acceptance pending. See [Phase 2 core acceptance](../TESTING.md#phase-2-core-acceptance).
+Status: automated Odoo 20 acceptance passed; manual acceptance partially verified. See [Phase 2 core acceptance](../TESTING.md#phase-2-core-acceptance).
 
 ## Installation and access
 

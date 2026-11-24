@@ -1,6 +1,6 @@
 # Core stock completion hook investigation
 
-Status: the core hook is implemented and passed [automated Odoo 20 acceptance](../TESTING.md#automated-acceptance-evidence). The [Phase 2 manual checks](../TESTING.md#phase-2-core-acceptance) remain pending. This investigation records how the hook was selected and what the automated evidence does not cover.
+Status: the core hook is implemented and passed [automated Odoo 20 acceptance](../TESTING.md#automated-acceptance-evidence). The [Phase 2 manual checks](../TESTING.md#phase-2-core-acceptance) are partially verified. This investigation records how the hook was selected and what the automated evidence does not cover.
 
 ## Evidence and version boundary
 
