@@ -7,6 +7,7 @@
 - Preserve saved POS values and move availability and product locking into the core.
 - Add an explicit POS dependency on the core and update English and Spanish catalogs.
 - Add navigation regression tests and a clean-install and upgrade checklist.
+- Mark the active-session notice as an accessible status message for Odoo 20 views.
 
 ## Inventory core - Unreleased (local preview)
 

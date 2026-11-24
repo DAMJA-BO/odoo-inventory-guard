@@ -24,7 +24,7 @@
                         <field name="company_id" readonly="1"/>
                         <field name="has_active_session" invisible="1"/>
                     </group>
-                    <div class="alert alert-info" invisible="not has_active_session">
+                    <div class="alert alert-info" role="status" invisible="not has_active_session">
                         Close the active POS session before changing these options.
                     </div>
                     <group string="Checkout">
