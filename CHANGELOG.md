@@ -1,5 +1,15 @@
 # Changelog
 
+## Versions
+
+| Addon | Manifest version | Notes |
+|---|---|---|
+| `pos_inventory_guard` | `20.0.3.0.0` | Last tagged release: `pos-stock-guard-20.0.2.0.1` |
+| `inventory_guard` | `20.0.2.0.0` | New addon, not released before this suite |
+
+The addons are versioned independently. Sections marked *Unreleased* below are
+not tagged yet; the entries above `20.0.2.0.1` belong to the manifests listed here.
+
 ## Review hardening — Unreleased
 
 - Validate malformed checkout payloads, positive product IDs and bounded demand.

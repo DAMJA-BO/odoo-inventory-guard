@@ -1,5 +1,9 @@
 # Odoo Inventory Guard
 
+Prevent Odoo 20 Point of Sale checkout when unreserved stock is insufficient.
+
+**Status: development preview. Automated Odoo 20 acceptance passed; manual POS UI and payment-flow acceptance remains.**
+
 The suite includes the accepted POS addon and the shared `inventory_guard`
 application. The core is disabled until a company policy is configured and
 enabled. Clean installation, database regression, concurrent last-unit and
@@ -13,10 +17,6 @@ The POS addon depends on the core and uses its shared availability service. See
 
 See the [migration verification guide](docs/roadmap/PHASE-1-VERIFICATION.md)
 before installing the renamed addon on Odoo.sh.
-
-Prevent Odoo 20 Point of Sale checkout when unreserved stock is insufficient.
-
-**Status: development preview. Automated Odoo 20 acceptance passed; manual POS UI and payment-flow acceptance remains.**
 
 Maintained by [Ronald Torrez](https://github.com/ronaldtorrez).
 Technical module: `pos_inventory_guard`. Target Odoo series: **20.0** only.
