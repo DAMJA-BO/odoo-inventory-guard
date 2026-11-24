@@ -31,7 +31,9 @@ def terms():
                     add(node.args[0].value, f"code:addons/{path.relative_to(ROOT).as_posix()}:0")
             if isinstance(node, ast.Assign) and isinstance(node.value, ast.Call):
                 call = node.value
-                if not isinstance(call.func, ast.Attribute) or not isinstance(call.func.value, ast.Name) or call.func.value.id != "fields":
+                is_field = (isinstance(call.func, ast.Attribute) and isinstance(call.func.value, ast.Name)
+                            and call.func.value.id == "fields")
+                if not is_field:
                     continue
                 name = node.targets[0].id
                 ref = f"pos_inventory_guard.field_{model}__{name}"
@@ -41,7 +43,8 @@ def terms():
                         add(kw.value.value, f"model:ir.model.fields,{kind}:{ref}")
                 if call.func.attr == "Selection" and call.args:
                     for key, label in ast.literal_eval(call.args[0]):
-                        add(label, f"model:ir.model.fields.selection,name:pos_inventory_guard.selection__{model}__{name}__{key}")
+                        selection = f"pos_inventory_guard.selection__{model}__{name}__{key}"
+                        add(label, f"model:ir.model.fields.selection,name:{selection}")
     for path in (ADDON / "static").rglob("*.js"):
         for match in re.finditer(r'_t\("((?:[^"\\]|\\.)*)"', path.read_text(encoding="utf-8")):
             add(json.loads('"' + match.group(1) + '"'), f"code:addons/{path.relative_to(ROOT).as_posix()}:0", True)
