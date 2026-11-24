@@ -91,11 +91,11 @@ class PosConfig(models.Model):
         # use the shared Product Unit decimal precision instead.
         digits = self.env["decimal.precision"].precision_get("Product Unit")
         availability = self.env["inventory.guard.availability"].with_company(config.company_id)
+        free = availability._free_quantities(products.filtered("is_storable"), location)
         for product in products:
-            quantity = availability._free_quantity(product, location) if product.is_storable else 0
             result[product.id] = {
                 "tracked": product.is_storable,
-                "available": quantity,
+                "available": free.get(product.id, 0),
                 "rounding": 10.0 ** -digits,
             }
         return {"products": result, "location": location.display_name}

@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Database acceptance tests; run on a disposable Odoo 20 instance."""
+from unittest.mock import patch
+
 from odoo.exceptions import UserError
 from odoo.tests import tagged
 from odoo.tests.common import TransactionCase, new_test_user
@@ -192,3 +194,43 @@ class TestInventoryGuardCore(TransactionCase):
         with self.assertRaises(UserError):
             self._line(1)._action_done()
         self.assertEqual(self._physical(), 2)
+
+    def test_free_quantities_match_single_product_calculation(self):
+        availability = self.env["inventory.guard.availability"]
+        tracked = self.env["product.product"].create({
+            "name": "Core tracked product", "is_storable": True, "tracking": "lot",
+        })
+        empty = self.env["product.product"].create({"name": "Core empty product", "is_storable": True})
+        lot = self.env["stock.lot"].create({
+            "name": "Batch lot", "product_id": tracked.id, "company_id": self.env.company.id,
+        })
+        child = self.source.copy({"name": "Guard child", "location_id": self.source.id})
+        owner = self.env["res.partner"].create({"name": "Batch owner"})
+        quants = self.env["stock.quant"]
+        quants._update_available_quantity(self.product, self.source, 5)
+        quants._update_available_quantity(self.product, child, 2, owner_id=owner)
+        quants._update_available_quantity(tracked, child, 3, lot_id=lot)
+        quants._update_reserved_quantity(self.product, self.source, 1)
+        products = self.product | tracked | empty
+        result = availability._free_quantities(products, self.source)
+        self.assertEqual(set(result), set(products.ids))
+        self.assertEqual(result[empty.id], 0)
+        for product in products:
+            self.assertAlmostEqual(
+                result[product.id],
+                quants._get_available_quantity(product, self.source, strict=False, allow_negative=True),
+                msg=product.name,
+            )
+        self.assertAlmostEqual(result[self.product.id], 6)
+        self.assertAlmostEqual(result[tracked.id], 3)
+
+    def test_free_quantities_does_not_query_each_product(self):
+        products = self.product | self.env["product.product"].create({
+            "name": "Core second product", "is_storable": True,
+        })
+        self._stock(2)
+        quant_model = type(self.env["stock.quant"])
+        with patch.object(quant_model, "_get_available_quantity", side_effect=AssertionError("per product")):
+            result = self.env["inventory.guard.availability"]._free_quantities(products, self.source)
+        self.assertAlmostEqual(result[self.product.id], 2)
+        self.assertEqual(result[products[1].id], 0)
