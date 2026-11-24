@@ -234,3 +234,29 @@ class TestInventoryGuardCore(TransactionCase):
             result = self.env["inventory.guard.availability"]._free_quantities(products, self.source)
         self.assertAlmostEqual(result[self.product.id], 2)
         self.assertEqual(result[products[1].id], 0)
+
+    def _policy_lookups(self):
+        model = type(self.env["inventory.guard.policy"])
+        return patch.object(model, "_for_source", autospec=True, side_effect=model._for_source)
+
+    def test_policy_is_resolved_once_per_distinct_source_and_operation(self):
+        self.policy.enabled = True
+        lines = self._line(1) | self._line(1) | self._line(2)
+        with self._policy_lookups() as lookups:
+            self.assertTrue(lines._inventory_guard_has_policy())
+        self.assertEqual(lookups.call_count, 1)
+
+    def test_policy_lookup_is_skipped_when_quantity_cannot_overdraw(self):
+        self.policy.enabled = True
+        line = self._line(1)
+        with self._policy_lookups() as lookups:
+            line._synchronize_quant(1, self.source)
+        self.assertEqual(lookups.call_count, 0)
+
+    def test_only_quant_affecting_writes_use_the_done_line_savepoint(self):
+        lines = self.env["stock.move.line"]
+        for vals in ({"picked": True}, {"description_picking": "x"}, {}):
+            self.assertFalse(lines._inventory_guard_write_affects_quants(vals), vals)
+        for key in ("quantity", "quant_id", "location_id", "location_dest_id", "lot_id",
+                    "package_id", "result_package_id", "owner_id", "uom_id"):
+            self.assertTrue(lines._inventory_guard_write_affects_quants({key: False}), key)

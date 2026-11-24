@@ -10,6 +10,14 @@ from odoo import _, models
 from odoo.exceptions import UserError
 
 
+# Standard write() re-syncs quants of done lines only for these keys
+# (its ``triggers`` list, ``quantity``, and ``quant_id`` which copies them).
+QUANT_WRITE_KEYS = frozenset({
+    "quantity", "quant_id", "location_id", "location_dest_id", "lot_id",
+    "package_id", "result_package_id", "owner_id", "uom_id",
+})
+
+
 class StockMoveLine(models.Model):
     _inherit = "stock.move.line"
 
@@ -27,10 +35,13 @@ class StockMoveLine(models.Model):
         self.env["inventory.guard.availability"]._lock_products(self.product_id)
 
     def _inventory_guard_has_policy(self):
-        return any(self.env["inventory.guard.policy"]._for_source(
-            line.location_id.company_id or line.company_id, line.location_id,
-            line._inventory_guard_operation(),
-        ) for line in self)
+        # Many lines share one source and operation; resolve each policy once.
+        sources = {
+            (line.location_id.company_id or line.company_id, line.location_id,
+             line._inventory_guard_operation())
+            for line in self
+        }
+        return any(self.env["inventory.guard.policy"]._for_source(*source) for source in sources)
 
     def _action_done(self):
         if not self._inventory_guard_has_policy():
@@ -41,18 +52,23 @@ class StockMoveLine(models.Model):
             self._inventory_guard_lock_products()
             return super()._action_done()
 
+    @staticmethod
+    def _inventory_guard_write_affects_quants(vals):
+        return not QUANT_WRITE_KEYS.isdisjoint(vals)
+
     def write(self, vals):
-        if not self.filtered(lambda line: line.state == "done"):
+        if not self._inventory_guard_write_affects_quants(vals) or not self.filtered(
+            lambda line: line.state == "done"
+        ):
             return super().write(vals)
         with self.env.cr.savepoint():
             return super().write(vals)
 
     def _synchronize_quant(self, quantity, location, action="available", in_date=False, **quants_value):
         self.ensure_one()
-        policy = self.env["inventory.guard.policy"]._for_source(
-            location.company_id or self.company_id, location, self._inventory_guard_operation(),
-        )
-        if action != "available" or quantity >= 0 or not self.product_id.is_storable or not policy:
+        if (action != "available" or quantity >= 0 or not self.product_id.is_storable
+                or not self.env["inventory.guard.policy"]._for_source(
+                    location.company_id or self.company_id, location, self._inventory_guard_operation())):
             return super()._synchronize_quant(quantity, location, action=action, in_date=in_date, **quants_value)
         with self.env.cr.savepoint():
             self._inventory_guard_lock_products()
