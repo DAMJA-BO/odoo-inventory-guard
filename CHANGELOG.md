@@ -8,6 +8,9 @@
 - Add independent transaction concurrency and persisted-order regression scenarios.
 - Expand core tests for destinations, fractional quantities and package isolation.
 - Database acceptance remains pending; see `docs/IMPLEMENTATION-LOG.md`.
+- Compute free stock for a whole POS snapshot or shortage check with one quant query.
+- Resolve the stock policy once per source and operation, and skip the done-line
+  savepoint for writes that cannot change quants.
 
 ## Centralized configuration — Unreleased
 

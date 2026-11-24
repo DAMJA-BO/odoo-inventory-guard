@@ -43,3 +43,20 @@
   last-unit behavior and upgrade from the accepted POS baseline on 2026-11-24.
 - Publish the commits to `RonaldTorrez`, synchronize the `DAMJA-BO` fork and
   advance the Odoo.sh deployment submodule. The user confirmed its build passed.
+
+## Performance pass (batched availability)
+
+- Add `inventory.guard.availability._free_quantities`: one sudo `_read_group`
+  over the `child_of` source subtree replaces one `_get_available_quantity` call
+  per product. It is the same sum of quantity minus reserved quantity, verified
+  against the pinned Odoo source; `_free_quantity` remains as a wrapper.
+- Deduplicate policy lookups per (company, source, operation) in
+  `_inventory_guard_has_policy` and test cheap conditions before the policy
+  search in `_synchronize_quant`.
+- Open the `stock.move.line.write` savepoint only for keys Odoo syncs quants for.
+- Not changed: the POS client still refreshes the whole catalog in 200-product
+  batches. Restricting it to storable products needs `is_storable` on the
+  `product.product` POS record, which Odoo 20 only loads on the template; the
+  server cost per batch is now one query, so the client was left alone.
+- The global product-row lock is the documented trade-off in `ARCHITECTURE.md`.
+- Odoo database tests for these changes run in CI only.

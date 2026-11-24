@@ -18,7 +18,8 @@ See [centralized configuration](architecture/centralized-configuration.md).
 
 The public snapshot RPC checks POS group membership, configuration read access,
 allowed company and product access. It uses the same free-stock calculation as
-the final validator. Snapshots are advisory, not reservations. Failed refreshes
+the final validator, computed for each batch with a single grouped quant query
+(`inventory.guard.availability._free_quantities`). Snapshots are advisory, not reservations. Failed refreshes
 are visible; all authoritative transaction checks remain server-side.
 
 ## Request flow
