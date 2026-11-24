@@ -1,6 +1,8 @@
 # Phase 2 — `inventory_guard` core app
 
-**Status: Implemented — automated Odoo 20 acceptance passed.**
+**Status: Implemented — automated Odoo 20 acceptance passed; manual Odoo.sh acceptance pending.**
+
+See [Phase 2 acceptance evidence and manual checklist](../TESTING.md#phase-2-core-acceptance). A successful Odoo.sh build is not manual acceptance.
 
 The [hook investigation](../architecture/core-hook-spike.md) records upstream
 findings, version limitations and the transaction tests required before enabling
@@ -17,23 +19,21 @@ an authoritative core hook.
   permissions; company record rules apply to policy management.
 
 The standalone app, policy configuration, completion/synchronization hooks,
-English/Spanish catalogs and initial Odoo transaction tests are implemented locally.
-Automated database tests and independent last-unit concurrency passed against the
-pinned Odoo 20 revision on 2026-11-24. Deployment-specific manual operation and
-UI acceptance remains required. The POS addon depends on the core as part of Phase 3.
+English/Spanish catalogs and Odoo transaction tests are implemented. The POS
+addon depends on the core as part of Phase 3.
 
 ## Goal
 
 Create one authoritative, reusable policy engine for stock-consuming operations.
 This addon becomes the Odoo application and configuration owner for the suite.
 
-## Initial models and services
+## Implemented models and services
 
-- `inventory.guard.policy`: company, sequence, active state, source-location
-  scope, operation scope, action and optional product/category scope.
-- `inventory.guard.mixin` or an abstract service: demand normalization, protected
-  location resolution, availability calculation and shortage formatting.
-- Security groups: Inventory Guard User, Manager and, when approved, Override.
+- `inventory.guard.policy`: one policy per company, with activation, source-location
+  scope and operation switches.
+- `inventory.guard.availability` and stock move-line hooks: shared stock and
+  product-locking helpers, with exact physical-balance checks on completion.
+- Existing Inventory User and Manager groups, with company record rules.
 - Company-aware settings in the central Inventory Guard app.
 
 Avoid adding stored availability fields. Odoo quants, reservations and move lines
@@ -65,7 +65,7 @@ hook rather than assuming every operation uses the same UI button.
 Use **Inventory Guard → General / Operations** for:
 
 - Global enable switch per company.
-- Default action and protected location scope.
+- Protected source-location scope. The action is always to block.
 - Operation toggles for transfers, deliveries, vendor returns, scrap, inventory
   adjustments and manufacturing consumption.
 - Manager security assignment and clear indication of active company.

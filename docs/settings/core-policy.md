@@ -1,6 +1,6 @@
 # Core inventory protection
 
-Status: local development preview, awaiting Odoo 20 database acceptance.
+Status: automated Odoo 20 acceptance passed; manual Odoo.sh acceptance pending. See [Phase 2 core acceptance](../TESTING.md#phase-2-core-acceptance).
 
 ## Installation and access
 
@@ -56,17 +56,9 @@ still apply with the POS checkout switch off. Neither setting controls badges.
 
 ## Verification required before release
 
-Run with both modules selected: `inventory_guard,pos_inventory_guard`. Keep tests
-enabled and verify both English and Spanish after installation/upgrade.
-
-New transaction tests cover disabled behavior, zero/exact stock, duplicate-line
-batch rollback, reservations, operation switches, positive correction and transit.
-They require a running Odoo server and PostgreSQL and have not been run locally.
-Before acceptance, add/run separate-cursor concurrent last-unit tests, lots,
-packages, owners, multi-company permissions, done-line edits, partials and backorders,
-and exercise native picking, scrap, return and inventory-adjustment entry points.
-Compare the server hooks with the deployed Odoo 20 revision. See the
-[hook investigation](../architecture/core-hook-spike.md).
-
-Do not deploy this preview merely because syntax and existing POS frontend tests
-pass. The roadmap phase remains in progress until database evidence is recorded.
+Follow the [Phase 2 core checklist](../TESTING.md#phase-2-core-acceptance) to
+verify menus, permissions, company isolation and delivery behavior on a test
+database. Verify both English and Spanish after installation or upgrade as
+part of the [suite checklist](../TESTING.md#suite-acceptance-checklist). See the
+[hook investigation](../architecture/core-hook-spike.md) for the server hook
+and version boundary.

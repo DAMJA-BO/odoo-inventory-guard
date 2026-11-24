@@ -66,14 +66,27 @@ upgrading both addons from the prior release. Include a POS with checkout enable
 and a POS with checkout disabled in the same company. Compare both records after
 the upgrade, without uninstalling either addon.
 
-## Acceptance checklist
+## Phase 2 core acceptance
+
+**Automated acceptance: passed. Manual acceptance: pending.**
+
+On 2026-11-24, addon commit `ece0440` passed [Odoo acceptance](https://github.com/ronaldtorrez/odoo-inventory-guard/actions/runs/45473072548): clean installation of both addons, database regressions (including `TestInventoryGuardStockOperations`), coverage floor, independent transactions competing for the last unit, and upgrade from the accepted POS baseline. The Odoo.sh `development` build for deployment commit `eb81a1a` was reported successful; this confirms the build, not the manual scenarios below.
+
+Use a disposable database or an isolated copy of Odoo.sh `development` with synthetic stock. Use separate Inventory manager and Inventory user accounts for the access checks; do not use a superuser. Do not change a live company's policy to test defaults.
+
+- [ ] On a fresh database, install `inventory_guard` without POS. Open **Inventory Guard → Overview, General, and Operations** as a manager. General and Operations must open the same company policy, with protection disabled by default.
+- [ ] As an Inventory user without manager permissions, verify that Overview is readable for allowed companies and that management menus and policy edits are unavailable.
+- [ ] As a manager allowed in two test companies, enable protection in company A only. Switch to company B and verify its settings are independent. With a user allowed only in A, verify that B's policy is not visible or editable.
+- [ ] In company A, enable delivery protection for a test internal source (or its parent). Put two units of a storable product without lot or serial tracking there and validate a delivery of exactly two. It must reach **Done**, leaving zero physical units at the source.
+- [ ] Replenish the same source to two units. Enter three as the quantity to complete on a new delivery and validate. Expect an Inventory Guard shortage message, a delivery that is not **Done**, and unchanged physical stock at both source and destination. Compare quantities immediately before and after validation, not before entering the delivery quantities.
+
+Record the test date, build and database, company and role, scenario result, and any message or stock evidence. Close manual Phase 2 acceptance only after all applicable core scenarios pass. Inventory Barcode, POS, payments and manufacturing integration are tracked separately.
+
+## Suite acceptance checklist
 
 - [ ] Install Spanish, upgrade the addon and verify settings and POS messages in Spanish.
 - [ ] Switch back to English and verify dynamic quantities and shortage messages.
 - [ ] Verify Inventory Guard is included in frontend translation modules.
-- [ ] Install the core alone and open Overview, General and Operations.
-- [ ] Open General and Operations for the first time; both use the same disabled policy.
-- [ ] Change the active company and confirm independent policies and permissions.
 - [ ] Open Inventory Guard → Point of Sale; compare two POS configurations.
 - [ ] Open the native POS shortcut and confirm it selects the same POS.
 - [ ] Verify manager-only sections, active-session read-only behavior and company isolation.
@@ -109,14 +122,7 @@ the upgrade, without uninstalling either addon.
 - [ ] Test a cashier without inventory-manager access and two allowed companies.
 - [ ] Unauthorized users/companies cannot use the advisory RPC.
 - [ ] Test installed integrations, bundles, routes and returns using synthetic data.
-- [ ] Run `TestInventoryGuardStockOperations` through the pinned Odoo/PostgreSQL
-  workflow. It exercises native picking, backorder, return, scrap and inventory
-  counting entry points and checks exact source/destination balances.
 - [ ] Complete Inventory Barcode and deployment-specific POS/payment smoke tests;
   mocked POS tests do not prove those UI workflows.
 
-Automated Odoo runtime acceptance passed on 2026-11-24 for addon commit
-`2ee7399c184359fe7453ded8dde7d464feeac1c1` and the pinned Odoo revision above.
-The run covered clean installation, database tests, independent last-unit
-transactions and upgrade from the accepted POS baseline. Release only after
-recording the deployment-specific manual checklist results as well.
+Release only after recording the applicable deployment-specific manual results.
