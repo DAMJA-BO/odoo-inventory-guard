@@ -88,16 +88,22 @@ records. Native settings may link to the central screen. See the
   checklist passes. Documentation-only commits do not require an Odoo.sh build.
 - Version every addon independently with the `20.0.x.y.z` convention.
 
-## Decisions required before core implementation
+## Core decisions
 
-Record final answers in the phase document before writing the policy engine:
+Recorded in [Phase 2](02-inventory-guard-core.md#confirmed-decisions-and-local-delivery)
+and implemented in the first core release:
 
-- Whether transit locations are protected by default.
-- Whether the first core release supports Block only or Block and Warn modes.
-- Whether managers can override immediately or only after the audit addon exists.
-- Whether policy scope starts company-wide or supports product/category rules in
-  the first release.
-- Whether inventory adjustments may correct already-negative historical stock.
+| Question | Decision |
+| --- | --- |
+| Transit locations protected by default? | No. Internal locations only; transit is excluded and fixed by a test. |
+| Block only, or Block and Warn? | Block only. |
+| Manager override before the audit addon? | No override in the first release. |
+| Policy scope | Company-wide, optionally narrowed to location subtrees. No product/category rules yet. |
+| Already-negative historical stock | Positive corrections may improve it; further consumption may not. |
+
+Revisit these only with a recorded decision. Phase 4 still needs to confirm that
+the transit exclusion also fits transit transfers (see
+[Stock operations](04-stock-operations.md)).
 
 ## Definition of done for every phase
 
