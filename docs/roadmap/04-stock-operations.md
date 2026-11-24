@@ -1,7 +1,9 @@
 # Phase 4 — stock operations
 
-Extend **Inventory Guard → Operations** for new stock-operation controls. See the
-[central configuration contract](../architecture/centralized-configuration.md).
+**Status: Automated Odoo 20 acceptance passed; deployment checks pending.**
+
+This phase validates the existing **Inventory Guard → Operations** controls. See
+[automated acceptance evidence](../TESTING.md#automated-acceptance-evidence).
 
 ## Goal
 
@@ -22,17 +24,20 @@ This phase extends core behavior and tests; it does not introduce another addon.
 | Internal → transit | Internal location | Protect the internal source under the transfers switch |
 | Transit → internal | Transit location excluded | Leave the transit source to standard Odoo; allow the internal credit |
 
-## Implementation steps
+## Automated coverage
 
-1. Build synthetic fixtures for every row in the matrix.
-2. Verify standard reservation and detailed-operation workflows.
-3. Support immediate transfers and partial quantities without using planned
-   demand as completed demand.
-4. Verify lot/serial, package and owner dimensions.
-5. Add operation-specific translated shortage context where the generic message
-   is insufficient.
-6. Test barcode-driven Inventory flows and server/API validation paths.
-7. Document policy decisions for adjustments and transit locations.
+`TestInventoryGuardStockOperations` exercises native picking validation, partial
+completion and backorders, receipts and returns, both transit legs, scrap wizard
+confirmation, inventory counts, serial selection and rollback when editing a
+completed delivery. Core regression tests separately cover own reservations,
+fractional quantities and exact lot, package and owner dimensions.
+
+## Pending deployment checks
+
+Use the [suite checklist](../TESTING.md#suite-acceptance-checklist) for Inventory
+Barcode and any installed integrations that invoke stock validation. Native
+server workflow tests do not establish coverage of those clients or custom API
+paths.
 
 ## Recorded policy decisions
 

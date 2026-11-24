@@ -28,7 +28,7 @@
   payment terminal, ship-later, upgrade value preservation, MRP and multi-company
   move completion. Phase 4 adds `TestInventoryGuardStockOperations` for native
   picking, backorder, return, scrap, inventory-count, transit and done-line paths;
-  its Odoo execution remains pending until the branch CI run.
+  that suite later passed in the accepted remote run recorded below.
 - Branch protection still requires repository settings.
 
 ## Phase 4 acceptance fixes
@@ -51,8 +51,17 @@
 
 - The corrected workflow passed clean install, database regressions, concurrent
   last-unit behavior and upgrade from the accepted POS baseline on 2026-11-24.
-- Publish the commits to `RonaldTorrez`, synchronize the `DAMJA-BO` fork and
-  advance the Odoo.sh deployment submodule. The user confirmed its build passed.
+- The addon commit `ece0440` was published to the canonical repository and the
+  company fork. The owner confirmed the Odoo.sh development build for submodule
+  update `eb81a1a` passed. See [acceptance evidence](TESTING.md#automated-acceptance-evidence)
+  for the scope of that run and build.
+
+## Settings help in English and Spanish
+
+- `1f6e6b5` adds visible descriptions in General, Operations and the POS settings
+  form without changing policy or settings behavior. Static project and translation
+  checks passed; the [visual checks in Odoo](TESTING.md#suite-acceptance-checklist)
+  are pending. This change was not part of the `eb81a1a` build.
 
 ## Performance pass (batched availability)
 

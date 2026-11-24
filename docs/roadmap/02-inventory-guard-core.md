@@ -52,13 +52,13 @@ remain the source of truth.
 - Lock participating records in deterministic order and rely on Odoo transaction
   retry behavior for concurrent validation.
 
-## Required technical spike
+## Selected stock hooks
 
-Before choosing an override, inspect Odoo 20's `stock.picking`, `stock.move`,
-`stock.move.line`, `stock.quant`, scrap and inventory-adjustment flows. Document
-the smallest server hook that covers completion without breaking reservation,
-partial transfer, backorder or immediate-transfer behavior. Tests must prove the
-hook rather than assuming every operation uses the same UI button.
+The core checks physical balances in `stock.move.line._synchronize_quant` after
+standard Odoo synchronization and lot compensation. Savepoints around
+`_action_done` and stock-affecting edits to completed lines preserve rollback.
+See the [hook investigation](../architecture/core-hook-spike.md) and the
+[Phase 4 workflow coverage](04-stock-operations.md#automated-coverage).
 
 ## Configuration
 

@@ -5,6 +5,10 @@ Verify each extension contributes its settings to the central Inventory Guard ap
 
 ## Automated validation
 
+The current two addons already have static checks and pinned Odoo acceptance CI.
+See [testing and acceptance evidence](../TESTING.md#automated-acceptance-evidence).
+This is a foundation for Phase 8, not acceptance of the full suite or release.
+
 Each addon must pass Python/XML/manifest checks, translation coverage, frontend
 tests where applicable and Odoo 20 tagged tests. Add an installation matrix for:
 

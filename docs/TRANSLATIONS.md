@@ -31,9 +31,10 @@ following the Odoo 20 POS hook. Without it, JavaScript messages can remain in
 English even when settings translations are present.
 
 Run `python scripts/check_translations.py` after changing source messages or
-catalogs. It checks current source coverage, duplicate entries, nonempty targets,
-English source parity and interpolation tokens. `translation_terms.py` inventories
-the current source conventions for this check; it does not replace Odoo's exporter.
+catalogs. The check compares the POS catalogs against source terms inventoried by
+`translation_terms.py`. For the core, it compares the PO catalogs against the POT;
+it does not discover missing core source terms. Regenerate the POT with Odoo or
+cross-check new core view text and its references against the template.
 Extend the inventory if new translation patterns are introduced.
 
 ## Acceptance checks on Odoo.sh

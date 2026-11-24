@@ -66,11 +66,15 @@ upgrading both addons from the prior release. Include a POS with checkout enable
 and a POS with checkout disabled in the same company. Compare both records after
 the upgrade, without uninstalling either addon.
 
+## Automated acceptance evidence
+
+On 2026-11-24, addon commit `ece0440` passed [Odoo acceptance](https://github.com/ronaldtorrez/odoo-inventory-guard/actions/runs/45473072548): clean installation of both addons, database regressions (including `TestInventoryGuardStockOperations`), the coverage floor, independent stock-move transactions competing for the last unit, and installation of the core while upgrading the accepted POS baseline. The stock-move race is not a POS checkout race, and the upgrade run does not compare saved settings across existing POS configurations.
+
+The Odoo.sh `development` build for deployment commit `eb81a1a` was reported successful. Neither this build nor that CI run validates later changes or replaces the deployment-specific manual checks below.
+
 ## Phase 2 core acceptance
 
 **Automated acceptance: passed. Manual acceptance: pending.**
-
-On 2026-11-24, addon commit `ece0440` passed [Odoo acceptance](https://github.com/ronaldtorrez/odoo-inventory-guard/actions/runs/45473072548): clean installation of both addons, database regressions (including `TestInventoryGuardStockOperations`), coverage floor, independent transactions competing for the last unit, and upgrade from the accepted POS baseline. The Odoo.sh `development` build for deployment commit `eb81a1a` was reported successful; this confirms the build, not the manual scenarios below.
 
 Use a disposable database or an isolated copy of Odoo.sh `development` with synthetic stock. Use separate Inventory manager and Inventory user accounts for the access checks; do not use a superuser. Do not change a live company's policy to test defaults.
 
@@ -86,12 +90,18 @@ Record the test date, build and database, company and role, scenario result, and
 
 - [ ] Install Spanish, upgrade the addon and verify settings and POS messages in Spanish.
 - [ ] Switch back to English and verify dynamic quantities and shortage messages.
+- [ ] On a build containing the bilingual descriptions, open General, Operations and
+  Point of Sale in English and Spanish. Confirm the descriptions are visible without
+  hovering and legible in light and dark themes. Disable low-stock warnings and
+  automatic refresh separately: the corresponding label, field and description
+  must disappear together. Confirm POS settings remain read-only with an active session.
 - [ ] Verify Inventory Guard is included in frontend translation modules.
 - [ ] Open Inventory Guard → Point of Sale; compare two POS configurations.
 - [ ] Open the native POS shortcut and confirm it selects the same POS.
 - [ ] Verify manager-only sections, active-session read-only behavior and company isolation.
 - [ ] Upgrade an existing database with saved POS values and compare every value.
-- [ ] All new switches start off; existing checkout protection retains its value on upgrade.
+- [ ] On a fresh POS configuration, optional cashier feature switches start off.
+  On upgrade, existing checkout protection retains its saved value.
 - [ ] Cards display stock; verify colors-only mode, tooltips and untracked products.
 - [ ] Multi-variant cards show combined availability; addition checks the chosen variant.
 - [ ] Zero stock is rejected on click, barcode scan and weighted/package scans with early blocking.

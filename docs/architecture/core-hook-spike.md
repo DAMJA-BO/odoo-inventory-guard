@@ -1,7 +1,6 @@
 # Core stock completion hook investigation
 
-Status: local prototype implemented; database validation pending. Installing and
-enabling the new addon activates its hooks. The accepted POS addon is unchanged.
+Status: the core hook is implemented and passed [automated Odoo 20 acceptance](../TESTING.md#automated-acceptance-evidence). The [Phase 2 manual checks](../TESTING.md#phase-2-core-acceptance) remain pending. This investigation records how the hook was selected and what the automated evidence does not cover.
 
 ## Evidence and version boundary
 
@@ -37,7 +36,7 @@ especially when the exact dimensional quant does not exist yet.
 Completed move-line edits and resets also synchronize quants. A check exclusively
 on the picking validation button would miss these paths.
 
-## Candidate integration
+## Selected integration and early findings
 
 Use a transaction boundary around the stock synchronization/completion flow,
 evaluate the final exact-dimension physical balance after standard compensation,
@@ -55,7 +54,7 @@ when two transactions compete for the last unit, including initially empty stock
 
 Operation classification must use persisted move metadata: inventory adjustments,
 scrap, manufacturing consumption, deliveries, supplier returns and internal
-transfers. Product/category exceptions and overrides remain pending scope decisions.
+transfers. Product/category exceptions and overrides are outside the current core scope.
 
 Odoo 20 unified legacy `ir.rule` and `ir.model.access` records under `ir.access`.
 Security declarations must use `ir.access`, its `operation`/`domain` fields and
@@ -71,9 +70,9 @@ stock; that method can reduce other unpicked move lines. The rollback test now
 marks both lines picked and asserts three actual units before validation and
 after rollback. This preserves the intended excessive-completion scenario rather
 than treating Odoo's legitimate adjustment of unpicked reservations as consumption.
-The corrected test still requires a new Odoo.sh execution.
+The corrected regression later passed in the pinned CI suite.
 
-## Required tests before selecting the final override
+## Verification scenarios
 
 - Reserved exact-stock delivery succeeds without counting its reservation twice.
 - Unreserved shortage fails and leaves no moves/quants partially changed, even
@@ -89,13 +88,15 @@ The corrected test still requires a new Odoo.sh execution.
 
 ## Remaining investigation
 
-Inspect `stock.picking`, inventory adjustment and manufacturing
-callers on the deployed revision; then implement and execute Odoo transaction
-tests. Pure Python or frontend tests cannot establish these database guarantees.
+The implemented hook uses `_synchronize_quant` after standard compensation, with
+savepoints around `_action_done` batches and stock-affecting completed-line writes.
+Persisted `stock.move.is_inventory`, `stock.move.is_scrap` and destination usage
+classify operations. Product row version writes serialize participating mutations
+even when no quant exists.
 
-The local prototype uses `_synchronize_quant` after standard compensation, with a
-savepoint around `_action_done` batches and completed-line writes. Persisted
-`stock.move.is_inventory`, `stock.move.is_scrap` and destination usage classify
-operations. Product row version writes serialize participating mutations even
-when no quant exists. The transaction retry and deadlock assumptions still require
-independent-connection tests on the deployed server before release.
+The pinned CI run exercised native stock workflows and one independent-connection
+race for the last unit. One transaction completed, the other encountered a
+serialization failure, and a fresh retry was blocked. That result does not cover
+all concurrency permutations listed above or verify the exact deployed revision.
+Inventory Barcode, custom integrations and manufacturing-specific callers require
+separate acceptance.

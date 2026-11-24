@@ -1,6 +1,11 @@
 # Phase 3 — `pos_inventory_guard`
 
-**Status: In progress — automated Odoo 20 acceptance passed; manual acceptance pending.**
+**Status: Automated Odoo 20 acceptance passed; manual acceptance pending.**
+
+See the [automated evidence](../TESTING.md#automated-acceptance-evidence) and
+[suite checklist](../TESTING.md#suite-acceptance-checklist). The CI race exercises
+a protected stock move; it does not exercise two POS checkout requests. The CI
+baseline upgrade does not compare saved values across existing POS configurations.
 
 ## Goal
 
@@ -29,8 +34,9 @@ or creating two competing stock calculations.
 2. Replace private server calculations with documented core services.
 3. Preserve the per-POS checkout switch and resolve availability in that POS's
    company and source location. Do not map POS choices to a company-wide switch.
-4. Retain the persisted-order checkout check until tests prove the generic final
-   hook covers every POS finalization and replay path; then remove duplication.
+4. Keep the persisted-order checkout check. It enforces per-POS free stock and
+   verifies immediate transfer completion; the generic hook separately protects
+   physical balances for covered stock moves.
 5. Move the settings to Inventory Guard → Point of Sale and keep native shortcuts.
    Preserve existing values by retaining the stored fields on `pos.config`.
 6. Update UI terminology to Inventory Guard while keeping concise cashier text.

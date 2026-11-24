@@ -38,9 +38,9 @@ more useful feedback; they must not duplicate the authoritative stock rule.
 | --- | --- | --- | --- |
 | 0 | Current POS release | Complete | Version `20.0.2.0.1` promoted to `main` |
 | 1 | [Repository and module migration](01-migration-and-renaming.md) | Complete | New identity builds on a clean Odoo.sh development database |
-| 2 | [Core app and policy engine](02-inventory-guard-core.md) | Automated acceptance passed | Generic stock operations cannot create protected negative stock |
-| 3 | [POS migration](03-pos-inventory-guard.md) | In progress | Central POS settings and shared server checks pass Odoo.sh acceptance |
-| 4 | [Stock operations](04-stock-operations.md) | Planned | Transfers, scrap, adjustments and returns pass acceptance tests |
+| 2 | [Core app and policy engine](02-inventory-guard-core.md) | Automated acceptance passed; manual acceptance pending | Generic stock operations cannot create protected negative stock |
+| 3 | [POS migration](03-pos-inventory-guard.md) | Automated acceptance passed; manual acceptance pending | Central POS settings and shared server checks pass Odoo.sh acceptance |
+| 4 | [Stock operations](04-stock-operations.md) | Automated acceptance passed; deployment checks pending | Transfers, scrap, adjustments and returns pass acceptance tests |
 | 5 | [Sales and purchases](05-sales-and-purchases.md) | Planned | Business users receive application-specific guidance |
 | 6 | [Manufacturing](06-manufacturing.md) | Planned | Consumption and partial manufacturing scenarios are protected |
 | 7 | [Audit and exceptions](07-audit-and-exceptions.md) | Planned | Authorized exceptions are explicit and traceable |

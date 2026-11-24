@@ -27,5 +27,5 @@ The POS order hook checks persisted demand and successful immediate stock
 completion. It delegates availability, shortage formatting and product locking
 to the core. The company policy checks exact physical move balances for
 protected operations. These checks address different stages of stock consumption.
-Keep the POS order hook until Odoo 20 tests prove complete coverage of finalization,
-failed transfers and replays through a replacement.
+The POS order hook remains in place because the generic stock hook is not a
+replacement for per-POS availability and checkout completion checks.
