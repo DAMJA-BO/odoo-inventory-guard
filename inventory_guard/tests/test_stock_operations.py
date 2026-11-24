@@ -333,11 +333,14 @@ class TestInventoryGuardStockOperations(BaseCommon):
         self.assertEqual(picking.state, "assigned")
 
         line.lot_id = missing
+        # Editing the line reserves the selected serial before validation, even with no stock.
+        self._assert_stock(self.source, 0, reserved=1, lot_id=missing.id)
         with self._guard_error(), self.env.cr.savepoint():
             picking.button_validate()
         self.assertEqual(picking.state, "assigned")
+        self.assertEqual(line.lot_id, missing)
         self._assert_stock(self.source, 1, lot_id=existing.id)
-        self._assert_stock(self.source, 0, lot_id=missing.id)
+        self._assert_stock(self.source, 0, reserved=1, lot_id=missing.id)
         self._assert_stock(self.customer, 0)
         line.lot_id = existing
         self.assertIs(picking.button_validate(), True)
