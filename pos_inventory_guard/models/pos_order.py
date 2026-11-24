@@ -36,6 +36,7 @@ class PosOrder(models.Model):
             and self.env.context.get("inventory_guard_validate", False)
             and self.state != "cancel"
         )
+        demand = {}
         if guarded:
             guard = self.env["pos.stock.guard"].with_company(self.company_id)
             demand = guard._aggregate_demand([
@@ -48,7 +49,7 @@ class PosOrder(models.Model):
             if error:
                 raise UserError(error)
         result = super()._process_saved_order(draft)
-        if guarded and demand:
+        if demand:
             stock_lines = self.lines.filtered(
                 lambda line: line.qty > 0 and line.product_id.is_storable
             )
