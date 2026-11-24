@@ -1,5 +1,14 @@
 # Changelog
 
+## Review hardening — Unreleased
+
+- Validate malformed checkout payloads, positive product IDs and bounded demand.
+- Exercise settings navigation without superuser privileges and deny cashier access.
+- Add pinned Odoo/PostgreSQL installation and upgrade CI with coverage artifacts.
+- Add independent transaction concurrency and persisted-order regression scenarios.
+- Expand core tests for destinations, fractional quantities and package isolation.
+- Database acceptance remains pending; see `docs/IMPLEMENTATION-LOG.md`.
+
 ## Centralized configuration — Unreleased
 
 - Add Overview, General, Operations and per-POS configuration to Inventory Guard.

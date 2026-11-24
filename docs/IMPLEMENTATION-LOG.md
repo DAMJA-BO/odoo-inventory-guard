@@ -15,3 +15,16 @@
 - Resolved official Odoo 20 revision for reproducible acceptance CI.
 - Preserve the pre-existing untracked `.agents/` directory. No cleanup target
   was identified as safe and necessary. No push is authorized.
+
+## Database acceptance infrastructure
+
+- Pin Odoo 20 at `7349287698e25ca2bddddb94dcd72a2bb3f1b77b`; add clean
+  installation, baseline upgrade, coverage artifacts and PostgreSQL 16 CI.
+- Add independent committed transactions racing on the last unit; assert a
+  serialization failure followed by rejection on a fresh transaction.
+- Add persisted POS duplicate/update/deferred-stock cases and core destination,
+  fractional and package cases. These database tests have not run locally.
+- Remaining acceptance work: actual POS request race, replay and failed picking,
+  payment terminal, ship-later, upgrade value preservation, real scrap/adjustment
+  entry points, backorders, serials, MRP and multi-company move completion.
+- Branch protection requires repository settings; no remote changes were made.

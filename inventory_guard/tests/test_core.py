@@ -158,3 +158,37 @@ class TestInventoryGuardCore(TransactionCase):
         self.policy.enabled = True
         with self.assertRaises(UserError):
             self._line(1).with_context(inventory_guard_skip=True, bypass_inventory_guard=True)._action_done()
+
+    def test_internal_transfer_and_vendor_return_shortages(self):
+        self.policy.enabled = True
+        for usage in ("internal", "supplier", "production", "inventory"):
+            with self.subTest(usage=usage), self.env.cr.savepoint():
+                destination = self.env["stock.location"].create({
+                    "name": "Guard destination", "usage": usage,
+                    "company_id": self.env.company.id,
+                })
+                line = self._line(1)
+                line.move_id.location_dest_id = destination
+                line.location_dest_id = destination
+                with self.assertRaises(UserError):
+                    line._action_done()
+                self.assertEqual(self._physical(), 0)
+
+    def test_fractional_completion_preserves_remainder(self):
+        self.policy.enabled = True
+        self._stock(1)
+        self._line(0.25)._action_done()
+        self.assertAlmostEqual(self._physical(), 0.75)
+        with self.assertRaises(UserError):
+            self._line(0.76)._action_done()
+        self.assertAlmostEqual(self._physical(), 0.75)
+
+    def test_other_package_cannot_finance_consumption(self):
+        package = self.env["stock.package"].create({"name": "Reserved package"})
+        self.env["stock.quant"]._update_available_quantity(
+            self.product, self.source, 2, package_id=package,
+        )
+        self.policy.enabled = True
+        with self.assertRaises(UserError):
+            self._line(1)._action_done()
+        self.assertEqual(self._physical(), 2)

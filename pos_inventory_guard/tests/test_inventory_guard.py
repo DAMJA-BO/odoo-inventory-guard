@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Stock-policy regression tests requiring a disposable Odoo 20 database."""
 
-from odoo.exceptions import AccessError, ValidationError
+from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.tests import tagged
 from odoo.tests.common import new_test_user
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
@@ -199,3 +199,37 @@ class TestInventoryGuard(AccountTestInvoicingCommon):
             "pos_inventory_guard",
             self.env["ir.http"]._get_translation_frontend_modules_name(),
         )
+
+    def _saved_order(self, quantities):
+        return self.env["pos.order"].sudo().create({
+            "session_id": self.session.id,
+            "amount_tax": 0, "amount_total": 0, "amount_paid": 0, "amount_return": 0,
+            "lines": [(0, 0, {
+                "product_id": self.product.id, "qty": qty, "price_unit": 0,
+                "price_subtotal": 0, "price_subtotal_incl": 0,
+            }) for qty in quantities],
+        })
+
+    def test_finalization_checks_persisted_duplicate_demand(self):
+        order = self._saved_order([1, 2])
+        self.env["stock.quant"].sudo()._update_available_quantity(self.product, self.location, 2)
+        with self.assertRaises(UserError):
+            order.with_context(inventory_guard_validate=True)._process_saved_order(False)
+        self.assertEqual(order.state, "draft")
+        self.assertFalse(order.picking_ids)
+
+    def test_finalization_uses_updated_lines(self):
+        order = self._saved_order([1])
+        order.lines.qty = 3
+        self.env["stock.quant"].sudo()._update_available_quantity(self.product, self.location, 2)
+        with self.assertRaises(UserError):
+            order.with_context(inventory_guard_validate=True)._process_saved_order(False)
+        self.assertEqual(order.state, "draft")
+        self.assertFalse(order.picking_ids)
+
+    def test_finalization_rejects_deferred_stock(self):
+        order = self._saved_order([1])
+        self.session.update_stock_at_closing = True
+        with self.assertRaisesRegex(UserError, "inventory updates"):
+            order.with_context(inventory_guard_validate=True)._process_saved_order(False)
+        self.assertFalse(order.picking_ids)

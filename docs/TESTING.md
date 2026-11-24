@@ -22,6 +22,13 @@ and serialized bounded requests. It does not replace rendering or real POS tests
 
 ## Odoo regression tests
 
+The `Odoo acceptance` workflow pins Odoo to
+`7349287698e25ca2bddddb94dcd72a2bb3f1b77b`, installs both addons against
+PostgreSQL 16, runs database tests, and upgrades the renamed POS baseline.
+Logs and Python coverage are retained as artifacts. Require this check in branch
+protection before merging release candidates; repository administrators must
+configure that GitHub setting. A configured workflow is not a passed acceptance run.
+
 On a disposable database with Odoo 20 and PostgreSQL:
 
 ```bash

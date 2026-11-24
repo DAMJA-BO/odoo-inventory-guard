@@ -1,0 +1,69 @@
+name: Odoo acceptance
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  acceptance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: odoo
+          POSTGRES_PASSWORD: odoo
+          POSTGRES_DB: postgres
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready --health-interval 10s
+          --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: odoo/odoo
+          ref: 7349287698e25ca2bddddb94dcd72a2bb3f1b77b
+          path: upstream
+      - uses: actions/checkout@v4
+        with:
+          ref: e255d6b9a6f76a4e601b50a96607039c782be90b
+          path: baseline
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y libldap2-dev libsasl2-dev libpq-dev libxml2-dev libxslt1-dev libjpeg-dev zlib1g-dev
+          pip install -r upstream/requirements.txt coverage
+      - name: Clean installation and database regression tests
+        run: |
+          python -m coverage run --source=inventory_guard,pos_inventory_guard upstream/odoo-bin \
+            --db_host=localhost --db_user=odoo --db_password=odoo \
+            --addons-path=upstream/addons,. --database=guard_clean \
+            --init=inventory_guard,pos_inventory_guard --without-demo=all \
+            --test-enable --test-tags=/inventory_guard,/pos_inventory_guard \
+            --stop-after-init --http-port=8071 --logfile=clean.log
+          python -m coverage json -o coverage.json
+      - name: Independent last-unit transactions
+        run: |
+          python upstream/odoo-bin shell --db_host=localhost --db_user=odoo --db_password=odoo \
+            --addons-path=upstream/addons,. --database=guard_clean --no-http < scripts/check_concurrency.py
+      - name: Install accepted POS baseline
+        run: |
+          python upstream/odoo-bin --db_host=localhost --db_user=odoo --db_password=odoo \
+            --addons-path=upstream/addons,baseline --database=guard_upgrade \
+            --init=pos_inventory_guard --without-demo=all --stop-after-init --logfile=baseline.log
+      - name: Upgrade both addons
+        run: |
+          python upstream/odoo-bin --db_host=localhost --db_user=odoo --db_password=odoo \
+            --addons-path=upstream/addons,. --database=guard_upgrade \
+            --init=inventory_guard --update=pos_inventory_guard --without-demo=all \
+            --test-enable --test-tags=/inventory_guard,/pos_inventory_guard \
+            --stop-after-init --http-port=8071 --logfile=upgrade.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: odoo-acceptance-evidence
+          path: |
+            *.log
+            coverage.json
