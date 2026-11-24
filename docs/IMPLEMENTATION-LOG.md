@@ -31,6 +31,14 @@
   its Odoo execution remains pending until the branch CI run.
 - Branch protection still requires repository settings.
 
+## Phase 4 acceptance fixes
+
+- The first Phase 4 CI run reported one failure and one error across 57 tests.
+- Scrap quantity entry leaves the move assigned before the warning. Check that
+  rejecting confirmation preserves the original quantity and source reservation.
+- Configure serial tracking with elevated access only on the test fixture. Run
+  receipt and delivery validation as the Inventory manager.
+
 ## First remote acceptance run
 
 - Clean installation and all Odoo database regression tests passed.

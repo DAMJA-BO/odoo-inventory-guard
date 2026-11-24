@@ -243,17 +243,21 @@ class TestInventoryGuardStockOperations(BaseCommon):
             "product_uom_qty": 3,
         })
         scrap.quantity = 3
+        # Entering the scrap quantity creates reserved move lines before validation.
+        self.assertEqual(scrap.state, "assigned")
+        reserved = sum(self._quants(self.source).mapped("reserved_quantity"))
         action = scrap.action_scrap()
         self.assertEqual(action["res_model"], "stock.warn.insufficient.qty.scrap")
-        self.assertEqual(scrap.state, "draft")
-        self._assert_stock(self.source, 2)
+        self.assertEqual(scrap.state, "assigned")
+        self._assert_stock(self.source, 2, reserved=reserved)
         self._assert_stock(self.scrap, 0)
         wizard = self.env[action["res_model"]].with_context(action["context"]).create({})
         self.assertEqual(wizard.scrap_move_id, scrap)
         with self._guard_error(), self.env.cr.savepoint():
             wizard.action_done()
-        self.assertEqual(scrap.state, "draft")
-        self._assert_stock(self.source, 2)
+        self.assertEqual(scrap.state, "assigned")
+        self.assertEqual(scrap.quantity, 3)
+        self._assert_stock(self.source, 2, reserved=reserved)
         self._assert_stock(self.scrap, 0)
         scrap.write({"product_uom_qty": 2, "quantity": 2})
         scrap.action_scrap()
@@ -307,7 +311,8 @@ class TestInventoryGuardStockOperations(BaseCommon):
         self._assert_stock(self.loss, -1)
 
     def test_validation_distinguishes_missing_serial_from_source_shortage(self):
-        self.product.tracking = "serial"
+        # Configure the fixture as an administrator; validate pickings as the stock manager.
+        self.product.sudo().tracking = "serial"
         existing, missing = self.env["stock.lot"].create([
             {"name": name, "product_id": self.product.id, "company_id": self.company.id}
             for name in ("Guard SN available", "Guard SN absent")
