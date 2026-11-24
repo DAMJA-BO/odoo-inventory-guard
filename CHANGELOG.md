@@ -24,7 +24,7 @@
 - Add internal-location scope and independent operation switches, managed by Inventory managers.
 - Validate exact-dimensional physical balances after standard lot compensation.
 - Serialize participating product updates and roll back failed move-line batches.
-- Add English/Spanish catalogs and Odoo transaction test cases (execution pending).
+- Add English/Spanish catalogs and Odoo transaction test cases; automated Odoo 20 execution passed.
 - Keep the accepted POS integration unchanged until Phase 3.
 - Use Odoo 20 unified `ir.access` permissions and company restriction domains.
 - Create stock-move test fixtures with Odoo 20 `reference` instead of the removed `name` field.

@@ -1,6 +1,6 @@
 # Phase 3 — `pos_inventory_guard`
 
-**Status: In progress — Odoo 20 acceptance pending.**
+**Status: In progress — automated Odoo 20 acceptance passed; manual acceptance pending.**
 
 ## Goal
 

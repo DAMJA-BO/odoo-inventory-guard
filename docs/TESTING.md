@@ -89,5 +89,8 @@ the upgrade, without uninstalling either addon.
 - [ ] Unauthorized users/companies cannot use the advisory RPC.
 - [ ] Test installed integrations, bundles, routes and returns using synthetic data.
 
-Release only after recording the Odoo commit/version, database configuration and
-results. No Odoo runtime acceptance run has been completed for this preview.
+Automated Odoo runtime acceptance passed on 2026-11-24 for addon commit
+`2ee7399c184359fe7453ded8dde7d464feeac1c1` and the pinned Odoo revision above.
+The run covered clean installation, database tests, independent last-unit
+transactions and upgrade from the accepted POS baseline. Release only after
+recording the deployment-specific manual checklist results as well.

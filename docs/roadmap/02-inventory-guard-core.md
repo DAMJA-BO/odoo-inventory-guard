@@ -1,6 +1,6 @@
 # Phase 2 — `inventory_guard` core app
 
-**Status: Implemented — Odoo 20 acceptance pending.**
+**Status: Implemented — automated Odoo 20 acceptance passed.**
 
 The [hook investigation](../architecture/core-hook-spike.md) records upstream
 findings, version limitations and the transaction tests required before enabling
@@ -18,8 +18,9 @@ an authoritative core hook.
 
 The standalone app, policy configuration, completion/synchronization hooks,
 English/Spanish catalogs and initial Odoo transaction tests are implemented locally.
-No deployment or release acceptance is implied. Database tests, source revision
-comparison and independent concurrency coverage remain pending. The POS addon now depends on the core as part of Phase 3.
+Automated database tests and independent last-unit concurrency passed against the
+pinned Odoo 20 revision on 2026-11-24. Deployment-specific manual operation and
+UI acceptance remains required. The POS addon depends on the core as part of Phase 3.
 
 ## Goal
 

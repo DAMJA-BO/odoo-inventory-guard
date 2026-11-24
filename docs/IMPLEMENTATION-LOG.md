@@ -23,11 +23,11 @@
 - Add independent committed transactions racing on the last unit; assert a
   serialization failure followed by rejection on a fresh transaction.
 - Add persisted POS duplicate/update/deferred-stock cases and core destination,
-  fractional and package cases. These database tests have not run locally.
+  fractional and package cases. The remote Odoo database suite passed.
 - Remaining acceptance work: actual POS request race, replay and failed picking,
   payment terminal, ship-later, upgrade value preservation, real scrap/adjustment
   entry points, backorders, serials, MRP and multi-company move completion.
-- Branch protection requires repository settings; no remote changes were made.
+- Branch protection still requires repository settings.
 
 ## First remote acceptance run
 
@@ -36,3 +36,10 @@
   fresh retry was blocked as designed.
 - Correct the evidence read to use a fresh cursor because the shell cursor keeps
   its original PostgreSQL repeatable-read snapshot.
+
+## Accepted remote run and deployment
+
+- The corrected workflow passed clean install, database regressions, concurrent
+  last-unit behavior and upgrade from the accepted POS baseline on 2026-11-24.
+- Publish the commits to `RonaldTorrez`, synchronize the `DAMJA-BO` fork and
+  advance the Odoo.sh deployment submodule. The user confirmed its build passed.
