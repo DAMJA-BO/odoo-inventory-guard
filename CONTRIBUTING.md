@@ -11,7 +11,8 @@ Contributions, bug reports and documentation improvements are welcome.
 3. Keep a pull request focused on one behavior. Use English names, comments,
    docstrings, commit messages and documentation.
 4. Add regression coverage for changed stock rules. Run the local checks and the
-   Odoo tests listed in `docs/TESTING.md`. Report checks you could not run.
+   Odoo tests listed in `docs/TESTING.md`, including `ruff check .` and
+   `npm run lint`. Report checks you could not run.
 5. Update `docs/` in the same change whenever behavior, configuration, architecture
    or testing changes. Keep each affected guide in `docs/settings/`, its examples,
    defaults, dependencies and limitations aligned with the implementation. Update

@@ -9,6 +9,16 @@ node --input-type=module --check < pos_inventory_guard/static/src/app/payment_sc
 
 These checks do not import Odoo or prove runtime compatibility.
 
+Lint Python with ruff (`pip install ruff==0.17.6`, configured in `ruff.toml`) and
+JavaScript with ESLint (`npm ci`, configured in `eslint.config.js`):
+
+```bash
+ruff check .
+npm run lint
+```
+
+The `Static checks` workflow runs both before the other checks.
+
 Run the dependency-free frontend policy and boundary tests with Node 22 or newer:
 
 ```bash
@@ -25,9 +35,20 @@ and serialized bounded requests. It does not replace rendering or real POS tests
 The `Odoo acceptance` workflow pins Odoo to
 `7349287698e25ca2bddddb94dcd72a2bb3f1b77b`, installs both addons against
 PostgreSQL 16, runs database tests, and upgrades the renamed POS baseline.
-Logs and Python coverage are retained as artifacts. Require this check in branch
-protection before merging release candidates; repository administrators must
-configure that GitHub setting. A configured workflow is not a passed acceptance run.
+Logs and Python coverage are retained as artifacts, and a `Coverage floor` step
+fails the run below `COVERAGE_MIN` (currently 50, deliberately low: the real figure
+has not been read from a run yet, so raise it once it is known). Require both the
+`Static checks` and `Odoo acceptance` checks in branch protection before merging
+release candidates; repository administrators must configure that GitHub setting,
+it cannot be set from the repository. A configured workflow is not a passed
+acceptance run.
+
+Actions are pinned to commit SHAs (the version is in a trailing comment) and
+Dependabot proposes weekly updates for them and for the npm dev tooling.
+
+The mutation, duplication and complexity tools mentioned in the contributor
+workflow (crapper, dryer, mutator) are not installed here, so no complexity,
+duplication or mutation score has been measured.
 
 On a disposable database with Odoo 20 and PostgreSQL:
 

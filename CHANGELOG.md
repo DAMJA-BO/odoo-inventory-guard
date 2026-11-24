@@ -23,6 +23,10 @@ not tagged yet; the entries above `20.0.2.0.1` belong to the manifests listed he
   savepoint for writes that cannot change quants.
 - Report a missing POS as a user error in the availability snapshot, and skip
   products of other companies instead of rejecting the whole batch.
+- Lint Python (ruff) and JavaScript (ESLint) in CI, and add a coverage floor to
+  the Odoo acceptance workflow.
+- Pin GitHub Actions to commit SHAs, add Dependabot for actions and npm, and
+  cancel superseded runs of the same ref.
 - Log stock refresh failures in the POS client; initialize order demand before use.
 - Document that POS lines use the product unit and that the POS switch is
   independent of the core policy.

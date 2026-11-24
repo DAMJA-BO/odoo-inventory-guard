@@ -77,3 +77,22 @@
   designed and documented in `CONFIGURATION.md`; it is a decision for the owner.
 - Removed the now-unused "Products must belong..." translation entries.
 - Odoo database tests for these changes run in CI only.
+
+## CI and quality pass
+
+- `Static checks` now runs `ruff check .` (pinned 0.17.6) and `npm run lint`
+  (ESLint 9, recommended rules) before the existing checks. Rule set: pyflakes,
+  pycodestyle and bugbear; import sorting is off because Odoo orders imports its
+  own way. Per-file ignores cover `__init__.py` re-exports, bare manifests and
+  `scripts/check_concurrency.py`, which receives `env` from `odoo-bin shell`.
+  The only code change was wrapping two long lines in
+  `scripts/translation_terms.py` (`check_translations.py` still passes).
+- All actions are pinned to commit SHAs with the version in a comment. Both
+  workflows use a `concurrency` group per workflow and ref with
+  `cancel-in-progress`, so a newer push stops the older run.
+- `.github/dependabot.yml` proposes weekly updates for actions and npm tooling.
+- `odoo.yml` gains a `Coverage floor` step (`COVERAGE_MIN`, 50). The value is a
+  guess: coverage output is only visible after a CI run. Read the first run and
+  raise it.
+- Not done: requiring the checks in branch protection (a GitHub setting) and
+  running crapper, dryer and mutator (not installed, nothing measured).
