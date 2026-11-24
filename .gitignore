@@ -12,3 +12,7 @@ htmlcov/
 *.dump
 *.backup
 .DS_Store
+
+# Local assistant tooling
+.agents/
+.claude/
