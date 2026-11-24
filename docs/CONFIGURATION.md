@@ -36,6 +36,17 @@ location and its children. It is not a total across all companies or warehouses.
 Quantities use each product's default unit of measure. The final comparison uses
 Odoo's Product Unit precision.
 
+POS order lines are always expressed in the product's default unit of measure
+(`pos.order.line.product_uom_id` is related to `product_id.uom_id` in the pinned
+Odoo revision), so no conversion is applied. Selling in another unit remains
+unsupported until Odoo allows it on POS lines.
+
+**POS switch versus core policy.** *Block negative stock* on a POS is a checkout
+policy and works on its own: it does not read the company's *enabled* flag in the
+core policy. The core policy only protects stock moves (deliveries, transfers,
+returns to vendors); it is not a prerequisite for the POS check. Enable both for
+full coverage.
+
 Example: 10 physical units minus 4 reserved units means 6 available. A sale of 7
 is insufficient even though physical stock is 10. Positive sale quantities for
 the same variant are added across duplicate lines. Returns do not cancel demand

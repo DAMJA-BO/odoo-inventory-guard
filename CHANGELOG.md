@@ -11,6 +11,11 @@
 - Compute free stock for a whole POS snapshot or shortage check with one quant query.
 - Resolve the stock policy once per source and operation, and skip the done-line
   savepoint for writes that cannot change quants.
+- Report a missing POS as a user error in the availability snapshot, and skip
+  products of other companies instead of rejecting the whole batch.
+- Log stock refresh failures in the POS client; initialize order demand before use.
+- Document that POS lines use the product unit and that the POS switch is
+  independent of the core policy.
 
 ## Centralized configuration — Unreleased
 

@@ -60,3 +60,20 @@
   server cost per batch is now one query, so the client was left alone.
 - The global product-row lock is the documented trade-off in `ARCHITECTURE.md`.
 - Odoo database tests for these changes run in CI only.
+
+## Correctness and robustness pass
+
+- `get_inventory_guard_availability`: a nonexistent `config_id` now raises
+  `UserError` (was a bare `ValueError` from `ensure_one`); products of another
+  company are omitted from the result instead of failing the 200-product batch
+  with `AccessError`. The client treats omitted products as unknown. Read access
+  to the products is still enforced.
+- `_process_saved_order`: `demand` is initialized before the `if guarded:` block.
+- `refreshInventoryGuard` logs the failure with `console.error` before failing
+  closed.
+- Alternative UoM: no code change. Odoo's POS line UoM is related to the product
+  UoM at the pinned revision, so `qty` is already in product units. Documented.
+- `block_negative_stock` independence from the core `enabled` flag: kept as
+  designed and documented in `CONFIGURATION.md`; it is a decision for the owner.
+- Removed the now-unused "Products must belong..." translation entries.
+- Odoo database tests for these changes run in CI only.
