@@ -3,7 +3,7 @@
  * Real Odoo installation/rendering is tested separately on Odoo.sh.
  */
 import assert from "node:assert/strict";
-import test from "node:test";
+import test, { mock } from "node:test";
 import fs from "node:fs/promises";
 import vm from "node:vm";
 import path from "node:path";
@@ -152,6 +152,18 @@ test("network errors fail early checks closed and mark snapshots stale", async (
     assert.equal(await f.store.handleOrderLineConfiguration(f.order, { product_id: f.product, qty: 1 }), false);
     assert.equal(runtime(f.config).failed, true);
     assert.equal(runtime(f.config).products[1].available, 2);
+});
+test("refresh failures are logged instead of swallowed", async () => {
+    const f = fixture();
+    const logged = mock.method(console, "error", () => {});
+    try {
+        f.store.data.call = async () => { throw Error("offline"); };
+        assert.equal(await f.store.refreshInventoryGuard(), false);
+        assert.equal(logged.mock.callCount(), 1);
+        assert.match(String(logged.mock.calls[0].arguments.join(" ")), /offline/);
+    } finally {
+        logged.mock.restore();
+    }
 });
 test("available filter is temporary; unknown and untracked products remain visible", async () => {
     const f = fixture({ inventory_guard_available_filter: true }, 0);

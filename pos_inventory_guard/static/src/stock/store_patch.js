@@ -32,7 +32,9 @@ patch(PosStore.prototype, {
                     state.failed = false;
                 }
                 return true;
-            } catch {
+            } catch (error) {
+                // Fail closed, but leave a trace for support instead of hiding the cause.
+                console.error("Inventory Guard: stock refresh failed", error);
                 state.failed = true;
                 return false;
             } finally {
