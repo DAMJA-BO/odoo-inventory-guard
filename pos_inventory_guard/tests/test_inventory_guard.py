@@ -55,10 +55,18 @@ class TestInventoryGuard(AccountTestInvoicingCommon):
         settings = self.env["res.config.settings"].with_user(manager).sudo().create({
             "pos_config_id": self.config.id,
         })
-        action = settings.action_open_inventory_guard()
+        action = settings.with_user(manager).action_open_inventory_guard()
         self.assertEqual(action["res_id"], self.config.id)
         view = self.env.ref("pos_inventory_guard.inventory_guard_pos_form")
         self.assertEqual(action["views"], [(view.id, "form")])
+
+    def test_cashier_cannot_open_configuration(self):
+        cashier = new_test_user(
+            self.env, login="guard_cashier", groups="point_of_sale.group_pos_user",
+            company_id=self.config.company_id.id,
+        )
+        with self.assertRaises(AccessError):
+            self.config.with_user(cashier).action_open_inventory_guard()
 
     def test_optional_settings_are_scoped_to_selected_pos(self):
         other = self.config.copy({"name": "Other POS"})

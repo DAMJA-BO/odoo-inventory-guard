@@ -15,16 +15,22 @@ class PosInventoryGuard(models.AbstractModel):
     @api.model
     def _aggregate_demand(self, lines):
         """Sum positive sales; returns never finance sales in the same order."""
+        if not isinstance(lines, list) or len(lines) > 1000:
+            raise ValidationError(_("Invalid checkout quantity."))
         demand = defaultdict(float)
         for line in lines:
+            if not isinstance(line, dict):
+                raise ValidationError(_("Invalid checkout quantity."))
             product_id = line.get("product_id")
+            if isinstance(line.get("qty"), bool):
+                raise ValidationError(_("Invalid checkout quantity."))
             try:
                 quantity = float(line.get("qty", 0))
-            except (TypeError, ValueError) as error:
+            except (TypeError, ValueError, OverflowError) as error:
                 raise ValidationError(_("Invalid checkout quantity.")) from error
             if not math.isfinite(quantity):
                 raise ValidationError(_("Checkout quantities must be finite."))
-            if not isinstance(product_id, int) or isinstance(product_id, bool):
+            if type(product_id) is not int or product_id <= 0:
                 raise ValidationError(_("A numeric product ID is required."))
             if quantity > 0:
                 demand[product_id] += quantity

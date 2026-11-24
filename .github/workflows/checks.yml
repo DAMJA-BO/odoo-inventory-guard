@@ -14,6 +14,7 @@ jobs:
         with:
           node-version: '22'
       - run: python scripts/check_project.py
+      - run: python -m unittest discover -s tests -p 'test_*.py'
       - run: python scripts/check_translations.py
       - run: node --input-type=module --check < pos_inventory_guard/static/src/app/payment_screen_patch.js
       - run: find pos_inventory_guard/static/src/stock -name '*.js' -exec sh -c 'node --input-type=module --check < "$1"' _ {} \;
