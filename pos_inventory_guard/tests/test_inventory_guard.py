@@ -131,6 +131,31 @@ class TestInventoryGuard(AccountTestInvoicingCommon):
                 self.config.id, [self.product.id] * 201,
             )
 
+    def test_snapshot_for_missing_pos_raises_a_user_error(self):
+        manager = new_test_user(
+            self.env, login="inventory_guard_pos_missing",
+            groups="point_of_sale.group_pos_manager", company_id=self.env.company.id,
+        )
+        with self.assertRaises(UserError):
+            self.env["pos.config"].with_user(manager).get_inventory_guard_availability(0, [self.product.id])
+
+    def test_snapshot_skips_products_of_another_company(self):
+        other_company = self.env["res.company"].sudo().create({"name": "Snapshot other company"})
+        foreign = self.env["product.product"].sudo().create({
+            "name": "Foreign snapshot product", "is_storable": True,
+            "company_id": other_company.id,
+        })
+        manager = new_test_user(
+            self.env, login="inventory_guard_pos_multi",
+            groups="point_of_sale.group_pos_manager", company_id=self.env.company.id,
+        )
+        manager.sudo().company_ids |= other_company
+        companies = [self.env.company.id, other_company.id]
+        result = self.env["pos.config"].with_user(manager).with_context(
+            allowed_company_ids=companies,
+        ).get_inventory_guard_availability(self.config.id, [self.product.id, foreign.id])
+        self.assertEqual(set(result["products"]), {self.product.id})
+
     def test_non_pos_user_cannot_read_stock_snapshot(self):
         user = new_test_user(self.env, login="inventory_guard_non_pos", groups="base.group_user")
         with self.assertRaises(AccessError):

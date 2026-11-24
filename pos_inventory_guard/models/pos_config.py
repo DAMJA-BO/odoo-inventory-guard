@@ -4,7 +4,7 @@
 import math
 
 from odoo import _, api, fields, models
-from odoo.exceptions import AccessError, ValidationError
+from odoo.exceptions import AccessError, UserError, ValidationError
 
 
 class PosConfig(models.Model):
@@ -68,7 +68,8 @@ class PosConfig(models.Model):
         if not self.env.user.has_group("point_of_sale.group_pos_user"):
             raise AccessError(_("Only Point of Sale users can check checkout stock."))
         config = self.browse(config_id).exists()
-        config.ensure_one()
+        if not config:
+            raise UserError(_("POS configuration not found."))
         config.check_access("read")
         if config.company_id not in self.env.companies:
             raise AccessError(_("The POS belongs to an unauthorized company."))
@@ -84,8 +85,9 @@ class PosConfig(models.Model):
             raise AccessError(_("The POS source location must belong to the POS company."))
         products = self.env["product.product"].with_company(config.company_id).browse(product_ids).exists()
         products.check_access("read")
-        if any(product.company_id and product.company_id != config.company_id for product in products):
-            raise AccessError(_("Products must belong to the POS company or be shared."))
+        # One product of another company must not fail the whole batch; it is
+        # simply not reported, so the client treats its availability as unknown.
+        products = products.filtered(lambda p: not p.company_id or p.company_id == config.company_id)
         result = {}
         # Odoo 20 removed uom.uom.rounding. Its compare()/round() methods
         # use the shared Product Unit decimal precision instead.

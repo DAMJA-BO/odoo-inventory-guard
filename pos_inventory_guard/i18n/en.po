@@ -161,11 +161,6 @@ msgstr "Supply at most 200 numeric product IDs."
 
 #. module: pos_inventory_guard
 #: code:addons/pos_inventory_guard/models/pos_config.py:0
-msgid "Products must belong to the POS company or be shared."
-msgstr "Products must belong to the POS company or be shared."
-
-#. module: pos_inventory_guard
-#: code:addons/pos_inventory_guard/models/pos_config.py:0
 msgid "POS configuration not found."
 msgstr "POS configuration not found."
 

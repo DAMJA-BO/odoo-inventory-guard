@@ -161,11 +161,6 @@ msgstr "Indique como máximo 200 identificadores numéricos de productos."
 
 #. module: pos_inventory_guard
 #: code:addons/pos_inventory_guard/models/pos_config.py:0
-msgid "Products must belong to the POS company or be shared."
-msgstr "Los productos deben pertenecer a la empresa del PdV o ser compartidos."
-
-#. module: pos_inventory_guard
-#: code:addons/pos_inventory_guard/models/pos_config.py:0
 msgid "POS configuration not found."
 msgstr "No se encontró la configuración del PdV."
 
