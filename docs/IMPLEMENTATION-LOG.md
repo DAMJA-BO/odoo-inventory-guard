@@ -28,3 +28,11 @@
   payment terminal, ship-later, upgrade value preservation, real scrap/adjustment
   entry points, backorders, serials, MRP and multi-company move completion.
 - Branch protection requires repository settings; no remote changes were made.
+
+## First remote acceptance run
+
+- Clean installation and all Odoo database regression tests passed.
+- The last-unit race produced one completion and one serialization failure; a
+  fresh retry was blocked as designed.
+- Correct the evidence read to use a fresh cursor because the shell cursor keeps
+  its original PostgreSQL repeatable-read snapshot.

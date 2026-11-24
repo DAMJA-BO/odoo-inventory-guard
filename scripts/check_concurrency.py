@@ -64,8 +64,15 @@ def check(env):
         outcomes = sorted(future.result(timeout=60) for future in futures)
     assert outcomes == ["completed", "retry"], outcomes
     assert consume(False) == "blocked", "Fresh retry must reject the consumed last unit"
-    env.invalidate_all()
-    assert env["inventory.guard.availability"]._free_quantity(product, source) == 0
+    # The shell cursor still owns its original repeatable-read snapshot. Verify
+    # the committed result from a fresh transaction, like Odoo's request retry.
+    with env.registry.cursor() as cr:
+        observer = api.Environment(cr, env.uid, {"allowed_company_ids": [ids[3]]}, su=True)
+        available = observer["inventory.guard.availability"]._free_quantity(
+            observer["product.product"].browse(ids[0]),
+            observer["stock.location"].browse(ids[1]),
+        )
+        assert available == 0, available
     print("Concurrent last-unit consumption and fresh retry passed")
 
 
